@@ -13,7 +13,7 @@
     hx-swap="innerHTML"
     hx-sync="this:replace"
     hx-trigger="change delay:250ms, submit"
-    x-data='{rain: {% if "rain_multiplier" in overrides %}{{ overrides.rain_multiplier }}{% else %}1{% endif %}, demand: {% if "demand_multiplier" in overrides %}{{ overrides.demand_multiplier }}{% else %}1{% endif %}, soilOn: {% if "soil_saturation" in overrides %}true{% else %}false{% endif %}, stormOn: {% if "storm_arrival_day" in overrides %}true{% else %}false{% endif %}}'
+    x-data='{rain: {% if "rain_multiplier" in overrides %}{{ overrides.rain_multiplier }}{% else %}1{% endif %}, demand: {% if "demand_multiplier" in overrides %}{{ overrides.demand_multiplier }}{% else %}1{% endif %}, soilOn: {% if "soil_saturation" in overrides %}true{% else %}false{% endif %}, stormOn: {% if "storm_arrival_day" in overrides %}true{% else %}false{% endif %}, storm: {% if "storm_arrival_day" in overrides %}{{ overrides.storm_arrival_day }}{% else %}4{% endif %}}'
   >
     {% csrf_token %}
     <div class="simulator__grid">

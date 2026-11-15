@@ -14,6 +14,14 @@
   try { dams = JSON.parse(document.getElementById("country-dams")?.textContent || "[]"); } catch (e) { dams = []; }
   try { events = JSON.parse(document.getElementById("country-events")?.textContent || "[]"); } catch (e) { events = []; }
 
+  // Theme colours come from the CSS tokens (static/ds/themes.css); maps restyle on "ds:theme".
+  const css = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const T = {};
+  function readTheme() {
+    T.link = css("--t-link", "#1b6c80"); T.line = css("--t-map-line", "#ffffff");
+    T.land = css("--t-map-land", "#dbe5df"); T.edge = css("--t-map-edge", "#a9b8b2");
+  }
+  readTheme();
   const map = L.map(el, { zoomControl: true, attributionControl: false, minZoom: 2, maxZoom: 9 }).setView([20, 0], 2);
   const colors = {
     drought: "#e5a23b",
@@ -28,6 +36,7 @@
       .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
   }
 
+  let outline = null;
   fetch(geoUrl)
     .then((response) => response.json())
     .then((geo) => {
@@ -36,11 +45,11 @@
         map.setView([20, 0], 2);
         return;
       }
-      const layer = L.geoJSON(feature, {
-        style: { color: "#1b6c80", weight: 1.5, fillColor: "#1b6c80", fillOpacity: 0.08 },
-        pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 6, color: "#1b6c80", fillColor: "#1b6c80", fillOpacity: 0.2 }),
+      outline = L.geoJSON(feature, {
+        style: () => ({ color: T.link, weight: 1.5, fillColor: T.link, fillOpacity: 0.08 }),
+        pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 6, color: T.link, fillColor: T.link, fillOpacity: 0.2 }),
       }).addTo(map);
-      const bounds = layer.getBounds();
+      const bounds = outline.getBounds();
       if (bounds.isValid()) map.fitBounds(bounds, { padding: [22, 22], maxZoom: 6 });
     })
     .catch(() => {});
@@ -51,9 +60,9 @@
     const monitored = !!dam.is_monitored;
     const marker = L.circleMarker([dam.lat, dam.lon], {
       radius: monitored ? 5 : 3,
-      color: monitored ? "#0d4553" : "#8a5a0a",
+      color: monitored ? T.line : "#8a5a0a",
       weight: 1,
-      fillColor: monitored ? "#1b6c80" : "#c98a2e",
+      fillColor: monitored ? T.link : "#c98a2e",
       fillOpacity: monitored ? 0.92 : 0.55,
     });
     const capacity = dam.capacity_m3
@@ -74,7 +83,7 @@
     if (event.lat == null || event.lon == null) return;
     L.circleMarker([event.lat, event.lon], {
       radius: 5,
-      color: "#ffffff",
+      color: T.line,
       weight: 1,
       fillColor: colors[event.category] || "#c4242a",
       fillOpacity: 0.9,
@@ -84,4 +93,10 @@
   });
 
   window.addEventListener("resize", () => map.invalidateSize());
+  window.addEventListener("ds:theme", () => {
+    readTheme();
+    if (outline) outline.setStyle({ color: T.link, fillColor: T.link });
+    damLayer.eachLayer((m) => m.setStyle(m.options.radius === 5 ? { color: T.line, fillColor: T.link } : {}));
+    eventLayer.eachLayer((m) => m.setStyle({ color: T.line }));
+  });
 })();

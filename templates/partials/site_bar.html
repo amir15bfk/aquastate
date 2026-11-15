@@ -1,0 +1,87 @@
+{% load static %}
+<header class="site-bar" data-site-bar>
+  <a class="site-brand" href="/" aria-label="AquaState home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 21c4.8 0 4.8-4 9.6-4s4.8 4 9.6 4 4.8-4 4.8-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4 14c4.8 0 4.8-4 9.6-4s4.8 4 9.6 4 4.8-4 4.8-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/></svg>
+    <span><strong>AquaState</strong><small>Water &amp; climate intelligence</small></span>
+  </a>
+
+  <nav class="site-nav" aria-label="Main">
+    <a href="/" class="{% if nav_active == 'overview' %}is-active{% endif %}" {% if nav_active == 'overview' %}aria-current="page"{% endif %}>Overview</a>
+    <a href="/map/" class="{% if nav_active == 'map' %}is-active{% endif %}" {% if nav_active == 'map' %}aria-current="page"{% endif %}>Map viewer</a>
+    <a href="/country/DZ/" class="{% if nav_active == 'country' %}is-active{% endif %}" {% if nav_active == 'country' %}aria-current="page"{% endif %}>Countries</a>
+    <a href="/dams/" class="{% if nav_active == 'dams' %}is-active{% endif %}" {% if nav_active == 'dams' %}aria-current="page"{% endif %}>Dams</a>
+    <a href="/hazards/" class="{% if nav_active == 'hazards' %}is-active{% endif %}" {% if nav_active == 'hazards' %}aria-current="page"{% endif %}>Hazards</a>
+    <div class="site-more" data-menu>
+      <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="site-more-menu"
+              class="{% if nav_active in 'water pilot methodology sources' and nav_active %}is-active{% endif %}">
+        More
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="site-menu" id="site-more-menu" role="menu">
+        <a role="menuitem" href="/water/DZ/" class="{% if nav_active == 'water' %}is-active{% endif %}"><span>Water runway</span><small>Days of stored water until the next rain</small></a>
+        <a role="menuitem" href="/pilot/" class="{% if nav_active == 'pilot' %}is-active{% endif %}"><span>Dam simulator</span><small>Stress-test the 10 pilot reservoirs</small></a>
+        <a role="menuitem" href="/methodology/" class="{% if nav_active == 'methodology' %}is-active{% endif %}"><span>Methodology</span><small>Every formula behind the indices</small></a>
+        <a role="menuitem" href="/sources/" class="{% if nav_active == 'sources' %}is-active{% endif %}"><span>Data sources</span><small>What is live, cached or missing</small></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="site-tools">
+    {% if site_snapshot_at %}
+    <span class="site-status" title="Latest world snapshot">
+      <span class="live-pulse" aria-hidden="true"></span>
+      Updated {{ site_snapshot_at|date:"H:i" }} UTC{% if site_scored %} · {{ site_scored }} countries{% endif %}
+    </span>
+    {% endif %}
+    <button type="button" class="search-trigger" data-search-open aria-haspopup="dialog" aria-controls="ds-search">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span class="search-label">Search places, wilayas, dams…</span>
+      <kbd>Ctrl K</kbd>
+    </button>
+    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to light theme" data-tip="Light / dark theme">
+      <svg class="theme-toggle__sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 2.2v1.9M10 15.9v1.9M2.2 10h1.9M15.9 10h1.9M4.5 4.5l1.3 1.3M14.2 14.2l1.3 1.3M4.5 15.5l1.3-1.3M14.2 5.8l1.3-1.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <svg class="theme-toggle__moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.2 12.4A6.6 6.6 0 0 1 7.6 3.8a6.6 6.6 0 1 0 8.6 8.6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="menu-toggle" data-drawer-open aria-controls="site-drawer" aria-expanded="false" aria-label="Open menu">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 6h13M3.5 10h13M3.5 14h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="site-drawer" id="site-drawer" data-drawer aria-hidden="true">
+  <div class="site-drawer__scrim" data-drawer-close></div>
+  <div class="site-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <header>
+      <strong>Menu</strong>
+      <button type="button" class="ds-btn ds-btn--quiet ds-btn--sm" data-drawer-close aria-label="Close menu">Close</button>
+    </header>
+    <a href="/" class="{% if nav_active == 'overview' %}is-active{% endif %}">Overview<small>The world water &amp; climate picture</small></a>
+    <a href="/map/" class="{% if nav_active == 'map' %}is-active{% endif %}">Map viewer<small>Every country, region by region</small></a>
+    <a href="/country/DZ/" class="{% if nav_active == 'country' %}is-active{% endif %}">Countries<small>Country sheets and their arithmetic</small></a>
+    <a href="/dams/" class="{% if nav_active == 'dams' %}is-active{% endif %}">Dams<small>The global dam atlas</small></a>
+    <a href="/hazards/" class="{% if nav_active == 'hazards' %}is-active{% endif %}">Hazards<small>Drought, flood, fire, desertification</small></a>
+    <hr>
+    <a href="/water/DZ/" class="{% if nav_active == 'water' %}is-active{% endif %}">Water runway<small>Stored water vs the next rain</small></a>
+    <a href="/pilot/" class="{% if nav_active == 'pilot' %}is-active{% endif %}">Dam simulator<small>The 10 pilot reservoirs</small></a>
+    <a href="/methodology/" class="{% if nav_active == 'methodology' %}is-active{% endif %}">Methodology</a>
+    <a href="/sources/" class="{% if nav_active == 'sources' %}is-active{% endif %}">Data sources</a>
+    <hr>
+    <button type="button" class="ds-btn ds-btn--ghost drawer-theme" data-theme-toggle>Switch to light theme</button>
+  </div>
+</div>
+
+<dialog class="ds-dialog" id="ds-search" aria-label="Search">
+  <div class="palette">
+    <div class="palette__input">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m13.2 13.2 3.3 3.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="ds-search-input">Search countries, wilayas, dams and pages</label>
+      <input id="ds-search-input" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Try “Oran”, “Morocco” or “Beni Haroun”" role="combobox" aria-expanded="true" aria-controls="ds-search-results">
+      <button type="button" class="ds-btn ds-btn--quiet ds-btn--sm" data-search-close>Esc</button>
+    </div>
+    <div class="palette__results" id="ds-search-results" role="listbox" aria-label="Results"></div>
+    <div class="palette__foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></div>
+  </div>
+</dialog>
+<div class="ds-tip" id="ds-tip" role="tooltip"></div>
+<div class="ds-toast" id="ds-toast" role="status" aria-live="polite"></div>

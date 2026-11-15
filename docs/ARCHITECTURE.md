@@ -49,7 +49,7 @@ world/                  the new world layer
                         dedupe_dams, load_full_dam_atlas
   templates/world/      overview, country, dams, dam, hazards, method, sources
   static/world/         world.css, country.css, atlas.css, dam.css, hazards.css,
-                        docs.css, world-map.js, country-map.js, country-chart.js,
+                        docs.css, overview.js, map-viewer.js, country-map.js, country-chart.js,
                         atlas-map.js
   tests/                15 tests
 
@@ -73,7 +73,7 @@ country_index.compute_country
         ↓
 CountryProfile + CountryIndexSnapshot + HazardCountryScore
         ↓
-WorldSnapshot payload → /api/world/ → world-map.js
+WorldSnapshot payload → /api/world/ → overview.js
         ↓
 Country page → WCRI waterfall + hazard strip + dam table
 Dam page → DRI (core.services.snapshots) + waterfall + sub-indices
@@ -96,7 +96,7 @@ The scores are not summed together. A low WRI can coexist with a good WCRI if th
 3. Each country is recomputed; profiles, snapshots and hazard scores are upserted in one transaction.
 4. A new `WorldSnapshot` is written with `version=wcri-YYYYMMDDHHMMSS`; the previous current snapshot is retired.
 5. `/api/world/meta/` exposes version, updated time, next refresh, source status and whether a refresh is running.
-6. `world-map.js` polls meta every 60 s; a version change refreshes the choropleth without a reload.
+6. `overview.js` polls meta every 60 s; a version change reloads the snapshot into the map, ranking and charts without a page reload.
 7. `refresh_world --loop --interval 900` is the unattended scheduler; `start.ps1` runs it beside the server.
 
 ## Endpoints
@@ -144,3 +144,13 @@ python -m pytest -q core/tests dashboard/tests                     # 122 tests
 ```
 
 The pilot tests keep the original signed fixtures. The world tests cover percentiles, PET, WCRI scoring, missing data, pages, APIs, atlas search and event GeoJSON.
+
+
+## Regional layers (Map viewer)
+
+`world/services/regions.py` downloads a country's ADM1 boundaries from geoBoundaries on first use
+(`world/data/geo_admin1/<ISO3>.geojson`, catalogue in `catalog_*.json`), samples NASA POWER, Open-Meteo and
+GloFAS at an interior point of every region and runs the same `compute_country` mathematics. First visits are
+built in a background thread (`world/services/region_jobs.py`) and reported to the page as progress; results
+are stored as `RegionSnapshot(region=<ISO2>)`. `refresh_regions --existing` (called by `refresh_world`) keeps every
+opened country fresh. APIs: `/api/regions/`, `/api/regions/<ISO2>/`, `/api/regions/<ISO2>/geo/`.

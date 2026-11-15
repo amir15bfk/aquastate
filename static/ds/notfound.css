@@ -1,0 +1,37 @@
+/* 404 page + Catch the Rain */
+.nf { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); gap: var(--sp-10); align-items: center; min-height: calc(100dvh - var(--site-bar-h) - 160px); }
+.nf-code { font-size: clamp(72px, 10vw, 128px); font-weight: 800; letter-spacing: -0.06em; line-height: 1; margin: 0 0 var(--sp-4); color: var(--c-text); display: flex; align-items: center; gap: .04em; }
+.nf-drop { width: .62em; height: .62em; background: var(--c-teal); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: inline-block; margin: 0 .06em; animation: nf-bob 2.6s var(--ease) infinite; box-shadow: inset -6px -6px 0 rgba(0, 0, 0, .12); }
+@keyframes nf-bob { 0%, 100% { transform: rotate(-45deg) translate(0, 0); } 50% { transform: rotate(-45deg) translate(4px, 4px); } }
+.nf h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -0.035em; margin: 0 0 var(--sp-3); line-height: 1.1; }
+.nf-lede { color: var(--t-soft); font-size: 17px; line-height: 1.6; margin: 0 0 var(--sp-6); max-width: 46ch; }
+.nf-lede code { background: var(--t-ov3); border-radius: 6px; padding: 1px 6px; font-size: 14px; word-break: break-all; }
+.nf-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+.nf-game { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
+.nf-game__head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-4); flex-wrap: wrap; }
+.nf-game__head h2 { margin: 0; font-size: 20px; font-weight: 800; }
+.nf-game__head p { margin: 4px 0 0; font-size: 13.5px; max-width: 40ch; }
+.nf-hud { display: flex; gap: var(--sp-4); }
+.nf-hud__item { display: grid; gap: 1px; text-align: right; }
+.nf-hud__item small { color: var(--c-muted); font-size: 12px; font-weight: 650; }
+.nf-hud__item b { font-size: 20px; font-weight: 800; display: flex; gap: 3px; justify-content: flex-end; min-height: 26px; align-items: center; }
+.nf-life { width: 12px; height: 12px; background: var(--c-blue); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: inline-block; transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease); }
+.nf-life.is-lost { opacity: .18; transform: rotate(-45deg) scale(.8); }
+
+.nf-stage { position: relative; border-radius: var(--r-lg); overflow: hidden; background: #0b2a33; line-height: 0; }
+.nf-stage canvas { display: block; width: 100%; outline: none; cursor: crosshair; }
+.nf-reservoir { position: absolute; right: 12px; top: 12px; width: 10px; height: 64px; border-radius: 6px; background: rgba(255, 255, 255, .1); overflow: hidden; display: flex; align-items: flex-end; }
+.nf-reservoir span { width: 100%; background: var(--c-teal); border-radius: 6px; transition: height var(--dur-3) var(--ease); }
+.nf-overlay { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 10px; text-align: center; padding: var(--sp-6); background: rgba(6, 18, 21, .62); backdrop-filter: blur(2px); line-height: 1.5; }
+.nf-overlay[hidden] { display: none; }
+.nf-overlay strong { font-size: 22px; font-weight: 800; color: #edf5f4; }
+.nf-overlay p { margin: 0; color: #c3d2d0; font-size: 14px; max-width: 38ch; }
+.nf-overlay kbd { border: 1px solid rgba(255, 255, 255, .25); border-radius: 5px; padding: 0 5px; font-family: var(--ds-font); font-size: 12px; }
+.nf-overlay--pause { background: rgba(6, 18, 21, .4); }
+.nf-pad { display: none; gap: var(--sp-3); }
+.nf-pad__btn { flex: 1; height: 56px; border-radius: var(--r-md); border: 1px solid var(--c-border); background: var(--t-ov2); color: var(--c-text); font-size: 20px; touch-action: none; user-select: none; -webkit-user-select: none; cursor: pointer; }
+.nf-pad__btn:active { background: rgba(52, 201, 184, .2); }
+@media (hover: none), (max-width: 760px) { .nf-pad { display: flex; } }
+@media (max-width: 980px) { .nf { grid-template-columns: minmax(0, 1fr); gap: var(--sp-8); min-height: 0; } }
+@media (max-width: 560px) { .nf-hud { width: 100%; justify-content: space-between; } .nf-hud__item { text-align: left; } .nf-actions .ds-btn { flex: 1 1 100%; } }

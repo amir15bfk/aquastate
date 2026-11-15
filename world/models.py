@@ -207,3 +207,20 @@ class HazardCountryScore(models.Model):
 
     def __str__(self) -> str:
         return f"{self.iso2} {self.category} {self.pressure:.0f}"
+
+
+class RegionSnapshot(models.Model):
+    """Sub-national layers (e.g. Algeria's wilayas) computed with the WCRI-2.0 mathematics."""
+
+    region = models.CharField(max_length=8, db_index=True)
+    version = models.CharField(max_length=40, unique=True)
+    as_of = models.DateTimeField(default=timezone.now)
+    payload = models.JSONField(default=dict, blank=True)
+    is_current = models.BooleanField(default=True, db_index=True)
+    created_at = models.DateTimeField(default=timezone.now, db_index=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.region} {self.version}"

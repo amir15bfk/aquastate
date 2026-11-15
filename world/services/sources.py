@@ -40,6 +40,12 @@ WORLD_BANK_URL = "https://api.worldbank.org/v2/country/all/indicator/{code}"
 
 def _cache_path(key: str) -> Path:
     safe = "".join(ch if ch.isalnum() or ch in "-_." else "_" for ch in key)
+    if len(safe) > 180:
+        # Long batch keys (e.g. 48 wilaya codes) exceed the Windows path limit; keep a readable
+        # prefix and make the rest a stable digest. Shorter keys are unchanged.
+        import hashlib
+
+        safe = f"{safe[:60]}__{hashlib.sha1(safe.encode()).hexdigest()}"
     return CACHE_DIR / f"{safe}.json"
 
 

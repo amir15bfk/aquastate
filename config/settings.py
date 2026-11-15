@@ -1,6 +1,11 @@
 """Django settings for AquaState — the merged water & climate observatory."""
 from pathlib import Path
+import mimetypes
 import os
+
+# Windows' registry often has no type for .mjs, so the dev static server sent the MapLibre
+# module worker as text/plain and browsers refused to start it (the /pilot/ map stayed blank).
+mimetypes.add_type("text/javascript", ".mjs", True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,6 +39,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Outside CommonMiddleware so APPEND_SLASH redirects still happen first.
+    "world.middleware.FriendlyNotFoundMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -56,6 +63,7 @@ TEMPLATES = [
                 "django.template.context_processors.csrf",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "world.context.site_nav",
             ],
         },
     },

@@ -1,0 +1,67 @@
+{% extends "world/base.html" %}
+{% load static %}
+{% block title %}Page not found · AquaState{% endblock %}
+{% block body_class %}world-body nf-body{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'ds/notfound.css' %}">{% endblock %}
+{% block content %}
+<section class="nf">
+  <div class="nf-copy">
+    <p class="nf-code" aria-hidden="true">4<span class="nf-drop"></span>4</p>
+    <h1>Looks like this page dried up.</h1>
+    <p class="nf-lede">
+      We couldn't find <code>{{ request_path|default:request.path }}</code>. It may have evaporated, moved, or never fallen here.
+      While the clouds regroup, you can help refill the reservoir.
+    </p>
+    <div class="nf-actions">
+      <a class="ds-btn" href="/">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 9.5 10 4l6.5 5.5M5.5 8v8h9V8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to the dashboard
+      </a>
+      <a class="ds-btn ds-btn--ghost" href="/map/">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5 7.5 3.5l5 2 4.5-2v11l-4.5 2-5-2-4.5 2z M7.5 3.5v11 M12.5 5.5v11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        Open the map viewer
+      </a>
+      <button type="button" class="ds-btn ds-btn--quiet" data-search-open>Search instead</button>
+    </div>
+  </div>
+
+  <div class="nf-game ds-card" aria-labelledby="rain-title">
+    <div class="nf-game__head">
+      <div>
+        <h2 id="rain-title">Catch the Rain</h2>
+        <p class="ds-muted">Optional mini-game · steer the droplet, catch the rain, don't let three drops hit the dust.</p>
+      </div>
+      <div class="nf-hud" aria-live="polite">
+        <span class="nf-hud__item"><small>Score</small><b class="num" id="rain-score">0</b></span>
+        <span class="nf-hud__item"><small>Best</small><b class="num" id="rain-best">0</b></span>
+        <span class="nf-hud__item"><small>Lives</small><b id="rain-lives" aria-label="3 lives">💧💧💧</b></span>
+      </div>
+    </div>
+    <div class="nf-stage" id="rain-stage">
+      <canvas id="rain-canvas" role="img" aria-label="Catch the Rain game area"></canvas>
+      <div class="nf-reservoir" aria-hidden="true"><span id="rain-reservoir"></span></div>
+      <div class="nf-overlay" id="rain-intro">
+        <strong>Refill the reservoir</strong>
+        <p>Move with <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd>, the mouse, or by dragging on touch screens. <kbd>P</kbd> pauses.</p>
+        <button type="button" class="ds-btn" id="rain-start">Start game</button>
+      </div>
+      <div class="nf-overlay" id="rain-over" hidden>
+        <strong id="rain-over-title">The ground dried out</strong>
+        <p id="rain-over-text">You caught 0 drops.</p>
+        <button type="button" class="ds-btn" id="rain-restart">Play again</button>
+      </div>
+      <div class="nf-overlay nf-overlay--pause" id="rain-paused" hidden>
+        <strong>Paused</strong>
+        <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm" id="rain-resume">Resume</button>
+      </div>
+    </div>
+    <div class="nf-pad" aria-label="Touch controls">
+      <button type="button" class="nf-pad__btn" data-dir="-1" aria-label="Move left">◀</button>
+      <button type="button" class="nf-pad__btn" data-dir="1" aria-label="Move right">▶</button>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'ds/catch-the-rain.js' %}" defer></script>
+{% endblock %}

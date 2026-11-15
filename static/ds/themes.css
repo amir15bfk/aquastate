@@ -1,0 +1,237 @@
+/* =========================================================================
+   AquaState themes — one light and one dark theme for EVERY page.
+   <html data-theme="dark|light"> is set before first paint (templates/partials/theme_head.html)
+   from the saved choice or the system preference, and switched by the site-bar toggle.
+
+   Colours come from the existing AquaState palettes only:
+   dark  = the "world" palette (#081012 ground, teal #34c9b8, …)
+   light = the "survey sheet" palette (#f2f5f2 ground, white sheet, petrol #1b6c80, …)
+
+   Every legacy variable family (--c-*, --world-*, --sheet-*, and the --ground/--text/… names shared by the
+   water and pilot apps) is mapped onto the same theme tokens (--t-*), so all apps switch together.
+   ========================================================================= */
+
+:root[data-theme="dark"] {
+  --t-bg: #081012;
+  --t-surface: #0d1719;
+  --t-raised: #122023;
+  --t-raised-2: #172a2d;
+  --t-border: #1e3034;
+  --t-border-strong: #2c464b;
+  --t-rule: #17272a;
+  --t-text: #edf5f4;
+  --t-soft: #c3d2d0;
+  --t-muted: #9bb0ae;
+  --t-faint: #7e9391;
+  --t-accent: #34c9b8;
+  --t-accent-ink: #072e2a;
+  --t-link: #34c9b8;
+  --t-link-strong: #8fe0d6;
+  --t-accent-wash: rgba(52, 201, 184, .12);
+  --t-ov1: rgba(255, 255, 255, .03);
+  --t-ov2: rgba(255, 255, 255, .05);
+  --t-ov3: rgba(255, 255, 255, .08);
+  --t-ov4: rgba(255, 255, 255, .12);
+  --t-ov5: rgba(255, 255, 255, .25);
+  --t-track: #122023;
+  --t-knob: #dfe9e8;
+  --t-bar: rgba(8, 16, 18, .86);
+  --t-glass: rgba(13, 23, 25, .92);
+  --t-scrim: rgba(2, 6, 7, .62);
+  --t-tip-bg: #f4f8f7;
+  --t-tip-ink: #0d1719;
+  --t-tip-muted: #53605c;
+  --t-solid-bg: #edf5f4;
+  --t-solid-ink: #0a1416;
+  --t-solid-hover: #ffffff;
+  --t-code-bg: #050c0d;
+  --t-code-ink: #e7f1f2;
+  --t-map-bg: #071012;
+  --t-map-land: #0f1c1f;
+  --t-map-edge: #1f3337;
+  --t-map-line: #0a1416;
+  --t-map-hover: #edf5f4;
+  --t-map-select: #ffffff;
+  --t-nodata: #2a3d40;
+  --t-label: #f4f8f7;
+  --t-label-halo: 0 1px 2px rgba(0, 0, 0, .9), 0 0 6px rgba(0, 0, 0, .7);
+  --t-pos: #4fd39b; --t-neg: #ef6f82; --t-warn: #d9b15f; --t-stress: #d99a5b;
+  --t-amber: #e5a23b; --t-red: #ef6f72; --t-blue: #5ba7e8; --t-green: #55c98a;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .22);
+  --shadow-2: 0 12px 32px -14px rgba(0, 0, 0, .6), 0 2px 6px -2px rgba(0, 0, 0, .35);
+  --shadow-3: 0 30px 70px -20px rgba(0, 0, 0, .7);
+}
+
+:root[data-theme="light"] {
+  --t-bg: #f2f5f2;
+  --t-surface: #ffffff;
+  --t-raised: #f7f9f7;
+  --t-raised-2: #eef2ef;
+  --t-border: #e3e8e4;
+  --t-border-strong: #c9d1cb;
+  --t-rule: #eef1ef;
+  --t-text: #14201d;
+  --t-soft: #3c4a46;
+  --t-muted: #53605c;
+  --t-faint: #66726e;
+  --t-accent: #1b6c80;
+  --t-accent-ink: #ffffff;
+  --t-link: #1b6c80;
+  --t-link-strong: #0d4553;
+  --t-accent-wash: #e7f1f2;
+  --t-ov1: rgba(20, 32, 29, .025);
+  --t-ov2: rgba(20, 32, 29, .045);
+  --t-ov3: rgba(20, 32, 29, .07);
+  --t-ov4: rgba(20, 32, 29, .1);
+  --t-ov5: rgba(20, 32, 29, .22);
+  --t-track: #e9eeea;
+  --t-knob: #ffffff;
+  --t-bar: rgba(255, 255, 255, .88);
+  --t-glass: rgba(255, 255, 255, .94);
+  --t-scrim: rgba(20, 32, 29, .32);
+  --t-tip-bg: #14201d;
+  --t-tip-ink: #f4f8f7;
+  --t-tip-muted: #a9b8b6;
+  --t-solid-bg: #14201d;
+  --t-solid-ink: #ffffff;
+  --t-solid-hover: #21312c;
+  --t-code-bg: #14201d;
+  --t-code-ink: #e7f1f2;
+  --t-map-bg: #e9efec;
+  --t-map-land: #dde5e1;
+  --t-map-edge: #c3cdc8;
+  --t-map-line: #ffffff;
+  --t-map-hover: #14201d;
+  --t-map-select: #14201d;
+  --t-nodata: #cdd6d2;
+  --t-label: #14201d;
+  --t-label-halo: 0 0 2px #fff, 0 0 4px #fff, 0 0 7px rgba(255, 255, 255, .9);
+  --t-pos: #1e7b4f; --t-neg: #c4242a; --t-warn: #8a5a0a; --t-stress: #b54708;
+  --t-amber: #a86f0c; --t-red: #c4242a; --t-blue: #2f70bb; --t-green: #1e7b4f;
+  --shadow-1: 0 1px 2px rgba(20, 32, 29, .06), 0 1px 1px rgba(20, 32, 29, .03);
+  --shadow-2: 0 14px 34px -16px rgba(20, 32, 29, .22), 0 2px 6px -2px rgba(20, 32, 29, .08);
+  --shadow-3: 0 30px 70px -24px rgba(20, 32, 29, .35);
+}
+
+/* ---- every legacy variable family -> the same tokens ---- */
+:root[data-theme] {
+  /* design system */
+  --c-ground: var(--t-bg); --c-surface: var(--t-surface); --c-raised: var(--t-raised); --c-raised-2: var(--t-raised-2);
+  --c-border: var(--t-border); --c-rule: var(--t-rule); --c-text: var(--t-text); --c-muted: var(--t-muted); --c-faint: var(--t-faint);
+  --c-teal: var(--t-accent); --c-teal-ink: var(--t-accent-ink);
+  --c-amber: var(--t-amber); --c-red: var(--t-red); --c-blue: var(--t-blue); --c-green: var(--t-green);
+  --c-sheet: var(--t-bg); --c-sheet-surface: var(--t-surface); --c-sheet-ink: var(--t-text); --c-sheet-muted: var(--t-muted); --c-sheet-rule: var(--t-border);
+  --c-petrol: var(--t-link);
+  /* world pages (dark family) */
+  --world-ground: var(--t-bg); --world-surface: var(--t-surface); --world-raised: var(--t-raised); --world-border: var(--t-border);
+  --world-rule: var(--t-rule); --world-text: var(--t-text); --world-muted: var(--t-muted); --world-faint: var(--t-faint);
+  --world-teal: var(--t-accent); --world-teal-ink: var(--t-accent-ink);
+  --world-amber: var(--t-amber); --world-red: var(--t-red); --world-blue: var(--t-blue); --world-green: var(--t-green);
+  /* world pages (light "sheet" family) */
+  --sheet-ground: var(--t-bg); --sheet-surface: var(--t-surface); --sheet-ink: var(--t-text); --sheet-muted: var(--t-muted);
+  --sheet-rule: var(--t-border); --sheet-accent: var(--t-link);
+  /* water app (/water/) and dam simulator (/pilot/) share these names */
+  --ground: var(--t-bg); --surface: var(--t-surface); --raised: var(--t-raised); --active: var(--t-raised-2);
+  --border: var(--t-border); --rule: var(--t-rule); --control: var(--t-border-strong);
+  --text: var(--t-text); --muted: var(--t-muted); --faint: var(--t-faint);
+  --accent: var(--t-link); --accent-ink: var(--t-link-strong); --accent-wash: var(--t-accent-wash); --accent-soft: var(--t-accent-wash);
+  --positive: var(--t-pos); --negative: var(--t-neg); --warning: var(--t-warn); --stressed: var(--t-stress);
+  --chart-1: var(--t-link); --chart-2: var(--t-blue); --chart-3: var(--t-amber);
+}
+:root[data-theme="dark"] {
+  --pill-positive-bg: rgba(85, 201, 138, .14); --pill-positive-ink: #8fe0b3;
+  --pill-negative-bg: rgba(239, 111, 114, .16); --pill-negative-ink: #f7a1a3;
+  --pill-warning-bg: rgba(229, 162, 59, .15); --pill-warning-ink: #f2c46f;
+  --pill-neutral-bg: rgba(255, 255, 255, .07); --pill-neutral-ink: #c3d2d0;
+  /* pilot status colours (unchanged dark values) */
+  --critical: #ef6f82; --watch: #d9c05f; --stable: #6fc7d8; --recharging: #4fd39b; --surplus: #63d8e8; --nodata: #7f929b; --cyan: #63d8e8;
+}
+:root[data-theme="light"] {
+  --pill-positive-bg: #dcfae5; --pill-positive-ink: #04250e;
+  --pill-negative-bg: #ffedea; --pill-negative-ink: #831c1e;
+  --pill-warning-bg: #fffbeb; --pill-warning-ink: #713f12;
+  --pill-neutral-bg: #ebedee; --pill-neutral-ink: #353736;
+  /* pilot status colours, darkened for white surfaces (sheet palette) */
+  --critical: #c4242a; --watch: #8a5a0a; --stable: #1b6c80; --recharging: #1e7b4f; --surplus: #2f70bb; --nodata: #6f7a76; --cyan: #1b6c80;
+}
+
+/* ---- page grounds: every page follows the theme ---- */
+html[data-theme] body,
+html[data-theme] body.world-body,
+html[data-theme] body.app-body { background: var(--t-bg); color: var(--t-text); }
+html[data-theme] .world-main { color: var(--t-text); }
+html[data-theme] .site-footer { color: var(--t-muted); border-top-color: var(--t-border); background: transparent; }
+
+/* ---- components whose ink must flip in the light theme ---- */
+:root[data-theme="light"] .ds-badge--resilient { color: #155e3b; background: rgba(30, 123, 79, .12); }
+:root[data-theme="light"] .ds-badge--stable { color: #0d4e4a; background: rgba(74, 163, 162, .16); }
+:root[data-theme="light"] .ds-badge--watch { color: #713f12; background: #fdf3d8; }
+:root[data-theme="light"] .ds-badge--stressed { color: #83310b; background: #fff1e7; }
+:root[data-theme="light"] .ds-badge--critical { color: #831c1e; background: #ffedea; }
+:root[data-theme="light"] .ds-badge--demo { color: #713f12; background: #fdf3d8; }
+:root[data-theme="light"] .ds-badge--live { color: #155e3b; background: rgba(30, 123, 79, .1); }
+:root[data-theme="light"] .ds-badge--no_data { color: var(--t-muted); background: var(--t-ov3); }
+:root[data-theme="light"] .mv-proxy, :root[data-theme="light"] .mv-note { color: #713f12; background: #fdf3d8; }
+:root[data-theme="light"] .site-nav .nav-new { color: #fff; }
+:root[data-theme="light"] .ds-btn:hover { box-shadow: 0 6px 18px -8px rgba(27, 108, 128, .55); }
+:root[data-theme="light"] .ds-btn--ghost:hover, :root[data-theme="light"] .ds-btn--quiet:hover { box-shadow: none; }
+
+/* country / docs status pills were light-only: give them dark-theme versions */
+:root[data-theme="dark"] .status-pill.status-resilient { background: rgba(85, 201, 138, .14); color: #8fe0b3; }
+:root[data-theme="dark"] .status-pill.status-stable { background: rgba(74, 163, 162, .16); color: #8fd0cf; }
+:root[data-theme="dark"] .status-pill.status-watch { background: rgba(229, 162, 59, .15); color: #f2c46f; }
+:root[data-theme="dark"] .status-pill.status-stressed { background: rgba(224, 122, 63, .16); color: #f2a06f; }
+:root[data-theme="dark"] .status-pill.status-critical { background: rgba(239, 111, 114, .16); color: #f7a1a3; }
+:root[data-theme="dark"] .status-pill.status-no_data { background: var(--t-ov3); color: var(--t-muted); }
+:root[data-theme="dark"] .source-modeled, :root[data-theme="dark"] .source-proxy { color: #8fe0d6; background: rgba(52, 201, 184, .12); }
+:root[data-theme="dark"] .pill-live { background: rgba(85, 201, 138, .14) !important; color: #8fe0b3 !important; }
+/* dam / world status text that used light-on-dark pastels */
+:root[data-theme="light"] .dri-no_data { color: var(--t-muted); }
+
+/* ---- the theme toggle ---- */
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--t-border); background: var(--t-ov1);
+  color: var(--t-text); display: inline-grid; place-items: center; cursor: pointer; flex: none;
+  transition: background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), transform var(--dur-2) var(--ease);
+}
+.theme-toggle:hover { background: var(--t-ov3); border-color: var(--t-border-strong); }
+.theme-toggle:active { transform: rotate(-20deg) scale(.95); }
+.theme-toggle svg { width: 19px; height: 19px; grid-area: 1 / 1; transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease); }
+:root[data-theme="dark"] .theme-toggle__moon, :root[data-theme="light"] .theme-toggle__sun { opacity: 0; transform: scale(.6) rotate(-40deg); }
+.drawer-theme { width: 100%; margin-top: 4px; }
+
+/* gentle cross-fade while switching (added for 400 ms by ds.js) */
+html.theme-switching, html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after {
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease, fill .3s ease, stroke .3s ease !important;
+}
+@media (prefers-reduced-motion: reduce) { html.theme-switching * { transition: none !important; } }
+
+/* ---- dam simulator (/pilot/): its Tailwind build hard-codes dark literals; map them to tokens ---- */
+body.pilot-page .map-pane { background: var(--t-map-bg); }
+body.pilot-page .panel-pane { scrollbar-color: var(--t-border-strong) transparent; }
+body.pilot-page .layer-toggles, body.pilot-page .map-hint, body.pilot-page .map-legend,
+body.pilot-page .dam-marker__ring, body.pilot-page .dam-marker__label { background: var(--t-glass); }
+body.pilot-page .maplibregl-ctrl-group { background: var(--t-raised) !important; }
+:root[data-theme="light"] body.pilot-page .maplibregl-ctrl-group button span { filter: none; }
+body.pilot-page .fallback-country { fill: var(--t-map-land); stroke: var(--t-map-edge); }
+body.pilot-page .ring-track { stroke: var(--t-track); }
+body.pilot-page .waterfall__track, body.pilot-page .skeleton__line { background: var(--t-track); }
+body.pilot-page .scenario-banner { background: var(--t-accent-wash); }
+:root[data-theme="light"] body.pilot-page .status-critical { background: #ffedea; }
+:root[data-theme="light"] body.pilot-page .status-stressed { background: #fff1e7; }
+:root[data-theme="light"] body.pilot-page .status-watch { background: #fffbeb; }
+:root[data-theme="light"] body.pilot-page .status-stable { background: #e7f1f2; }
+:root[data-theme="light"] body.pilot-page .status-recharging { background: #dcfae5; }
+:root[data-theme="light"] body.pilot-page .status-surplus { background: #e8f0fb; }
+:root[data-theme="light"] body.pilot-page .status-no_data { background: #ebedee; }
+
+/* ---- status pills tuned for one background only: give each theme its own ink ---- */
+:root[data-theme="light"] .dri-critical { color: #831c1e; background: #ffedea; }
+:root[data-theme="light"] .dri-stressed { color: #83310b; background: #fff1e7; }
+:root[data-theme="light"] .dri-watch { color: #713f12; background: #fdf3d8; }
+:root[data-theme="light"] .dri-recharging, :root[data-theme="light"] .dri-surplus { color: #155e3b; background: #dcfae5; }
+:root[data-theme="light"] .dri-stable { color: #0d4e4a; background: #dff1f0; }
+:root[data-theme="dark"] .status-pill.status-ok { border-color: rgba(85, 201, 138, .35); }
+:root[data-theme="dark"] .status-pill.status-watch { border-color: rgba(229, 162, 59, .35); }
+:root[data-theme="dark"] .status-pill.status-stressed { background: rgba(224, 122, 63, .16); border-color: rgba(224, 122, 63, .35); color: #f2a06f; }
+:root[data-theme="dark"] .status-pill.status-critical { border-color: rgba(239, 111, 114, .35); }

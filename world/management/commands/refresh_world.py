@@ -35,6 +35,11 @@ class Command(BaseCommand):
                         if options["limit"]:
                             args.extend(["--limit", str(options["limit"])])
                         call_command("bootstrap_world", *args, verbosity=0)
+                        # Region layers for the Map Viewer: Algeria plus every country already opened there.
+                        try:
+                            call_command("refresh_regions", "--country", "DZ", "--existing", *[a for a in args if a == "--force"], verbosity=0)
+                        except Exception as exc:  # never let the sub-national layer break the world refresh
+                            self.stderr.write(f"Region refresh failed: {exc}")
                         self.stdout.write(
                             self.style.SUCCESS(f"Refresh complete in {round(time.time() - started, 1)}s")
                         )

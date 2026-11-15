@@ -1,0 +1,113 @@
+{% extends "world/base.html" %}
+{% load static %}
+{% block title %}Map viewer · Regions of every country · AquaState{% endblock %}
+{% block body_class %}world-body mv-body{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'ds/map-viewer.css' %}">{% endblock %}
+{% block content %}
+<div class="mv" id="mv"
+     data-api-base="/api/regions/"
+     data-catalog="/api/regions/"
+     data-world-api="/api/world/"
+     data-world-geo="{% static 'data/countries-world.geojson' %}"
+     data-initial-country="{{ initial_country }}"
+     data-initial-region="{{ initial_region }}"
+     data-initial-layer="{{ initial_layer }}">
+
+  {# ---------------- controls ---------------- #}
+  <aside class="mv-controls" aria-label="Map controls">
+    <div class="mv-controls__head">
+      <nav class="mv-crumbs" aria-label="Map level">
+        <button type="button" class="mv-crumb" id="mv-crumb-world">World</button>
+        <span class="mv-crumb-sep" id="mv-crumb-sep" hidden>›</span>
+        <span class="mv-crumb is-current" id="mv-crumb-country" hidden></span>
+      </nav>
+      <h1 id="mv-title">Map viewer</h1>
+      <p class="ds-muted" id="mv-intro">Every country, region by region. Pick a country on the map or search for it — its regions are computed from live NASA and Open-Meteo signals.</p>
+      <label class="visually-hidden" for="mv-country">Choose a country</label>
+      <input class="ds-input mv-country" id="mv-country" type="search" placeholder="Go to a country… e.g. Morocco" autocomplete="off" list="mv-country-list">
+      <datalist id="mv-country-list"></datalist>
+    </div>
+
+    <fieldset class="mv-group">
+      <legend>Layer</legend>
+      <div class="mv-layers" role="radiogroup" aria-label="Environmental layer" id="mv-layers">
+        <button type="button" role="radio" data-layer="water_stress" aria-checked="false"><i class="mv-ico mv-ico--water"></i><span><b>Water stress</b><small>Rain vs evaporative demand</small></span></button>
+        <button type="button" role="radio" data-layer="drought" aria-checked="true"><i class="mv-ico mv-ico--drought"></i><span><b>Drought</b><small>Rain and soil deficit vs normal</small></span></button>
+        <button type="button" role="radio" data-layer="flood" aria-checked="false"><i class="mv-ico mv-ico--flood"></i><span><b>Flood risk</b><small>Forecast river discharge</small></span></button>
+        <button type="button" role="radio" data-layer="fire" aria-checked="false"><i class="mv-ico mv-ico--fire"></i><span><b>Forest fire risk</b><small>Fire weather + drought</small></span></button>
+        <button type="button" role="radio" data-layer="vegetation" aria-checked="false"><i class="mv-ico mv-ico--veg"></i><span><b>Vegetation moisture</b><small>Proxy · root-zone soil wetness</small></span></button>
+      </div>
+      <p class="mv-layer-note" id="mv-layer-note"></p>
+    </fieldset>
+
+    <fieldset class="mv-group">
+      <legend>Observation period</legend>
+      <label class="visually-hidden" for="mv-month">Observation month</label>
+      <select class="ds-select" id="mv-month"><option value="">Latest (live)</option></select>
+      <p class="mv-hint" id="mv-month-hint">Open a country to replay drought and vegetation moisture month by month. Flood, fire and water stress are latest-only.</p>
+    </fieldset>
+
+    <fieldset class="mv-group">
+      <legend id="mv-show-legend">Show</legend>
+      <div class="mv-levels" id="mv-levels" role="group" aria-label="Filter by level"></div>
+      <label class="visually-hidden" for="mv-find">Find on the map</label>
+      <input class="ds-input" id="mv-find" type="search" placeholder="Find…" autocomplete="off" list="mv-find-list">
+      <datalist id="mv-find-list"></datalist>
+    </fieldset>
+
+    <fieldset class="mv-group mv-group--inline">
+      <legend>Display</legend>
+      <label class="mv-switch"><input type="checkbox" id="mv-labels" checked><span></span>Names</label>
+      <label class="mv-switch"><input type="checkbox" id="mv-dams"><span></span>Dams</label>
+    </fieldset>
+
+    <div class="mv-meta" id="mv-meta"></div>
+  </aside>
+
+  {# ---------------- map ---------------- #}
+  <section class="mv-stage" aria-label="Map">
+    <div class="mv-mobilebar">
+      <div class="ds-seg mv-mobile-layers" role="group" aria-label="Layer" id="mv-mobile-layers">
+        <button type="button" data-layer="water_stress">Water</button>
+        <button type="button" data-layer="drought">Drought</button>
+        <button type="button" data-layer="flood">Flood</button>
+        <button type="button" data-layer="fire">Fire</button>
+        <button type="button" data-layer="vegetation">Vegetation</button>
+      </div>
+      <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm" id="mv-open-controls" aria-controls="mv" aria-expanded="false">Filters</button>
+    </div>
+    <div id="mv-map" class="mv-map" tabindex="0"></div>
+    <div class="mv-loading" id="mv-loading" role="status">
+      <span class="mv-loading__drop" aria-hidden="true"></span>
+      <span id="mv-loading-text">Loading the map…</span>
+      <div class="mv-progress" id="mv-progress" hidden><span id="mv-progress-bar"></span></div>
+      <small class="ds-muted" id="mv-loading-sub"></small>
+    </div>
+    <div class="mv-error ds-state ds-state--error" id="mv-error" hidden role="alert">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5v5.5M12 16.2v.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <strong id="mv-error-title">The map data could not load</strong>
+      <span id="mv-error-text">Check the server is running, then retry.</span>
+      <div class="mv-error__actions">
+        <button type="button" class="ds-btn ds-btn--sm" id="mv-retry">Retry</button>
+        <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm" id="mv-error-world">Back to the world</button>
+      </div>
+    </div>
+    <div class="mv-mapbtns">
+      <button type="button" class="mv-mapbtn" id="mv-reset" data-tip="Fit the main territory (zoom out for detached regions)" aria-label="Reset view">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 8V4h4M16 12v4h-4M4 4l4.5 4.5M16 16l-4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="mv-legend" id="mv-legend" aria-live="polite"></div>
+  </section>
+
+  {# ---------------- detail ---------------- #}
+  <aside class="mv-detail" id="mv-detail" aria-label="Detail" aria-live="polite">
+    <div class="mv-detail__inner" id="mv-detail-inner">
+      <span class="ds-skeleton" style="height:180px"></span>
+    </div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'world/js/map-viewer.js' %}" defer></script>
+{% endblock %}

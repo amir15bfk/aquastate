@@ -5,8 +5,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token }}">
-  <meta name="theme-color" content="#0b1415">
-  <title>{% block title %}AquaState — The Water Ledger{% endblock %}</title>
+  <meta name="theme-color" content="#081012">
+  {% include "partials/theme_head.html" %}
+  <link rel="icon" href="{% static 'ds/favicon.svg' %}" type="image/svg+xml">
+  <title>{% block title %}AquaState — Water & climate intelligence{% endblock %}</title>
+  <link rel="preload" href="{% static 'fonts/manrope-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{% static 'hydro/vendor/leaflet.css' %}">
   <link rel="stylesheet" href="{% static 'hydro/css/app.css' %}">
   <link rel="stylesheet" href="{% static 'world/css/world.css' %}">
@@ -15,36 +18,27 @@
   <link rel="stylesheet" href="{% static 'world/css/dam.css' %}">
   <link rel="stylesheet" href="{% static 'world/css/hazards.css' %}">
   <link rel="stylesheet" href="{% static 'world/css/docs.css' %}">
+  <link rel="stylesheet" href="{% static 'ds/ds.css' %}">
+  <link rel="stylesheet" href="{% static 'ds/pages.css' %}">
+  <link rel="stylesheet" href="{% static 'ds/themes.css' %}">
   {% block head %}{% endblock %}
 </head>
 <body class="{% block body_class %}world-body{% endblock %}">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="world-topbar">
-    <a class="world-brand" href="/" aria-label="AquaState world overview">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 21c4.8 0 4.8-4 9.6-4s4.8 4 9.6 4 4.8-4 4.8-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4 15c4.8 0 4.8-4 9.6-4s4.8 4 9.6 4 4.8-4 4.8-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg>
-      <span><strong>AquaState</strong><small>The Water Ledger</small></span>
-    </a>
-    <nav class="world-nav" aria-label="Main">
-      <a href="/" class="{% if request.resolver_match.url_name == 'overview' %}is-active{% endif %}">World</a>
-      <a href="/country/DZ/" class="{% if request.resolver_match.url_name == 'country' %}is-active{% endif %}">Country</a>
-      <a href="/dams/" class="{% if request.resolver_match.url_name == 'dams' %}is-active{% endif %}">Dams</a>
-      <a href="/hazards/" class="{% if request.resolver_match.url_name == 'hazards' %}is-active{% endif %}">Hazards</a>
-      <a href="/methodology/">Method</a>
-      <a href="/sources/">Sources</a>
-    </nav>
-    <div class="world-status">
-      <span class="live-dot"></span>
-      <span>{% block status_line %}Live when available{% endblock %}</span>
-    </div>
-  </header>
-  <main id="main" class="world-main">
+  {% include "partials/site_bar.html" %}
+  <main id="main" class="world-main ds-enter">
     {% block content %}{% endblock %}
   </main>
-  <footer class="world-footer">
-    <span>Water is the secret of life. This is its ledger.</span>
-    <span>Screening tool · not for operational, safety or investment decisions · WCRI-2.0</span>
+  <footer class="site-footer">
+    <span>AquaState · Water is the secret of life. This is its ledger.</span>
+    <nav aria-label="Footer">
+      <a href="/methodology/">Methodology</a>
+      <a href="/sources/">Data sources</a>
+      <span>Screening tool — not for operational, safety or investment decisions</span>
+    </nav>
   </footer>
   <script src="{% static 'hydro/vendor/leaflet.js' %}"></script>
+  <script src="{% static 'ds/ds.js' %}" defer></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

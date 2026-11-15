@@ -36,8 +36,11 @@ def _current_snapshot() -> WorldSnapshot | None:
     return WorldSnapshot.objects.filter(is_current=True).first()
 
 
-def _snapshot_payload() -> dict:
-    snapshot = _current_snapshot()
+def _snapshot_payload(version: str | None = None) -> dict:
+    snapshot = None
+    if version:
+        snapshot = WorldSnapshot.objects.filter(version=version).first()
+    snapshot = snapshot or _current_snapshot()
     if not snapshot:
         return {
             "version": None,
@@ -172,6 +175,9 @@ def overview(request):
             "atlas_total": DamAtlas.objects.count(),
             "atlas_monitored": DamAtlas.objects.filter(is_monitored=True).count(),
             "last_updated": snapshot.created_at if snapshot else None,
+            "snapshots": list(WorldSnapshot.objects.values("version", "created_at")[:30]),
+            "attention": sum((summary.get("bands") or {}).get(k, 0) or 0 for k in ("watch", "stressed", "critical")),
+            "region_snapshot": _region_snapshot("DZ"),
         },
     )
 
@@ -432,7 +438,7 @@ def sources_page(request):
 
 @require_GET
 def api_world(request):
-    payload = _snapshot_payload()
+    payload = _snapshot_payload(request.GET.get("version"))
     response = JsonResponse(payload)
     response["Cache-Control"] = "public, max-age=60, stale-while-revalidate=120"
     if payload["version"]:
@@ -561,3 +567,129 @@ def api_dams(request):
 @require_GET
 def api_events(request):
     return JsonResponse(_events_geojson())
+
+
+# ---------------------------------------------------------------------------
+# Map Viewer: first-level regions for any country (ADM1)
+# ---------------------------------------------------------------------------
+REGION_STALE_HOURS = 24
+
+
+def _region_snapshot(iso2: str = "DZ", version: str | None = None):
+    from world.models import RegionSnapshot
+
+    qs = RegionSnapshot.objects.filter(region=(iso2 or "DZ").upper())
+    if version:
+        return qs.filter(version=version).first()
+    return qs.filter(is_current=True).first() or qs.first()
+
+
+def _region_rows(payload: dict) -> list[dict]:
+    # Snapshots written before the worldwide pipeline stored the list under "wilayas".
+    return payload.get("regions") or payload.get("wilayas") or []
+
+
+@require_GET
+def api_region_catalog(request):
+    from world.models import RegionSnapshot
+    from world.services.regions import catalog, term
+
+    built = set(RegionSnapshot.objects.values_list("region", flat=True).distinct())
+    rows = []
+    for iso2, meta in sorted(catalog().items()):
+        rows.append({
+            "iso2": iso2, "iso3": meta["iso3"], "units": meta["units"], "release": meta["release"],
+            "license": meta["license"], "year": meta["year"], "term": term(iso2)[1], "ready": iso2 in built,
+        })
+    response = JsonResponse({"count": len(rows), "countries": rows})
+    response["Cache-Control"] = "public, max-age=300"
+    return response
+
+
+@require_GET
+def api_region_geo(request, iso2: str):
+    import requests as _requests
+
+    from world.services.regions import NoBoundaries, boundaries
+
+    try:
+        geo = boundaries(iso2)
+    except NoBoundaries:
+        return JsonResponse({"status": "unavailable", "message": "No first-level boundaries are published for this country."}, status=404)
+    except _requests.RequestException as exc:
+        return JsonResponse({"status": "error", "message": f"Boundary download failed: {exc}"}, status=502)
+    response = JsonResponse(geo)
+    response["Cache-Control"] = "public, max-age=86400"
+    return response
+
+
+@require_GET
+def api_regions(request, iso2: str):
+    """Region layers for a country. Builds them in the background on first use (202 + progress)."""
+    from world.models import RegionSnapshot
+    from world.services import region_jobs
+    from world.services.regions import catalog, term
+
+    iso2 = iso2.upper()
+    meta = catalog().get(iso2)
+    if not meta:
+        return JsonResponse({"status": "unavailable", "iso2": iso2,
+                             "message": "geoBoundaries publishes no first-level regions for this country, so there is nothing to map below the national level."}, status=404)
+    snapshot = _region_snapshot(iso2, request.GET.get("snapshot"))
+    job = region_jobs.status(iso2)
+    running = bool(job and job["state"] == "running")
+    if request.GET.get("retry") == "1" and not running:
+        job = region_jobs.start(iso2)
+        running = True
+    if snapshot:
+        age_h = (timezone.now() - snapshot.created_at).total_seconds() / 3600
+        if age_h > REGION_STALE_HOURS and not running and not request.GET.get("snapshot"):
+            job = region_jobs.start(iso2)  # stale-while-revalidate
+            running = True
+        payload = dict(snapshot.payload)
+        payload["regions"] = _region_rows(payload)
+        payload.pop("wilayas", None)
+        singular, plural = term(iso2)
+        payload.setdefault("term", singular)
+        payload.setdefault("term_plural", plural)
+        payload.setdefault("country_name", iso2)
+        payload.update({
+            "status": "ready", "refreshing": running, "job": job,
+            "version": snapshot.version, "created_at": snapshot.created_at.isoformat(),
+            "snapshots": [{"version": v, "created_at": c.isoformat()} for v, c in
+                          RegionSnapshot.objects.filter(region=iso2).values_list("version", "created_at")[:20]],
+        })
+        return JsonResponse(payload)
+    if job and job["state"] == "error":
+        return JsonResponse({"status": "error", "iso2": iso2, "message": job["error"], "job": job})
+    if not running:
+        job = region_jobs.start(iso2)
+    return JsonResponse({"status": "building", "iso2": iso2, "units": meta["units"], "job": job}, status=202)
+
+
+@require_GET
+def api_wilayas(request):
+    """Backwards-compatible Algeria endpoint used by the dashboard preview and search."""
+    snapshot = _region_snapshot("DZ", request.GET.get("snapshot"))
+    if not snapshot:
+        return JsonResponse({"wilayas": [], "message": "No wilaya snapshot yet. Run `python manage.py refresh_regions --country DZ`."})
+    payload = dict(snapshot.payload)
+    payload["wilayas"] = _region_rows(payload)
+    payload.pop("regions", None)
+    payload.update({"version": snapshot.version, "created_at": snapshot.created_at.isoformat()})
+    response = JsonResponse(payload)
+    response["Cache-Control"] = "public, max-age=120"
+    return response
+
+
+@ensure_csrf_cookie
+def map_viewer(request, iso2: str | None = None):
+    code = (iso2 or request.GET.get("c") or "").upper()
+    selected = (request.GET.get("w") or "").upper()
+    if not code and len(selected) > 3 and selected[2] == "-":
+        code = selected[:2]  # legacy links such as /map/?w=DZ-16
+    return render(
+        request,
+        "world/map_viewer.html",
+        {"initial_country": code, "initial_region": selected, "initial_layer": request.GET.get("layer") or "drought"},
+    )

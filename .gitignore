@@ -116,3 +116,6 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+# On-demand ADM1 boundary files (catalog_*.json stay versioned)
+world/data/geo_admin1/*.geojson

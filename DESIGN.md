@@ -7,6 +7,10 @@
 
 The app is a **hydrological survey sheet**: a tinted field frame holds a white instrument sheet. The map is the survey itself; the right rail is the margin where an analyst writes the arithmetic. The signature element is the **water runway** — stored-water days drawn against the day rain arrives.
 
+## Themes
+
+Every page has a **light** theme (the survey-sheet palette below) and a **dark** theme (the world palette: ground `#081012`, surface `#0d1719`, teal `#34c9b8`). `<html data-theme>` is set before paint from the saved choice or the system setting, and the site-bar toggle switches it. Use the `--t-*` tokens from `static/ds/themes.css` (never raw hex) for anything structural; maps and charts read them with `DS.cssVar()` and listen for the `ds:theme` event.
+
 ## Palette
 
 ```css
@@ -43,11 +47,13 @@ Colour budget: under 3% of pixels. The accent marks data and the selected state;
 
 ## Type
 
-- **IBM Plex Sans** 400/500/600, local woff2.
-- **IBM Plex Mono** 400/500 for figures, IDs, and formulas.
-- Title 22/600; section 16/600; KPI 28/500; body 14/400; small 12/400.
-- Sentence case. Negative tracking only on the verdict figure. Tabular numbers everywhere.
-- No uppercase tracked labels.
+- **Manrope** variable (200–800), SIL OFL, self-hosted in `static/fonts/` — every app (world, water, pilot). Friendly, highly legible, with tabular figures (`tnum`).
+- **IBM Plex Mono** 400/500 for formulas and IDs only.
+- Scale (see `static/ds/ds.css`): 12 / 13 / 15 / 18 / 22 / 28, fluid 30–44 page titles, fluid 30–40 KPIs. Minimum text size 12px.
+- Sentence case. Tabular numbers everywhere numbers line up.
+- No uppercase tracked labels (removed in Nov 2026, see `scripts/ds_normalize_css.py`).
+
+> The shared design-system layer (`static/ds/ds.css`, `static/ds/pages.css`) and the shared site bar (`templates/partials/site_bar.html`) are documented in `UI_IMPROVEMENTS_REPORT.md`. The palettes below are unchanged.
 
 ## Shell
 

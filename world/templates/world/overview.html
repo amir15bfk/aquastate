@@ -1,241 +1,268 @@
 {% extends "world/base.html" %}
 {% load static humanize %}
-{% block title %}World · AquaState — The Water Ledger{% endblock %}
-{% block body_class %}world-body overview-body{% endblock %}
-{% block status_line %}
-  {% if last_updated %}Updated {{ last_updated|date:"H:i" }} UTC · {% endif %}{{ summary.scored|default:0 }} countries scored
-{% endblock %}
+{% block title %}Overview · AquaState — Water & climate intelligence{% endblock %}
+{% block body_class %}world-body overview-body ov{% endblock %}
 {% block content %}
-<section class="hero-grid">
-  <div class="world-hero">
-    <p class="world-kicker">World water &amp; climate observatory · WCRI-2.0</p>
-    <h1>Water is the secret of life.<br><span>This is its ledger.</span></h1>
-    <p class="world-lede">
-      One country index, four pressures, every dam, and a live refresh.
-      The map is the index; the country sheet is the arithmetic.
+
+{# ------------------------------------------------------------------ welcome #}
+<section class="ov-hero">
+  <div class="ov-hero__copy">
+    <p class="ds-eyebrow"><span class="live-pulse" aria-hidden="true"></span>World water &amp; climate observatory</p>
+    <h1>How is the world's water doing today?</h1>
+    <p class="ov-lede">
+      One resilience index for every country, four live climate pressures and every catalogued dam —
+      built from NASA Earth data and open forecasts, with the arithmetic one click away.
     </p>
-    <div class="hero-actions">
-      <button class="btn-live" id="refresh-world" type="button">Refresh live data</button>
-      <a class="btn-ghost" href="/hazards/">Open the hazard board</a>
-      <a class="btn-ghost" href="/dams/">Browse the dam atlas</a>
+    <div class="ov-hero__actions">
+      <a class="ds-btn" href="/map/">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5 7.5 3.5l5 2 4.5-2v11l-4.5 2-5-2-4.5 2z M7.5 3.5v11 M12.5 5.5v11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        Open the Algeria map viewer
+      </a>
+      <button class="ds-btn ds-btn--ghost" id="refresh-world" type="button"
+              data-tip-title="Refresh live data" data-tip="Re-fetches NASA POWER, Open-Meteo, GloFAS, NASA EONET and World Bank, then recomputes every country. Takes a few minutes.">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16 10a6 6 0 1 1-1.8-4.3M16 3.5v3.2h-3.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Refresh live data
+      </button>
     </div>
-    <p class="hero-fineprint" id="refresh-status" role="status" aria-live="polite">
-      Live sources: NASA POWER, Open-Meteo, NASA EONET, World Bank. Screening tool, not an operational warning.
+    <p class="ov-fineprint" id="refresh-status" role="status" aria-live="polite">
+      Sources: NASA POWER, Open-Meteo, GloFAS, NASA EONET, World Bank. A screening tool, not an operational warning.
     </p>
   </div>
 
-  <aside class="global-index-card" aria-label="Global index summary">
-    <div class="card-topline">
-      <span>Global index</span>
-      <span class="tiny">WCRI-2.0</span>
+  <div class="ov-hero__snapshot ds-card ds-card--raised">
+    <div class="ov-snap-head">
+      <span>World snapshot</span>
+      <label class="visually-hidden" for="snapshot-select">Snapshot date</label>
+      <select class="ds-select ds-select--sm" id="snapshot-select" data-tip="Each refresh writes a dated snapshot. Pick one to redraw the map and rankings as they were.">
+        {% for snap in snapshots %}
+        <option value="{{ snap.version }}" {% if forloop.first %}selected{% endif %}>{{ snap.created_at|date:"j M Y · H:i" }} UTC</option>
+        {% empty %}
+        <option value="">No snapshot yet</option>
+        {% endfor %}
+      </select>
     </div>
-    <div class="global-score">
-      {% if summary.average %}{{ summary.average|floatformat:1 }}{% else %}—{% endif %}<span>/100</span>
+    <div class="ov-gauge" aria-label="Global average index">
+      <svg viewBox="0 0 120 70" aria-hidden="true">
+        <path d="M10 62a50 50 0 0 1 100 0" class="ov-gauge__track"/>
+        <path d="M10 62a50 50 0 0 1 100 0" class="ov-gauge__value" pathLength="100"
+              style="stroke-dasharray: {{ summary.average|default:0 }} 100"/>
+      </svg>
+      <div class="ov-gauge__num"><strong id="kpi-average">{% if summary.average %}{{ summary.average|floatformat:1 }}{% else %}—{% endif %}</strong><span>/100</span></div>
+      <p>Average water-climate resilience (WCRI-2.0) across <b id="kpi-scored">{{ summary.scored|default:0 }}</b> countries</p>
     </div>
-    <p class="global-summary">
-      {% if summary.scored %}
-        {{ summary.scored }} countries scored. {{ summary.bands.resilient|default:0 }} resilient,
-        {{ summary.bands.stable|default:0 }} stable, {{ summary.bands.watch|default:0 }} on watch,
-        {{ summary.bands.stressed|default:0 }} stressed, {{ summary.bands.critical|default:0 }} critical.
-      {% else %}
-        The first world snapshot is being built. Run <code>python manage.py bootstrap_world</code>.
-      {% endif %}
-    </p>
-    <dl class="global-facts">
-      <div><dt>Countries</dt><dd>{{ summary.countries|default:0 }}</dd></div>
-      <div><dt>Dams catalogued</dt><dd>{{ atlas_total|default:0|intcomma }}</dd></div>
-      <div><dt>Monitored</dt><dd>{{ atlas_monitored|default:0 }}</dd></div>
-      <div><dt>Active events</dt><dd>{{ summary.events|default:0 }}</dd></div>
-    </dl>
-    <div class="band-bar" aria-hidden="true">
+    <div class="band-strip" id="band-strip" role="group" aria-label="Countries per band — click to filter the map">
       {% with bands=summary.bands %}
-      <span class="band band-resilient" style="flex:{{ bands.resilient|default:1 }}"></span>
-      <span class="band band-stable" style="flex:{{ bands.stable|default:1 }}"></span>
-      <span class="band band-watch" style="flex:{{ bands.watch|default:1 }}"></span>
-      <span class="band band-stressed" style="flex:{{ bands.stressed|default:1 }}"></span>
-      <span class="band band-critical" style="flex:{{ bands.critical|default:1 }}"></span>
+      <button type="button" class="band-seg band-resilient" data-band="resilient" style="flex:{{ bands.resilient|default:0 }}" data-tip-title="Resilient · {{ bands.resilient|default:0 }} countries" data-tip="Index 70 or more. Click to show only these on the map."></button>
+      <button type="button" class="band-seg band-stable" data-band="stable" style="flex:{{ bands.stable|default:0 }}" data-tip-title="Stable · {{ bands.stable|default:0 }} countries" data-tip="Index 55–70. Click to show only these on the map."></button>
+      <button type="button" class="band-seg band-watch" data-band="watch" style="flex:{{ bands.watch|default:0 }}" data-tip-title="Watch · {{ bands.watch|default:0 }} countries" data-tip="Index 40–55. Click to show only these on the map."></button>
+      <button type="button" class="band-seg band-stressed" data-band="stressed" style="flex:{{ bands.stressed|default:0 }}" data-tip-title="Stressed · {{ bands.stressed|default:0 }} countries" data-tip="Index 25–40. Click to show only these on the map."></button>
+      <button type="button" class="band-seg band-critical" data-band="critical" style="flex:{{ bands.critical|default:0 }}" data-tip-title="Critical · {{ bands.critical|default:0 }} countries" data-tip="Index below 25. Click to show only these on the map."></button>
       {% endwith %}
     </div>
-    <div class="band-labels"><span>Resilient</span><span>Critical</span></div>
-  </aside>
+    <div class="band-legend"><span>Resilient</span><span>Critical</span></div>
+  </div>
 </section>
 
-<div class="world-grid">
-  <div class="world-left">
-  <section class="map-panel" aria-label="World index map">
-    <div class="map-head">
-      <div>
-        <h2>The world is the index</h2>
-        <p class="panel-sub">Click a country to read its water, drought, flood, fire and desertification arithmetic.</p>
-      </div>
-      <div class="layer-controls" role="group" aria-label="Map layers">
-        <button type="button" class="layer-btn is-active" data-layer="index">Index</button>
-        <button type="button" class="layer-btn" data-layer="drought">Drought</button>
-        <button type="button" class="layer-btn" data-layer="flood">Flood</button>
-        <button type="button" class="layer-btn" data-layer="fire">Fire</button>
-        <button type="button" class="layer-btn" data-layer="desertification">Desert</button>
-        <button type="button" class="layer-btn" data-layer="dams">Dams</button>
-        <button type="button" class="layer-btn" data-layer="events">Events</button>
-      </div>
+{# ------------------------------------------------------------------ KPIs #}
+<section class="ov-kpis" aria-label="Key figures">
+  <a class="ov-kpi ds-card ds-card--interactive" href="#explorer" data-filter-bands="watch,stressed,critical"
+     data-tip-title="Countries needing attention" data-tip="Countries in the Watch, Stressed or Critical bands of the current snapshot. Click to filter the map to them.">
+    <span class="ov-kpi__label">Need attention</span>
+    <strong class="ov-kpi__value num">{{ attention }}</strong>
+    <span class="ov-kpi__sub">countries on watch or worse</span>
+  </a>
+  <a class="ov-kpi ds-card ds-card--interactive" href="/hazards/#drought"
+     data-tip-title="Average drought pressure" data-tip="Mean drought pressure across scored countries, 0–100. Built from SPI-3, SPI-12, soil moisture and the current dry spell.">
+    <span class="ov-kpi__label">Drought pressure</span>
+    <strong class="ov-kpi__value num">{% for c in hazard_cards %}{% if c.key == 'drought' %}{{ c.average|floatformat:0|default:"—" }}{% endif %}{% endfor %}<small>/100</small></strong>
+    <span class="ov-kpi__sub">global average · highest in {% for c in hazard_cards %}{% if c.key == 'drought' %}{{ c.top.0.iso2|default:"—" }}{% endif %}{% endfor %}</span>
+  </a>
+  <a class="ov-kpi ds-card ds-card--interactive" href="/dams/"
+     data-tip-title="Dam atlas" data-tip="{{ atlas_total|intcomma }} dams catalogued from Wikidata and curated inventories; {{ atlas_monitored }} carry a live status. Click to browse.">
+    <span class="ov-kpi__label">Dams catalogued</span>
+    <strong class="ov-kpi__value num">{{ atlas_total|default:0|intcomma }}</strong>
+    <span class="ov-kpi__sub">{{ atlas_monitored|default:0 }} monitored with a live status</span>
+  </a>
+  <a class="ov-kpi ds-card ds-card--interactive" href="#alerts"
+     data-tip-title="Active natural events" data-tip="Open events in NASA EONET's curated feed (drought, floods, wildfires, dust, temperature extremes). Not a complete disaster census.">
+    <span class="ov-kpi__label">Active events</span>
+    <strong class="ov-kpi__value num">{{ summary.events|default:0 }}</strong>
+    <span class="ov-kpi__sub">open in NASA EONET</span>
+  </a>
+</section>
+
+{# ------------------------------------------------------------------ explorer #}
+<section class="ov-explorer ds-card" id="explorer" aria-label="World explorer">
+  <div class="ov-explorer__head">
+    <div>
+      <h2>Explore the planet</h2>
+      <p class="ds-muted">Pick what to look at, then click any country.</p>
     </div>
-    <div class="map-wrap">
-      <div id="world-map" class="world-map" tabindex="0"
+    <div class="ds-seg" role="group" aria-label="Map layer" id="layer-seg">
+      <button type="button" data-layer="index" aria-pressed="true" data-tip="The combined resilience index (higher is better).">Index</button>
+      <button type="button" data-layer="drought" aria-pressed="false" data-tip="Drought pressure: rain and soil deficit against each country's own record.">Drought</button>
+      <button type="button" data-layer="flood" aria-pressed="false" data-tip="Flood pressure: forecast river discharge against its 60-day baseline.">Flood</button>
+      <button type="button" data-layer="fire" aria-pressed="false" data-tip="Wildfire pressure: fire weather coupled to drought and active fires.">Wildfire</button>
+      <button type="button" data-layer="desertification" aria-pressed="false" data-tip="Desertification pressure: aridity, rainfall and soil trends, forest change.">Desertification</button>
+    </div>
+  </div>
+
+  <div class="ov-explorer__body">
+    <div class="ov-map">
+      <div class="ov-map__overlays" role="group" aria-label="Map overlays">
+        <button type="button" class="ds-chip" data-overlay="dams" aria-pressed="false"><i style="background:#34c9b8"></i>Monitored dams</button>
+        <button type="button" class="ds-chip" data-overlay="events" aria-pressed="false"><i style="background:#ef6f72"></i>Active events</button>
+        <button type="button" class="ds-chip" id="band-clear" hidden aria-pressed="true">Showing <span id="band-clear-label"></span> · clear ✕</button>
+      </div>
+      <div id="world-map" class="world-map ov-map__canvas" tabindex="0"
            data-geo-url="{% static 'data/countries-world.geojson' %}"
            data-api-url="/api/world/"
            data-meta-url="/api/world/meta/"
            data-refresh-url="/api/world/refresh/"
            data-events-url="/api/events/"
            data-dams-url="/api/dams/?monitored=1&page_size=500"
-           data-layer="index"
-           aria-label="Interactive world map coloured by the country index. The ranked country table beside it is the keyboard-accessible alternative."></div>
-      <div id="map-fallback" class="map-fallback" hidden>
-        <strong>The map library did not load.</strong>
-        <span>Use the ranked country list; every map value is repeated there.</span>
+           aria-label="Interactive world map coloured by the selected layer. The ranking beside it lists the same values."></div>
+      <div class="ov-map__loading ds-skeleton" id="map-loading" aria-hidden="true"></div>
+      <div id="map-fallback" class="ds-state ds-state--error ov-map__fallback" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5v5.5M12 16.2v.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <strong>The map could not load.</strong>
+        <span>The ranking beside it repeats every value.</span>
       </div>
-      <div id="country-card" class="country-card" hidden aria-live="polite"></div>
+      <div class="ov-legend" id="map-legend" aria-label="Map legend"></div>
+      <div class="ov-histo" aria-label="Distribution of the selected layer — click a bar to highlight those countries">
+        <div class="ov-histo__head"><strong id="histo-title">How countries are spread</strong><span class="ds-muted" id="histo-note">Click a bar to highlight countries in that range</span></div>
+        <div class="ov-histo__bars" id="histo"></div>
+        <div class="ov-histo__axis"><span id="histo-min">0</span><span id="histo-max">100</span></div>
+      </div>
     </div>
-    <div class="map-foot">
-      <div class="legend" id="map-legend" aria-label="Map legend"></div>
-      <span class="map-source">Natural Earth 50m · no external tiles · values WCRI-2.0</span>
-    </div>
-  </section>
-  <section class="signals-panel" aria-label="Where the pressure is">
-    <div class="signals-head"><h2>Where the pressure is</h2><span>Top country per pressure · 0–100</span></div>
-    <div class="signals-grid">
-      {% for card in hazard_cards %}
-      <a class="signal-row" href="{% if card.top %}/country/{{ card.top.0.iso2 }}/{% else %}/hazards/#{{ card.key }}{% endif %}">
-        <span class="signal-label">{{ card.label }}</span>
-        <span class="signal-country">{% if card.top %}{{ card.top.0.iso2 }}{% else %}—{% endif %}</span>
-        <span class="signal-bar"><i style="width:{% if card.top %}{{ card.top.0.pressure|floatformat:0 }}{% else %}0{% endif %}%"></i></span>
-        <span class="signal-value">{% if card.top %}{{ card.top.0.pressure|floatformat:0 }}{% else %}—{% endif %}</span>
-      </a>
-      {% endfor %}
-    </div>
-    <a class="signals-link" href="/hazards/">Open the hazard board →</a>
-  </section>
+
+    <aside class="ov-side" aria-label="Country detail and ranking">
+      <div class="ov-detail" id="country-detail" hidden aria-live="polite"></div>
+      <div class="ov-rank" id="rank-panel">
+        <div class="ov-rank__head">
+          <h3 id="rank-title">Most resilient</h3>
+          <div class="ds-seg ds-seg--sm" role="group" aria-label="Ranking direction">
+            <button type="button" data-rank="top" aria-pressed="true">Best</button>
+            <button type="button" data-rank="bottom" aria-pressed="false">Worst</button>
+          </div>
+        </div>
+        <label class="visually-hidden" for="rank-filter">Filter the ranking</label>
+        <input class="ds-input ov-rank__filter" id="rank-filter" type="search" placeholder="Filter countries…" autocomplete="off">
+        <ol class="ov-rank__list" id="rank-list">
+          {% for row in top %}
+          <li><a class="ov-rank__row" href="/country/{{ row.iso2 }}/"><span class="ov-rank__n">{{ forloop.counter }}</span><span class="ov-rank__name">{{ row.country.name }}<small>{{ row.region|default:"—" }}</small></span><span class="ov-rank__v num">{{ row.score|floatformat:1 }}</span></a></li>
+          {% empty %}
+          <li class="ds-state">No country scores yet.</li>
+          {% endfor %}
+        </ol>
+      </div>
+    </aside>
   </div>
+</section>
 
-  <aside class="world-rail">
-    <section class="rail-panel">
-      <div class="rail-head">
-        <h2>Country ledger</h2>
-        <div class="rail-switch" role="group" aria-label="Ranking direction">
-          <button type="button" class="is-active" data-rank="top">Highest</button>
-          <button type="button" data-rank="bottom">Lowest</button>
-        </div>
+{# ------------------------------------------------------------------ Algeria + alerts #}
+<div class="ov-split">
+  <section class="ov-algeria ds-card" aria-label="Algeria at wilaya scale">
+    <div class="ds-section-head">
+      <div>
+        <p class="ds-eyebrow">New · wilaya scale</p>
+        <h2>Algeria, wilaya by wilaya</h2>
+        <p>The same live sources, sampled inside each of the 48 wilayas{% if region_snapshot %} · updated {{ region_snapshot.created_at|date:"j M, H:i" }} UTC{% endif %}.</p>
       </div>
-      <div class="rank-list" id="rank-top">
-        {% for row in top %}
-        <a class="rank-row" href="/country/{{ row.iso2 }}/">
-          <span class="rank-num">{{ forloop.counter }}</span>
-          <span class="rank-name">{{ row.country.name }}<small>{{ row.region|default:"—" }}</small></span>
-          <span class="rank-score">{{ row.score|floatformat:1 }}</span>
-          <span class="status-dot status-{{ row.status }}" title="{{ row.status }}"></span>
+      <div class="ds-seg ds-seg--sm" role="group" aria-label="Wilaya layer" id="dz-seg">
+        <button type="button" data-dz="drought" aria-pressed="true">Drought</button>
+        <button type="button" data-dz="water_stress" aria-pressed="false">Water stress</button>
+        <button type="button" data-dz="fire" aria-pressed="false">Fire</button>
+      </div>
+    </div>
+    <div class="ov-algeria__body">
+      <div class="ov-algeria__map" id="dz-mini" role="img" aria-label="Map of Algeria's wilayas coloured by the selected layer"></div>
+      <div class="ov-algeria__list">
+        <p class="ov-algeria__caption" id="dz-caption">Highest pressure</p>
+        <ol id="dz-top" class="ov-bars"><li class="ds-skeleton" style="height:120px"></li></ol>
+        <a class="ds-btn ds-btn--ghost ds-btn--sm" href="/map/" id="dz-open">
+          Explore all 48 wilayas
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M11 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        {% empty %}
-        <p class="empty-inline">No country scores yet.</p>
-        {% endfor %}
       </div>
-      <div class="rank-list" id="rank-bottom" hidden>
-        {% for row in bottom %}
-        <a class="rank-row" href="/country/{{ row.iso2 }}/">
-          <span class="rank-num">{{ forloop.counter }}</span>
-          <span class="rank-name">{{ row.country.name }}<small>{{ row.region|default:"—" }}</small></span>
-          <span class="rank-score">{{ row.score|floatformat:1 }}</span>
-          <span class="status-dot status-{{ row.status }}" title="{{ row.status }}"></span>
-        </a>
-        {% empty %}
-        <p class="empty-inline">No country scores yet.</p>
-        {% endfor %}
-      </div>
-      <a class="rail-link" href="/dams/">All {{ atlas_total|intcomma }} catalogued dams →</a>
-    </section>
+    </div>
+  </section>
 
-    <section class="rail-panel">
-      <div class="rail-head"><h2>Active events</h2><span class="tiny">NASA EONET</span></div>
-      <div class="event-list">
-        {% for event in events %}
-        <div class="event-row">
-          <span class="event-dot event-{{ event.category }}" aria-hidden="true"></span>
-          <span class="event-title">{{ event.title }}</span>
-          <span class="event-country">{{ event.country_iso2|default:"—" }}</span>
-        </div>
-        {% empty %}
-        <p class="empty-inline">No active events cached.</p>
-        {% endfor %}
+  <section class="ov-alerts ds-card" id="alerts" aria-label="Active natural events">
+    <div class="ds-section-head">
+      <div>
+        <h2>Active events</h2>
+        <p>NASA EONET's open events, newest first.</p>
       </div>
-      <a class="rail-link" href="/hazards/">Open the hazard board →</a>
-    </section>
-  </aside>
+      <label class="visually-hidden" for="alert-period">Period</label>
+      <select class="ds-select ds-select--sm" id="alert-period">
+        <option value="7">Last 7 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="all">All open events</option>
+      </select>
+    </div>
+    <div class="ov-alerts__chips" role="group" aria-label="Event type" id="alert-chips">
+      <button type="button" class="ds-chip" data-cat="all" aria-pressed="true">All</button>
+      <button type="button" class="ds-chip" data-cat="wildfires" aria-pressed="false"><i style="background:#ef6f72"></i>Wildfires</button>
+      <button type="button" class="ds-chip" data-cat="floods" aria-pressed="false"><i style="background:#5ba7e8"></i>Floods</button>
+      <button type="button" class="ds-chip" data-cat="drought" aria-pressed="false"><i style="background:#e5a23b"></i>Drought</button>
+      <button type="button" class="ds-chip" data-cat="dustHaze" aria-pressed="false"><i style="background:#b18a5c"></i>Dust</button>
+    </div>
+    <ul class="ov-alerts__list" id="alert-list">
+      {% for event in events %}
+      <li class="ov-alert"><span class="ov-alert__dot cat-{{ event.category }}"></span><span class="ov-alert__title">{{ event.title }}</span><span class="ov-alert__meta">{{ event.country_iso2|default:"—" }}</span></li>
+      {% empty %}
+      <li class="ds-state">No active events cached.</li>
+      {% endfor %}
+    </ul>
+    <p class="ov-alerts__count ds-muted" id="alert-count"></p>
+  </section>
 </div>
 
-<section class="hazard-grid" aria-label="Four climate pressures">
-  {% for card in hazard_cards %}
-  <a class="hazard-card" href="/hazards/#{{ card.key }}">
-    <div class="hazard-head">
-      <span class="hazard-label">{{ card.label }}</span>
-      <span class="hazard-arabic" lang="ar" dir="rtl">{{ card.arabic }}</span>
-    </div>
-    <div class="hazard-value">
-      {% if card.average %}{{ card.average|floatformat:0 }}{% else %}—{% endif %}<span>/100 pressure</span>
-    </div>
-    <p>{{ card.blurb }}</p>
-    <div class="hazard-foot">
-      <span>{% if card.top %}{{ card.top.0.iso2 }} highest{% else %}No data{% endif %}</span>
-      <span>{{ card.events }} active</span>
-    </div>
-  </a>
-  {% endfor %}
+{# ------------------------------------------------------------------ how to read it #}
+<section class="ov-read" aria-label="How to read AquaState">
+  <div class="ov-read__intro">
+    <p class="ds-eyebrow">How to read it</p>
+    <h2>Drought rarely stays a drought.</h2>
+    <p>Dry soil raises fire risk, fire and heat strip the land, and hard ground sheds the next storm as a flood.
+      AquaState reads the four pressures together and applies a small, explicit penalty when they compound.</p>
+    <a class="ds-link" href="/methodology/">See every formula <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M11 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <ol class="ov-cascade">
+    {% for card in hazard_cards %}
+    <li>
+      <a class="ov-cascade__step ds-card ds-card--interactive" href="/hazards/#{{ card.key }}">
+        <span class="ov-cascade__n">0{{ forloop.counter }}</span>
+        <strong>{{ card.label }} <span lang="ar" dir="rtl">{{ card.arabic }}</span></strong>
+        <span class="ov-cascade__v num">{% if card.average %}{{ card.average|floatformat:0 }}{% else %}—{% endif %}<small>/100 average</small></span>
+        <small>{{ card.blurb }}</small>
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
 </section>
 
-<section class="cascade-panel">
-  <div class="cascade-copy">
-    <p class="world-kicker">The cascade</p>
-    <h2>Drought does not stay a drought.</h2>
-    <p>
-      Dry soil raises fire risk. Fire and heat strip the land. Hard ground sheds the
-      next storm as a flood. AquaState shows the four pressures together and applies
-      a small, explicit cascade penalty when drought, fire and desertification are
-      all severe. The formula is on every country page.
-    </p>
+<section class="ov-sources" aria-label="Source freshness">
+  <div class="ds-section-head">
+    <div><h2>Where the numbers come from</h2><p>Every value carries a source and a freshness stamp.</p></div>
+    <a class="ds-link" href="/sources/">Full source ledger <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M11 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
-  <div class="cascade-steps" aria-label="Climate cascade">
-    <div class="cascade-step"><span>01</span><strong>Drought</strong><small>Rain and soil deficit</small></div>
-    <span class="cascade-arrow">→</span>
-    <div class="cascade-step"><span>02</span><strong>Wildfire</strong><small>Dry fuel, hot air</small></div>
-    <span class="cascade-arrow">→</span>
-    <div class="cascade-step"><span>03</span><strong>Desertification</strong><small>Land loses cover</small></div>
-    <span class="cascade-arrow">→</span>
-    <div class="cascade-step"><span>04</span><strong>Flood</strong><small>Hard ground sheds rain</small></div>
-  </div>
-</section>
-
-<section class="source-strip">
-  <div class="source-strip-head">
-    <h2>Source ledger</h2>
-    <span>Every value carries a source and a freshness stamp.</span>
-  </div>
-  <div class="source-grid">
+  <div class="ov-sources__grid">
     {% for source in sources %}
-    <div class="source-item">
-      <span class="source-kind source-{{ source.kind }}">{{ source.kind }}</span>
+    <div class="ov-source">
+      <span class="ds-badge ds-badge--{% if source.kind == 'live' %}live{% else %}no_data{% endif %}"><i></i>{{ source.kind }}</span>
       <strong>{{ source.label }}</strong>
-      <span>{% if source.last_success %}{{ source.last_success|slice:":16"|cut:"T" }} UTC{% else %}no successful fetch{% endif %}</span>
-      <span class="source-records">{{ source.records }} records</span>
+      <span class="ds-muted">{% if source.last_success %}{{ source.last_success|slice:":16"|cut:"T" }} UTC · {{ source.records|intcomma }} records{% else %}No successful fetch yet{% endif %}</span>
     </div>
     {% empty %}
-    <p class="empty-inline">No source status yet.</p>
+    <div class="ds-state">No source status yet.</div>
     {% endfor %}
   </div>
-  <p class="source-note">
-    NASA POWER monthly ends about two days before today; Open-Meteo is the near-term forecast;
-    EONET is a curated natural-event feed, not a complete disaster census. The score is a screening
-    decision aid, not an official water-accounting standard.
-  </p>
 </section>
 
 {{ world_payload|json_script:"world-data" }}
 {% endblock %}
 {% block scripts %}
-<script src="{% static 'world/js/world-map.js' %}"></script>
+<script src="{% static 'world/js/overview.js' %}" defer></script>
 {% endblock %}

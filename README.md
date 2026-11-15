@@ -23,6 +23,7 @@ python manage.py dedupe_dams                # merge only curated/pilot duplicate
 python manage.py load_full_dam_atlas        # full Wikidata corpus with coordinates
 python manage.py bootstrap_world            # fetch live sources, compute WCRI, write a snapshot
 python manage.py compute_indices --all      # deep DRI snapshots for the 10 pilot dams
+python manage.py refresh_regions --country DZ   # pre-build Algeria's 48 wilayas for the Map viewer (other countries build on first visit)
 python manage.py runserver 127.0.0.1:8010
 ```
 
@@ -48,7 +49,8 @@ Or run `.\start.ps1`, which starts the refresher and the server together.
 
 | Page | What it answers |
 |---|---|
-| `/` | Where is water stress becoming climate risk? Interactive world choropleth + rankings + active events + the four pressures. |
+| `/` | Where is water stress becoming climate risk? Interactive world explorer (layers, ranking, distribution, country detail), Algeria preview, filterable active events, snapshot picker. |
+| `/map/` | **Map viewer** — the world, then any of 209 countries' first-level regions (geoBoundaries ADM1: wilayas, states, provinces…) coloured by water stress, drought, flood, forest-fire risk or vegetation moisture (proxy), with a monthly replay, filters and a region detail panel. Regions are computed from live sources the first time a country is opened (`/map/?c=MA`). |
 | `/country/<ISO2>/` | What is the country index, what is driving it, which dams are in the country, and what is the water system doing? |
 | `/water/<ISO2>/` | The original water-state sheet: water runway, Smart Horizon, reservoir ledger, scenarios, sub-index arithmetic. |
 | `/dam/<slug>/` | The deep DRI page for the 10 pilot dams: ring, buffer bridge, waterfall, sub-index stack, analogs. |

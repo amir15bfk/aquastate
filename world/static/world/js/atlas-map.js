@@ -1,6 +1,14 @@
 /* Atlas map: viewport-loaded dam markers, no tile server. */
 (function () {
   "use strict";
+  // Theme colours come from the CSS tokens (static/ds/themes.css); maps restyle on "ds:theme".
+  const css = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const T = {};
+  function readTheme() {
+    T.link = css("--t-link", "#1b6c80"); T.line = css("--t-map-line", "#ffffff");
+    T.land = css("--t-map-land", "#dbe5df"); T.edge = css("--t-map-edge", "#a9b8b2");
+  }
+  readTheme();
   const el = document.getElementById("atlas-map");
   if (!el) return;
   if (!window.L) {
@@ -30,9 +38,9 @@
           const monitored = !!dam.is_monitored;
           const marker = L.circleMarker([dam.lat, dam.lon], {
             radius: monitored ? 5 : 3,
-            color: monitored ? "#0d4553" : "#8a5a0a",
+            color: monitored ? T.line : "#8a5a0a",
             weight: 1,
-            fillColor: monitored ? "#1b6c80" : "#c98a2e",
+            fillColor: monitored ? T.link : "#c98a2e",
             fillOpacity: monitored ? 0.92 : 0.5,
           });
           const slug = dam.pilot_slug || dam.wikidata_id;
@@ -57,12 +65,14 @@
       });
   }
 
+  let countries = null;
+  window.addEventListener("ds:theme", () => { readTheme(); if (countries) countries.setStyle({ color: T.edge, fillColor: T.land }); load(); });
   fetch(geoUrl)
     .then((response) => response.json())
     .then((geo) => {
-      const countries = L.geoJSON(geo, {
-        style: { color: "#a9b8b2", weight: 0.5, fillColor: "#dbe5df", fillOpacity: 0.7 },
-        pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 2, color: "#a9b8b2", fillColor: "#dbe5df" }),
+      countries = L.geoJSON(geo, {
+        style: () => ({ color: T.edge, weight: 0.5, fillColor: T.land, fillOpacity: 0.85 }),
+        pointToLayer: (f, latlng) => L.circleMarker(latlng, { radius: 2, color: T.edge, fillColor: T.land }),
       }).addTo(map);
       const bounds = countries.getBounds();
       if (bounds.isValid()) map.fitBounds(bounds, { padding: [6, 6] });

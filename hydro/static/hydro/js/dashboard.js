@@ -2,18 +2,31 @@
 (function () {
   "use strict";
 
-  const STATUS_COLORS = {
-    ok: "#1e7b4f",
-    watch: "#8a5a0a",
-    stressed: "#b54708",
-    critical: "#c4242a",
-  };
-  const ACCENT = "#1b6c80";
-  const CHART_2 = "#2f70bb";
-  const INK = "#14201d";
-  const MUTED = "#5b6763";
-  const FAINT = "#6f7a76";
-  const RULE = "#eef1ef";
+  // Colours come from the light/dark theme tokens (static/ds/themes.css) and are re-read on "ds:theme".
+  const STATUS_COLORS = {};
+  let ACCENT, CHART_2, INK, MUTED, FAINT, RULE, LAND, LAND_EDGE, LAND_SEL, GRID, RING, AMBER, CRIT_INK;
+  const restylers = [];
+  function readTheme() {
+    const css = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+    STATUS_COLORS.ok = css("--t-pos", "#1e7b4f");
+    STATUS_COLORS.watch = css("--t-warn", "#8a5a0a");
+    STATUS_COLORS.stressed = css("--t-stress", "#b54708");
+    STATUS_COLORS.critical = css("--t-neg", "#c4242a");
+    ACCENT = css("--t-link", "#1b6c80");
+    CHART_2 = css("--t-blue", "#2f70bb");
+    INK = css("--t-text", "#14201d");
+    MUTED = css("--t-muted", "#5b6763");
+    FAINT = css("--t-faint", "#6f7a76");
+    RULE = css("--t-rule", "#eef1ef");
+    LAND = css("--t-surface", "#f4f5ef");
+    LAND_EDGE = css("--t-map-edge", "#cfd8d2");
+    LAND_SEL = css("--t-accent-wash", "#e7f1f2");
+    GRID = css("--t-border", "#c7d5d0");
+    RING = css("--t-surface", "#ffffff");
+    AMBER = css("--t-amber", "#a86f0c");
+    CRIT_INK = css("--t-neg", "#831c1e");
+  }
+  readTheme();
 
   let navigating = false;
 
@@ -100,10 +113,10 @@
     // Emergency reserve.
     const yThreshold = y(threshold);
     parts.push(
-      `<line x1="${ml}" y1="${yThreshold}" x2="${W - mr}" y2="${yThreshold}" stroke="#c4242a" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>`
+      `<line x1="${ml}" y1="${yThreshold}" x2="${W - mr}" y2="${yThreshold}" stroke="${STATUS_COLORS.critical}" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>`
     );
     parts.push(
-      `<text x="${W - mr}" y="${yThreshold - 4}" text-anchor="end" font-size="12" fill="#831c1e" font-family="IBM Plex Sans">reserve ${num(threshold, 0)}%</text>`
+      `<text x="${W - mr}" y="${yThreshold - 4}" text-anchor="end" font-size="12" fill="${CRIT_INK}" font-family="IBM Plex Sans">reserve ${num(threshold, 0)}%</text>`
     );
 
     // Area and line.
@@ -116,7 +129,7 @@
 
     // Today.
     parts.push(
-      `<circle cx="${x(0)}" cy="${y(values[0])}" r="3" fill="#ffffff" stroke="${ACCENT}" stroke-width="1.8"/>`
+      `<circle cx="${x(0)}" cy="${y(values[0])}" r="3" fill="${RING}" stroke="${ACCENT}" stroke-width="1.8"/>`
     );
 
     // Rain runoff arrival.
@@ -189,7 +202,7 @@
     );
     const last = history.length - 1;
     parts.push(
-      `<circle cx="${x(last)}" cy="${y(Number(history[last].storage_pct))}" r="3" fill="${ACCENT}" stroke="#ffffff" stroke-width="1.5"/>`
+      `<circle cx="${x(last)}" cy="${y(Number(history[last].storage_pct))}" r="3" fill="${ACCENT}" stroke="${RING}" stroke-width="1.5"/>`
     );
     const labels = [0, Math.floor(last / 2), last];
     labels.forEach((index) => {
@@ -301,10 +314,10 @@
             const selected =
               feature.properties && feature.properties.iso2 === payload.country.iso2;
             return {
-              color: selected ? ACCENT : "#cfd8d2",
+              color: selected ? ACCENT : LAND_EDGE,
               weight: selected ? 1.6 : 0.6,
               opacity: selected ? 0.95 : 0.7,
-              fillColor: selected ? "#e7f1f2" : "#f4f5ef",
+              fillColor: selected ? LAND_SEL : LAND,
               fillOpacity: selected ? 0.82 : 0.92,
             };
           },
@@ -317,7 +330,7 @@
               [lat, -180],
               [lat, 180],
             ],
-            { pane: "grid", color: "#c7d5d0", weight: 0.5, opacity: 0.45, interactive: false }
+            { pane: "grid", color: GRID, weight: 0.5, opacity: 0.45, interactive: false }
           ).addTo(grid);
         }
         for (let lon = -180; lon <= 180; lon += 5) {
@@ -326,10 +339,11 @@
               [-85, lon],
               [85, lon],
             ],
-            { pane: "grid", color: "#c7d5d0", weight: 0.5, opacity: 0.45, interactive: false }
+            { pane: "grid", color: GRID, weight: 0.5, opacity: 0.45, interactive: false }
           ).addTo(grid);
         }
         grid.addTo(mapRef);
+        restylers.push(() => { world.setStyle(world.options.style); grid.eachLayer((l) => l.setStyle({ color: GRID })); });
 
         const viewport = mapRef.getBounds().pad(0.15);
         world.eachLayer((layer) => {
@@ -365,7 +379,7 @@
               pane: "basemap",
               color: ACCENT,
               weight: 1.4,
-              fillColor: "#e7f1f2",
+              fillColor: LAND_SEL,
               fillOpacity: 0.55,
             }
           ).addTo(mapRef);
@@ -381,13 +395,14 @@
       rain: L.layerGroup(),
     };
     const markers = {};
+    restylers.push(() => Object.values(markers).forEach((e) => e.marker.setStyle({ color: RING, fillColor: STATUS_COLORS[e.row.status] || MUTED })));
 
     (payload.reservoirs || []).forEach((row) => {
       const radius = Math.max(5, Math.min(15, 4 + Math.sqrt(Number(row.capacity_mm3) || 0) / 2.4));
       const color = STATUS_COLORS[row.status] || MUTED;
       const marker = L.circleMarker([row.lat, row.lon], {
         radius,
-        color: "#ffffff",
+        color: RING,
         weight: 1.5,
         fillColor: color,
         fillOpacity: 0.9,
@@ -408,10 +423,10 @@
       const radius = Math.max(8, Math.min(18, 7 + Math.sqrt(Number(row.volume_km3) || 0) / 5.5));
       const marker = L.circleMarker([row.lat, row.lon], {
         radius,
-        color: "#a86f0c",
+        color: AMBER,
         weight: 1.2,
         dashArray: "4 3",
-        fillColor: "#a86f0c",
+        fillColor: AMBER,
         fillOpacity: 0.12,
       });
       marker.bindTooltip(
@@ -485,7 +500,7 @@
         (item) => String(item.id) === String(id)
       );
       Object.values(markers).forEach((item) => {
-        item.marker.setStyle({ color: "#ffffff", weight: 1.5 });
+        item.marker.setStyle({ color: RING, weight: 1.5 });
       });
       entry.marker.setStyle({ color: INK, weight: 3 });
       entry.marker.bringToFront();
@@ -650,6 +665,16 @@
     renderTrend(payload);
     initMap(payload);
   }
+
+  // Theme switch: re-read colours, redraw both charts and restyle the map in place.
+  window.addEventListener("ds:theme", () => {
+    readTheme();
+    const payload = data();
+    if (!payload) return;
+    renderRunway(payload);
+    renderTrend(payload);
+    restylers.forEach((fn) => { try { fn(); } catch (e) { /* map not ready yet */ } });
+  });
 
   wireScenarioControls();
   wireMapAndRows();

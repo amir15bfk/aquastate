@@ -8,7 +8,7 @@
 {% block content %}
 <section class="dam-head">
   <div>
-    <p class="crumb" style="color:#718684"><a href="/" style="color:#34c9b8">World</a><span>/</span><a href="/dams/" style="color:#34c9b8">Dams</a>{% if atlas and atlas.country_iso2 %}<span>/</span><a href="/country/{{ atlas.country_iso2 }}/" style="color:#34c9b8">{{ atlas.country_name|default:atlas.country_iso2 }}</a>{% endif %}</p>
+    <p class="crumb"><a href="/">World</a><span>/</span><a href="/dams/">Dams</a>{% if atlas and atlas.country_iso2 %}<span>/</span><a href="/country/{{ atlas.country_iso2 }}/">{{ atlas.country_name|default:atlas.country_iso2 }}</a>{% endif %}</p>
     <h1>{% if atlas %}{{ atlas.name }}{% elif pilot %}{{ pilot.name }}{% else %}Dam{% endif %}</h1>
     <p class="dam-sub">
       {% if atlas %}{{ atlas.country_name|default:atlas.country_iso2 }}{% elif pilot %}{{ pilot.country.name }}{% endif %}

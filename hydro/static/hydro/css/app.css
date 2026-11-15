@@ -78,7 +78,7 @@
   --gap: 24px;
   --pad: 24px;
   --control-height: 32px;
-  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-sans: var(--ds-font);
   --font-mono: "IBM Plex Mono", monospace;
   --fs-title: 22px;
   --fs-section: 16px;
@@ -162,7 +162,7 @@ button {
   left: 16px;
   z-index: 4000;
   background: var(--text);
-  color: #fff;
+  color: var(--t-bg);
   padding: 8px 12px;
   border-radius: var(--radius-control);
   text-decoration: none;
@@ -414,10 +414,10 @@ button {
 .btn-primary {
   background: var(--text);
   border-color: var(--text);
-  color: #fff;
+  color: var(--t-bg);
 }
 .btn-primary:hover {
-  background: #24322e;
+  background: var(--t-solid-hover);
 }
 .btn-primary[aria-busy="true"] {
   opacity: 0.7;
@@ -599,7 +599,7 @@ h1 {
 }
 .segment-whatif.is-active {
   background: var(--accent-wash);
-  border-color: #bfd9dd;
+  border-color: var(--t-border-strong);
   color: var(--accent-ink);
 }
 
@@ -737,7 +737,7 @@ h1 {
 .map {
   width: 100%;
   height: clamp(340px, 38vh, 520px);
-  background: #e7eef0;
+  background: var(--t-ov2);
   border: 1px solid var(--border);
   border-radius: var(--radius-control);
   overflow: hidden;
@@ -749,7 +749,7 @@ h1 {
 .leaflet-container {
   font-family: var(--font-sans);
   font-size: 13px;
-  background: #e7eef0;
+  background: var(--t-ov2);
 }
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
@@ -782,10 +782,10 @@ h1 {
 .map-country-label {
   border: 0;
   border-radius: 2px;
-  background: rgba(246, 247, 242, 0.82);
+  background: var(--t-glass);
   color: var(--muted);
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 1.35;
   padding: 1px 4px;
@@ -794,7 +794,7 @@ h1 {
   transform: translate(-50%, -50%);
 }
 .map-country-label.is-selected {
-  background: rgba(231, 241, 242, 0.92);
+  background: var(--t-glass);
   color: var(--accent-ink);
   font-size: 12px;
   font-weight: 600;
@@ -1570,7 +1570,7 @@ h1 {
   margin-top: 10px;
   padding: 10px;
   background: var(--accent-wash);
-  border: 1px solid #cfe2e5;
+  border: 1px solid var(--t-border-strong);
   border-radius: var(--radius-control);
 }
 .ai-badge {
@@ -1580,7 +1580,7 @@ h1 {
   padding: 0 6px;
   border-radius: 4px;
   background: var(--surface);
-  border: 1px solid #bfd9dd;
+  border: 1px solid var(--t-border-strong);
   color: var(--accent-ink);
   font-size: 12px;
   font-weight: 500;
@@ -1622,7 +1622,7 @@ h1 {
   padding: 10px 13px;
   border-radius: var(--radius-control);
   background: var(--text);
-  color: #fff;
+  color: var(--t-bg);
   font-size: 13px;
   line-height: 1.45;
   opacity: 0;
@@ -1773,7 +1773,7 @@ h1 {
 .doc-note {
   padding: 12px 14px;
   background: var(--accent-wash);
-  border: 1px solid #cfe2e5;
+  border: 1px solid var(--t-border-strong);
   border-radius: var(--radius-control);
   color: var(--accent-ink);
   font-size: 13px;

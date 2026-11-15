@@ -1,6 +1,11 @@
 /* AquaState map — MapLibre 6 ESM, local style, local SVG fallback. */
 (function () {
   "use strict";
+  // Basemap colours from the light/dark theme tokens (static/ds/themes.css).
+  function pilotTheme() {
+    const css = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+    return { bg: css("--t-map-bg", "#090d10"), land: css("--t-map-land", "#0d171b"), edge: css("--t-map-edge", "#334750"), accent: css("--t-link", "#38d6c9") };
+  }
 
   const STATUS_COLORS = {
     CRITICAL: "#ef6f82",
@@ -104,25 +109,25 @@
       id: "countries-fill",
       type: "fill",
       source: "countries",
-      paint: { "fill-color": "#0d171b", "fill-opacity": 0.96 },
+      paint: { "fill-color": pilotTheme().land, "fill-opacity": 0.96 },
     });
     map.addLayer({
       id: "countries-line",
       type: "line",
       source: "countries",
-      paint: { "line-color": "#334750", "line-width": 1.2 },
+      paint: { "line-color": pilotTheme().edge, "line-width": 1.2 },
     });
     map.addLayer({
       id: "basins-fill",
       type: "fill",
       source: "basins",
-      paint: { "fill-color": "#38d6c9", "fill-opacity": 0.10 },
+      paint: { "fill-color": pilotTheme().accent, "fill-opacity": 0.10 },
     });
     map.addLayer({
       id: "basins-line",
       type: "line",
       source: "basins",
-      paint: { "line-color": "#38d6c9", "line-opacity": 0.45, "line-width": 1 },
+      paint: { "line-color": pilotTheme().accent, "line-opacity": 0.45, "line-width": 1 },
     });
 
     (data.features || []).forEach((feature, index) => {
@@ -209,7 +214,7 @@
         style: {
           version: 8,
           sources: {},
-          layers: [{ id: "ground", type: "background", paint: { "background-color": "#090d10" } }],
+          layers: [{ id: "ground", type: "background", paint: { "background-color": pilotTheme().bg } }],
         },
         center: [9, 35],
         zoom: 3.2,
@@ -224,6 +229,15 @@
         if (fallback) fallback.hidden = true;
       });
       window.addEventListener("resize", () => { if (map) map.resize(); });
+      // Light/dark theme switch: recolour the basemap layers in place (static/ds/themes.css tokens).
+      window.addEventListener("ds:theme", () => {
+        if (!map || !map.isStyleLoaded()) return;
+        const t = pilotTheme();
+        [["ground", "background-color", t.bg], ["countries-fill", "fill-color", t.land], ["countries-line", "line-color", t.edge],
+         ["basins-fill", "fill-color", t.accent], ["basins-line", "line-color", t.accent]].forEach(([id, prop, value]) => {
+          if (map.getLayer(id)) map.setPaintProperty(id, prop, value);
+        });
+      });
       window.addEventListener("popstate", () => {
         const params = new URLSearchParams(window.location.search);
         if (params.get("dam")) selectDam(params.get("dam"), false);

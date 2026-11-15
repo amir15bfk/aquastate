@@ -15,6 +15,7 @@
     </p>
     <div class="head-actions">
       <a class="btn-light" href="/water/{{ profile.iso2 }}/">Open water system detail</a>
+      <a class="btn-light ghost" href="/map/?c={{ profile.iso2 }}">Regional map</a>
       <a class="btn-light ghost" href="/dams/?country={{ profile.iso2 }}">All {{ dam_count }} dam{{ dam_count|pluralize }}</a>
       <a class="btn-light ghost" href="/api/world/country/{{ profile.iso2 }}/">Open JSON</a>
     </div>
