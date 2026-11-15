@@ -1,0 +1,33 @@
+{% load hydro_format %}
+<section class="block" id="bridge" {% if oob %}hx-swap-oob="true"{% endif %}>
+  <div class="block__head">
+    <h3>The buffer bridge</h3>
+    <span class="block__meta">{% if is_scenario %}<span class="simulated-tag">simulated</span> {% endif %}Forecast-implied recharge, not a promise</span>
+  </div>
+  <div class="bridge">
+    <div class="bridge__step">
+      <span class="bridge__label">Today</span>
+      <strong class="bridge__value">{{ state.components.buffer.d_autonomy_days|floatformat:1 }} d</strong>
+      <span class="bridge__note">autonomy at {{ state.components.buffer.q_out_m3_day|volume_mm3 }} Mm³/day</span>
+    </div>
+    <div class="bridge__connector" aria-hidden="true"></div>
+    <div class="bridge__step">
+      <span class="bridge__label">First rain</span>
+      <strong class="bridge__value">
+        {% if state.components.buffer.d_until_rain_days %}+{{ state.components.buffer.d_until_rain_days }} d{% else %}none{% endif %}
+      </strong>
+      <span class="bridge__note">{{ state.components.buffer.event_count }} storm event(s) in 14 d</span>
+    </div>
+    <div class="bridge__connector" aria-hidden="true"></div>
+    <div class="bridge__step">
+      <span class="bridge__label">+14 days</span>
+      <strong class="bridge__value">{{ state.components.buffer.v_proj14_m3|volume_mm3 }} Mm³</strong>
+      <span class="bridge__note">usable storage · inflow {{ state.components.buffer.v_in14_m3|volume_mm3 }} Mm³</span>
+    </div>
+  </div>
+  <div class="bridge__foot">
+    <span>Φ = {{ state.phi|floatformat:3 }}</span>
+    <span>Forecast type: {{ state.components.forecast_type }}</span>
+    <span>Confidence {{ state.components.forecast_confidence|floatformat:2 }}</span>
+  </div>
+</section>

@@ -1,0 +1,213 @@
+{% extends "world/base.html" %}
+{% load static humanize world_format %}
+{% block title %}{% if atlas %}{{ atlas.name }}{% elif pilot %}{{ pilot.name }}{% else %}Dam{% endif %} · AquaState{% endblock %}
+{% block body_class %}world-body dam-body{% endblock %}
+{% block status_line %}
+  {% if state %}{{ state.status }} · {{ state.hri|floatformat:1 }} / 100{% else %}Inventory only{% endif %}
+{% endblock %}
+{% block content %}
+<section class="dam-head">
+  <div>
+    <p class="crumb" style="color:#718684"><a href="/" style="color:#34c9b8">World</a><span>/</span><a href="/dams/" style="color:#34c9b8">Dams</a>{% if atlas and atlas.country_iso2 %}<span>/</span><a href="/country/{{ atlas.country_iso2 }}/" style="color:#34c9b8">{{ atlas.country_name|default:atlas.country_iso2 }}</a>{% endif %}</p>
+    <h1>{% if atlas %}{{ atlas.name }}{% elif pilot %}{{ pilot.name }}{% else %}Dam{% endif %}</h1>
+    <p class="dam-sub">
+      {% if atlas %}{{ atlas.country_name|default:atlas.country_iso2 }}{% elif pilot %}{{ pilot.country.name }}{% endif %}
+      {% if state %} · Dam Resilience Index · {{ state.as_of }}{% else %} · inventory row{% endif %}
+    </p>
+    <div class="dam-tags">
+      {% if state %}<span class="dri-pill dri-{{ state.status|lower }}">{{ state.status }}</span>{% endif %}
+      {% if atlas and atlas.is_monitored %}<span class="tag">Monitored</span>{% else %}<span class="tag tag-muted">Inventory only</span>{% endif %}
+      {% if atlas and atlas.source %}<span class="tag tag-muted">{{ atlas.source }}</span>{% endif %}
+    </div>
+  </div>
+  <div class="dam-head-actions">
+    {% if pilot %}<a class="btn-live" href="/pilot/?country={{ pilot.country.iso3 }}&dam={{ pilot.slug }}">Open the full simulator</a>{% endif %}
+    {% if state %}<a class="btn-ghost" href="/api/pilot/dams/{{ pilot.slug }}/" target="_blank" rel="noopener">Audit JSON</a>{% endif %}
+    {% if atlas and atlas.source_url %}<a class="btn-ghost" href="{{ atlas.source_url }}" target="_blank" rel="noopener">Source record</a>{% endif %}
+  </div>
+</section>
+
+{% if state %}
+<section class="dam-hero-grid">
+  <article class="dri-card">
+    <div class="dri-ring-wrap">
+      <svg viewBox="0 0 120 120" class="dri-ring" role="img" aria-label="Dam Resilience Index {{ state.hri|floatformat:1 }} out of 100">
+        <circle cx="60" cy="60" r="52" class="dri-track"/>
+        <circle cx="60" cy="60" r="52" class="dri-value" pathLength="100" stroke-dasharray="{{ state.hri|floatformat:2 }} 100" transform="rotate(-90 60 60)"/>
+        <text x="60" y="57" text-anchor="middle" class="dri-number">{{ state.hri|floatformat:1 }}</text>
+        <text x="60" y="73" text-anchor="middle" class="dri-unit">DRI / 100</text>
+      </svg>
+    </div>
+    <div class="dri-copy">
+      <span class="card-caption">Dam Resilience Index</span>
+      <h2 class="dri-status dri-{{ state.status|lower }}">{{ state.status }}</h2>
+      <p>{{ state.explanation }}</p>
+      <div class="dri-triplet">
+        <div><span>Observed now</span><strong>{{ state.hri_now|floatformat:1 }}</strong></div>
+        <div><span>Projected +14 d</span><strong>{{ state.hri_proj|floatformat:1 }}</strong></div>
+        <div><span>Buffer bridge Φ</span><strong>{{ state.phi|floatformat:3 }}</strong></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="bridge-card">
+    <div class="light-head"><div><h2>The buffer bridge</h2><p>Forecast-implied recharge, not a promise.</p></div><span class="tiny">{{ state.data_mode }}</span></div>
+    {% with buffer=state.components.buffer %}
+    <div class="bridge-facts">
+      <div><span>Autonomy today</span><strong>{{ buffer.d_autonomy_days|floatformat:1 }} d</strong><small>at {{ buffer.q_out_m3_day|floatformat:0 }} m³/day out</small></div>
+      <div><span>First rain</span><strong>{% if buffer.d_until_rain_days %}+{{ buffer.d_until_rain_days }} d{% else %}no event{% endif %}</strong><small>{{ buffer.event_count }} event{{ buffer.event_count|pluralize }} in 14 d</small></div>
+      <div><span>Usable +14 d</span><strong>{{ buffer.v_proj14_m3|floatformat:0 }} m³</strong><small>{{ buffer.v_in14_m3|floatformat:0 }} m³ forecast inflow</small></div>
+    </div>
+    <div class="bridge-foot">
+      <span>Φ = {{ buffer.phi|floatformat:3 }}</span>
+      <span>{{ buffer.forecast_type }}</span>
+      <span>confidence {{ buffer.forecast_confidence|floatformat:2 }}</span>
+    </div>
+    {% endwith %}
+  </article>
+</section>
+
+<div class="dam-grid">
+  <div class="dam-main">
+    <section class="dam-panel">
+      <div class="panel-head-dam"><div><h2>Why this score</h2><p>Signed points against the 50-point neutral midline. Σ contributions + 50 = {{ state.hri|floatformat:1 }}.</p></div><span class="tiny">waterfall</span></div>
+      <div class="waterfall">
+        {% for key, value in state.contributions.items %}
+        <div class="wf-row">
+          <span class="wf-label">{{ key }}</span>
+          <div class="wf-track"><span class="wf-bar {% if value >= 0 %}pos{% else %}neg{% endif %}" style="width:{{ value|bar_pct:3 }}%"></span></div>
+          <span class="wf-value">{{ value|floatformat:1 }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <p class="wf-note">The override line is the difference made by the continuous low-storage guard. The core arithmetic is never rewritten by the forecast; the projected state is blended through Φ.</p>
+    </section>
+
+    <section class="dam-panel">
+      <div class="panel-head-dam"><div><h2>Sub-index stack</h2><p>Five deterministic calculators. SAI is visible but not scored for pilot basins.</p></div><span class="tiny">formula → score</span></div>
+      <div class="subindex-stack">
+        {% for key, sub in state.sub_indices.items %}
+        <details class="subindex" {% if forloop.first %}open{% endif %}>
+          <summary>
+            <span class="subindex-key">{{ key }}</span>
+            <span class="subindex-score">{{ sub.score|floatformat:1 }}</span>
+            <span class="subindex-status">{{ sub.status }}</span>
+            <span class="subindex-conf">{{ sub.confidence|floatformat:2 }} conf.</span>
+          </summary>
+          <div class="subindex-body">
+            <div class="subindex-bar"><span style="width:{% if sub.available %}{{ sub.score|floatformat:0 }}{% else %}0{% endif %}%"></span></div>
+            <p>{{ sub.explanation }}</p>
+            {% if sub.proof_steps %}
+            <ol class="proof-list">{% for step in sub.proof_steps %}<li>{{ step }}</li>{% endfor %}</ol>
+            {% endif %}
+            {% if sub.components %}
+            <div class="component-grid">
+              {% for ckey, cvalue in sub.components.items %}{% if cvalue is not None and cvalue != "" %}<div><span>{{ ckey }}</span><strong>{{ cvalue|floatformat:3 }}</strong></div>{% endif %}{% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </details>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="dam-panel">
+      <div class="panel-head-dam"><div><h2>Historical analogs</h2><p>Similar weeks in the baseline. Explanatory, not a forecast.</p></div><span class="tiny">leave-one-out</span></div>
+      <div class="analog-grid">
+        {% for analog in state.analogs %}
+        <div class="analog-card">
+          <div class="analog-year">{{ analog.year }} <small>week {{ analog.week }}</small></div>
+          <div class="analog-score">+{{ analog.delta_fill_pct|floatformat:1 }}<span> pp fill / 90 d</span></div>
+          <div class="analog-meta">similarity {{ analog.similarity|floatformat:2 }} · distance {{ analog.distance|floatformat:2 }}</div>
+        </div>
+        {% empty %}
+        <p class="empty-inline">No analog matches available.</p>
+        {% endfor %}
+      </div>
+      <p class="wf-note">An analog is a feature-space comparison over the baseline, not a replay of history.</p>
+    </section>
+  </div>
+
+  <aside class="dam-rail">
+    <section class="dam-panel">
+      <div class="panel-head-dam"><div><h2>Dam facts</h2><p>The inventory behind the index.</p></div></div>
+      <dl class="fact-list">
+        {% if atlas %}
+        <div><dt>Capacity</dt><dd>{% if atlas.capacity_m3 %}{{ atlas.capacity_m3|volume_mm3 }}{% elif atlas.installed_mw %}{{ atlas.installed_mw|installed_mw }}{% else %}—{% endif %}</dd></div>
+        <div><dt>Height</dt><dd>{% if atlas.height_m %}{{ atlas.height_m|height_m }}{% else %}—{% endif %}</dd></div>
+        <div><dt>Year</dt><dd>{{ atlas.year_built|default:"—" }}</dd></div>
+        <div><dt>Coordinates</dt><dd>{{ atlas.lat|floatformat:3 }}, {{ atlas.lon|floatformat:3 }}</dd></div>
+        <div><dt>Source</dt><dd>{{ atlas.source }}</dd></div>
+        {% elif pilot %}
+        <div><dt>Capacity</dt><dd>{{ pilot.capacity_m3|volume_mm3 }}</dd></div>
+        <div><dt>Dead storage</dt><dd>{{ pilot.dead_storage_m3|volume_mm3 }}</dd></div>
+        <div><dt>Basin</dt><dd>{{ pilot.basin.name|default:"—" }}</dd></div>
+        <div><dt>Coordinates</dt><dd>{{ pilot.lat|floatformat:3 }}, {{ pilot.lon|floatformat:3 }}</dd></div>
+        {% endif %}
+      </dl>
+    </section>
+
+    <section class="dam-panel">
+      <div class="panel-head-dam"><div><h2>Country context</h2><p>The dam is one line in the national ledger.</p></div></div>
+      {% if profile %}
+      <div class="country-context">
+        <strong>{{ profile.country.name }}</strong>
+        <span>{{ profile.score|floatformat:1 }} / 100 · {{ profile.index.status_label }}</span>
+        <span>rank {{ profile.rank|default:"—" }} of 249</span>
+        <a href="/country/{{ profile.iso2 }}/">Open the country sheet →</a>
+      </div>
+      {% else %}
+      <p class="empty-inline">No country profile cached.</p>
+      {% endif %}
+    </section>
+
+    <section class="dam-panel">
+      <div class="panel-head-dam"><div><h2>Method note</h2><p>What this page does and does not claim.</p></div></div>
+      <p class="method-note">
+        The DRI is the space app's signed HRI-1.0 mathematics, ported unchanged: SSI, CMI, SRRI, SAI and EESI,
+        blended through the buffer bridge Φ. SAI is not scored for pilot basins because GRACE's footprint is
+        coarser than these basins. Reservoir storage is a screening model/reference estimate, not telemetry.
+        Scenario values are simulated and never overwrite the observed snapshot.
+      </p>
+    </section>
+  </aside>
+</div>
+
+{% else %}
+<section class="inventory-card">
+  <div class="inventory-main">
+    <span class="card-caption">Catalogue record</span>
+    <h2>This dam is in the atlas, but it is not monitored yet.</h2>
+    <p>
+      There is no live reservoir observation, bathymetry or demand series for this dam in the current
+      dataset. The atlas gives its location and available public attributes; the country sheet gives
+      the national water-climate context. No score is invented.
+    </p>
+    <div class="inventory-facts">
+      <div><dt>Country</dt><dd>{% if atlas %}{{ atlas.country_name|default:atlas.country_iso2 }}{% else %}—{% endif %}</dd></div>
+      <div><dt>Capacity / power</dt><dd>{% if atlas and atlas.capacity_m3 %}{{ atlas.capacity_m3|volume_mm3 }}{% elif atlas and atlas.installed_mw %}{{ atlas.installed_mw|installed_mw }}{% else %}—{% endif %}</dd></div>
+      <div><dt>Height</dt><dd>{% if atlas and atlas.height_m %}{{ atlas.height_m|height_m }}{% else %}—{% endif %}</dd></div>
+      <div><dt>Year</dt><dd>{{ atlas.year_built|default:"—" }}</dd></div>
+      <div><dt>Coordinates</dt><dd>{% if atlas %}{{ atlas.lat|floatformat:3 }}, {{ atlas.lon|floatformat:3 }}{% else %}—{% endif %}</dd></div>
+      <div><dt>Source</dt><dd>{{ atlas.source|default:"—" }}</dd></div>
+    </div>
+    <div class="head-actions">
+      {% if atlas and atlas.country_iso2 %}<a class="btn-live" href="/country/{{ atlas.country_iso2 }}/">Open the country sheet</a>{% endif %}
+      <a class="btn-ghost" href="/dams/">Back to the atlas</a>
+      {% if atlas and atlas.source_url %}<a class="btn-ghost" href="{{ atlas.source_url }}" target="_blank" rel="noopener">Source record</a>{% endif %}
+    </div>
+  </div>
+  <aside class="inventory-aside">
+    <h3>Monitored dams</h3>
+    <p>The {{ atlas_monitored }} monitored dams have a modelled storage series and, for the 10 pilot dams, the full DRI waterfall and scenario simulator.</p>
+    <a class="text-link" href="/dams/?monitored=1">Browse monitored dams →</a>
+    {% if profile %}
+    <hr>
+    <h3>{{ profile.country.name }}</h3>
+    <p>Country index {{ profile.score|floatformat:1 }} · {{ profile.index.status_label }} · rank {{ profile.rank }} of 249.</p>
+    <a class="text-link" href="/country/{{ profile.iso2 }}/">Open the country sheet →</a>
+    {% endif %}
+  </aside>
+</section>
+{% endif %}
+{% endblock %}

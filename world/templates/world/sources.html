@@ -1,0 +1,102 @@
+{% extends "world/base.html" %}
+{% load static humanize %}
+{% block title %}Sources · AquaState{% endblock %}
+{% block body_class %}world-body docs-body{% endblock %}
+{% block status_line %}{{ countries }} countries · {{ atlas_total|intcomma }} dams · {{ events }} events{% endblock %}
+{% block content %}
+<section class="docs-head">
+  <p class="world-kicker" style="color:#1b6c80">Source ledger</p>
+  <h1>Every value has a timestamp.</h1>
+  <p class="docs-lede">Keyless public sources, honest labels, and a readable failure path. Live means a fetch succeeded; cached means it is the last good copy; modeled and proxy are named as such.</p>
+</section>
+<div class="docs-grid">
+  <nav class="docs-toc" aria-label="On this page">
+    <a href="#live">Live source status</a>
+    <a href="#catalogue">What is fetched</a>
+    <a href="#refresh">Refresh</a>
+    <a href="#honesty">Honesty rules</a>
+    <a href="#coverage">Coverage</a>
+  </nav>
+  <article class="docs-article">
+    <section id="live">
+      <h2>Live source status</h2>
+      <div class="source-ledger">
+        {% for source in sources %}
+        <div class="source-ledger-row">
+          <div>
+            <span class="source-kind source-{{ source.kind }}">{{ source.kind }}</span>
+            <strong>{{ source.label }}</strong>
+            <span class="source-key">{{ source.key }}</span>
+          </div>
+          <div class="source-ledger-meta">
+            <span>{% if source.last_success %}{{ source.last_success|slice:":16"|cut:"T" }} UTC{% else %}no successful fetch{% endif %}</span>
+            <span>{{ source.records }} records</span>
+            <span>{% if source.due %}due{% else %}fresh{% endif %}</span>
+          </div>
+          {% if source.last_error %}<p class="source-error">{{ source.last_error|truncatechars:220 }}</p>{% endif %}
+        </div>
+        {% empty %}
+        <p class="empty-light">No source status yet. Run <code>python manage.py bootstrap_world</code>.</p>
+        {% endfor %}
+      </div>
+      {% if snapshot %}
+      <p class="docs-meta">Current snapshot <code>{{ snapshot.version }}</code> · {{ snapshot.created_at|slice:":16"|cut:"T" }} UTC · {{ summary.scored }} scored countries · {{ summary.events }} active events.</p>
+      {% endif %}
+    </section>
+
+    <section id="catalogue">
+      <h2>What is fetched</h2>
+      <table class="docs-table">
+        <thead><tr><th>Source</th><th>Used for</th><th>Kind</th><th>Cadence</th></tr></thead>
+        <tbody>
+          <tr><td>NASA POWER / MERRA-2 monthly</td><td>10-year rainfall, temperature, soil wetness, PET inputs</td><td>live</td><td>24 h</td></tr>
+          <tr><td>NASA POWER / MERRA-2 daily</td><td>recent rain and soil at a hydrologic centroid</td><td>live</td><td>6 h</td></tr>
+          <tr><td>Open-Meteo forecast</td><td>16-day rain, ET0, temperature, humidity, wind; 92-day fire-weather baseline</td><td>live</td><td>30 min</td></tr>
+          <tr><td>Open-Meteo GloFAS flood</td><td>60-day past + 16-day forecast river discharge</td><td>live</td><td>60 min</td></tr>
+          <tr><td>NASA EONET</td><td>open drought, flood, wildfire, dust and temperature events</td><td>live</td><td>30 min</td></tr>
+          <tr><td>World Bank</td><td>population, renewable freshwater per capita, withdrawal, forest and arable land</td><td>reference</td><td>7 days</td></tr>
+          <tr><td>Wikidata + Wikipedia sitelinks</td><td>global notable-dam inventory (names, coordinates, country, height, power)</td><td>reference</td><td>30 days</td></tr>
+          <tr><td>Natural Earth 50m</td><td>country geometry for the map</td><td>reference</td><td>static</td></tr>
+          <tr><td>Mass-balance / screening model</td><td>reservoir storage, soil and index calculations</td><td>modeled</td><td>recomputed</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="refresh">
+      <h2>Refresh</h2>
+      <p>The world layer is designed to be refreshed without a page being open. The UI also has a <strong>Refresh live data</strong> button that starts a single-flight background refresh.</p>
+      <pre class="formula">python manage.py bootstrap_world              # fetch + recompute + snapshot
+python manage.py bootstrap_world --offline    # use cached/source files only
+python manage.py bootstrap_world --limit 10   # smoke run
+python manage.py load_dam_atlas --reset       # rebuild the dam catalogue
+python manage.py dedupe_dams                  # merge duplicate monitored rows</pre>
+      <p>For unattended operation, run <code>python manage.py refresh_world --loop --interval 900</code> in a second terminal. The page polls <code>/api/world/meta/</code> every 60 seconds and updates the map when the snapshot version changes.</p>
+    </section>
+
+    <section id="honesty">
+      <h2>Honesty rules</h2>
+      <ul>
+        <li><strong>Live</strong> is a successful fetch with a stored timestamp, not a label of intent.</li>
+        <li><strong>Cached</strong> is the last successful copy; the UI never calls it live.</li>
+        <li><strong>Modeled</strong> storage is a mass-balance/reference estimate, not SCADA telemetry.</li>
+        <li><strong>Proxy</strong> groundwater uses root-zone wetness when no aquifer inventory exists.</li>
+        <li>Missing data is neutral with low confidence; it is never a hidden zero or a fake 50 in the score.</li>
+        <li>Scenario values are simulated, tagged, and never overwrite an observed snapshot.</li>
+        <li>“Not for operational decisions” appears in the footer and in the API language.</li>
+      </ul>
+    </section>
+
+    <section id="coverage">
+      <h2>Coverage</h2>
+      <div class="coverage-grid">
+        <div><span>Countries with a profile</span><strong>{{ countries }} / 249</strong></div>
+        <div><span>Catalogued dams</span><strong>{{ atlas_total|intcomma }}</strong></div>
+        <div><span>Monitored dams</span><strong>{{ atlas_monitored }}</strong></div>
+        <div><span>EONET events</span><strong>{{ events }}</strong></div>
+      </div>
+      <p>The dam atlas is built from notable dams with an English Wikipedia article and a Wikidata coordinate, supplemented by curated public inventories. It is a catalogue, not a complete census. Country geometry covers 236 polygons and 13 point markers; boundaries are Natural Earth, not legal.</p>
+      <p>Attribution: NASA POWER / MERRA-2, Open-Meteo and GloFAS, NASA EONET, World Bank, Natural Earth, Wikidata and Wikipedia contributors, OpenStreetMap contributors, IBM Plex (SIL OFL), Leaflet (BSD-2-Clause).</p>
+    </section>
+  </article>
+</div>
+{% endblock %}

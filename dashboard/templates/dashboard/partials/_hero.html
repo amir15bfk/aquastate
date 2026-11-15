@@ -1,0 +1,51 @@
+{% load hydro_format %}
+<section class="hero" id="hero" {% if oob %}hx-swap-oob="true"{% endif %} data-hri="{{ state.hri }}" data-status="{{ state.status }}">
+  <div class="hero__head">
+    <div>
+      <h1 class="panel__title">Hydrological Resilience Index</h1>
+      <h2 class="dam-name">{{ selected_dam.name }}</h2>
+    </div>
+    <div class="status-chip status-{{ state.status|lower }}">{{ state.status }}</div>
+  </div>
+
+  <div class="hero__figure">
+    <div class="ring-wrap" aria-hidden="true">
+      <svg class="hri-ring" viewBox="0 0 140 140">
+        <circle class="ring-track" cx="70" cy="70" r="54"></circle>
+        <circle class="ring-value status-{{ state.status|lower }}" cx="70" cy="70" r="54"
+                style="stroke-dashoffset: calc(339.292 - 3.39292 * {{ state.hri }})"></circle>
+      </svg>
+      <div class="ring-label">
+        <span class="ring-value-text">{{ state.hri|floatformat:1 }}</span>
+        <span class="ring-unit">HRI / 100</span>
+      </div>
+    </div>
+    <div class="hero__numbers">
+      <div class="figure">
+        <span class="figure__label">Observed now</span>
+        <span class="figure__value">{{ state.hri_now|floatformat:1 }}</span>
+      </div>
+      <div class="figure">
+        <span class="figure__label">Projected +14 d</span>
+        <span class="figure__value">{{ state.hri_proj|floatformat:1 }}</span>
+      </div>
+      <div class="figure">
+        <span class="figure__label">Bridge factor Φ</span>
+        <span class="figure__value figure__value--accent">{{ state.phi|floatformat:3 }}</span>
+      </div>
+      {% if is_scenario %}
+        <div class="figure">
+          <span class="figure__label">Observed HRI</span>
+          <span class="figure__value">{{ observed_state.hri|floatformat:1 }}</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <p class="hero__explanation">{{ state.explanation }}</p>
+  <div class="hero__meta">
+    <span>Confidence {{ state.confidence|floatformat:2 }}</span>
+    <span>{{ state.dam.country }} · {{ state.dam.basin_area_km2|floatformat:0 }} km² basin</span>
+    <span>Week {{ state.week }}</span>
+    <span>{% if is_scenario %}Simulated view{% else %}Observed view{% endif %}</span>
+  </div>
+</section>

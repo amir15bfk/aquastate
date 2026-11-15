@@ -1,0 +1,1808 @@
+{
+ "url": "http://127.0.0.1:8011/methodology/",
+ "at": "2026-11-13T20:32:23.632Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.69,
+    0.86,
+    0.76,
+    0.86
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 3355,
+     "screens": 3.7,
+     "words": 1622,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 5,
+     "sections": 2,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "chars": 33,
+     "lines": 1,
+     "size": 28,
+     "vw": 1.9,
+     "font": "IBM Plex Sans",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 108,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "lines": 1,
+     "size": 28,
+     "font": "IBM Plex Sans"
+    },
+    "headings": [
+     {
+      "text": "How the water state is calculated",
+      "words": 6,
+      "chars": 33,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "IBM Plex Sans",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.56,
+      "top": 108,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "IBM Plex Sans",
+       "share": 0.84,
+       "mono": false
+      },
+      {
+       "family": "IBM Plex Mono",
+       "share": 0.16,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      19,
+      28
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "IBM Plex Sans",
+      "size": 14,
+      "leading": 1.65,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.7
+     },
+     "measureChars": 115,
+     "max": {
+      "size": 28,
+      "vw": 1.9,
+      "font": "IBM Plex Sans",
+      "text": "How the water state is calculated"
+     },
+     "monoShare": 0.16,
+     "monoProseShare": 0.14,
+     "monoFamilies": [
+      "IBM Plex Mono"
+     ],
+     "monoSamples": [
+      "WRI-1.0",
+      "Uᵢ = max(0, Sᵢ − Dᵢ) bᵢ = max(0.05, dᵢ +",
+      "B = 100 × Σ dᵢ · min(1, cover_daysᵢ / 90",
+      "p = percentile rank of the current 7-day",
+      "M = 0.7p + 0.3a",
+      "abstraction = 100 × clamp((1.25 − extrac"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 17
+    },
+    "eyebrows": [
+     {
+      "text": "Reference / Methodology",
+      "above": "How the water state is calculated",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 73
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f5f2",
+     "bodyBgHsl": {
+      "h": 120,
+      "s": 0.13,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f5f2",
+       "top": 0,
+       "hsl": {
+        "h": 120,
+        "s": 0.13,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 48,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#14201d",
+       "share": 0.83
+      },
+      {
+       "color": "#0d4553",
+       "share": 0.1
+      },
+      {
+       "color": "#53605c",
+       "share": 0.04
+      },
+      {
+       "color": "#5f6a66",
+       "share": 0.02
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#14201d",
+      "hsl": {
+       "h": 165,
+       "s": 0.23,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 6,
+     "inHero": 3,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to the water state",
+      "Methodology",
+      "Audit JSON"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 7,
+     "hairlineSamples": [
+      "aside.sidebar 228px",
+      "ul.doc-aside-list 266px",
+      "li 266px",
+      "li 266px",
+      "li 266px"
+     ],
+     "outlinedBoxes": 11,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 11,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 835
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "ibm plex sans",
+     "ibm plex mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 3355,
+    "margins": {
+     "left": 54,
+     "right": 56
+    },
+    "sections": [],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "How the water state is calculated",
+      "size": 28,
+      "top": 108,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 253,
+      "n": 27
+     },
+     {
+      "x": 1124,
+      "n": 2
+     },
+     {
+      "x": 410,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 30,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.1,
+    "voidBox": {
+     "x": 0,
+     "y": 240,
+     "w": 240,
+     "h": 540
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f2f5f2",
+    "sidebar": {
+     "w": 228,
+     "tag": "aside",
+     "links": 4,
+     "share": 0.16
+    },
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 25,
+     "right": 56
+    },
+    "hero": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "chars": 33,
+     "lines": 1,
+     "size": 28,
+     "vw": 1.9,
+     "font": "IBM Plex Sans",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 108,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 13,
+     "radii": [
+      [
+       6,
+       8
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       8,
+       2
+      ],
+      [
+       16,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 10,
+     "leftAligned": 0,
+     "figures": 10,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": {
+     "count": 14,
+     "median": 37
+    },
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.04,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      19,
+      28
+     ]
+    },
+    "title": {
+     "text": "How the water state is calculated",
+     "size": 28,
+     "top": 108
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.84,
+    0.95,
+    0.94,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 3878,
+     "screens": 3.8,
+     "words": 1612,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 5,
+     "sections": 2,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "chars": 33,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "IBM Plex Sans",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 161,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "lines": 1,
+     "size": 28,
+     "font": "IBM Plex Sans"
+    },
+    "headings": [
+     {
+      "text": "How the water state is calculated",
+      "words": 6,
+      "chars": 33,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "IBM Plex Sans",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.91,
+      "top": 161,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "IBM Plex Sans",
+       "share": 0.84,
+       "mono": false
+      },
+      {
+       "family": "IBM Plex Mono",
+       "share": 0.16,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      19,
+      28
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "IBM Plex Sans",
+      "size": 14,
+      "leading": 1.65,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.7
+     },
+     "measureChars": 100,
+     "max": {
+      "size": 28,
+      "vw": 3.6,
+      "font": "IBM Plex Sans",
+      "text": "How the water state is calculated"
+     },
+     "monoShare": 0.16,
+     "monoProseShare": 0.14,
+     "monoFamilies": [
+      "IBM Plex Mono"
+     ],
+     "monoSamples": [
+      "Uᵢ = max(0, Sᵢ − Dᵢ) bᵢ = max(0.05, dᵢ +",
+      "B = 100 × Σ dᵢ · min(1, cover_daysᵢ / 90",
+      "p = percentile rank of the current 7-day",
+      "M = 0.7p + 0.3a",
+      "abstraction = 100 × clamp((1.25 − extrac",
+      "G = 0.55 × abstraction + 0.45 × trend"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 15
+    },
+    "eyebrows": [
+     {
+      "text": "Reference / Methodology",
+      "above": "How the water state is calculated",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 126
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f5f2",
+     "bodyBgHsl": {
+      "h": 120,
+      "s": 0.13,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f5f2",
+       "top": 0,
+       "hsl": {
+        "h": 120,
+        "s": 0.13,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 101,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#14201d",
+       "share": 0.83
+      },
+      {
+       "color": "#0d4553",
+       "share": 0.1
+      },
+      {
+       "color": "#53605c",
+       "share": 0.04
+      },
+      {
+       "color": "#5f6a66",
+       "share": 0.02
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#14201d",
+      "hsl": {
+       "h": 165,
+       "s": 0.23,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 6,
+     "inHero": 2,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to the water state",
+      "Methodology"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 7,
+     "hairlineSamples": [
+      "aside.sidebar 768px",
+      "ul.doc-aside-list 307px",
+      "li 307px",
+      "li 307px",
+      "li 307px"
+     ],
+     "outlinedBoxes": 11,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 11,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": false,
+     "height": 32,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "ibm plex sans",
+     "ibm plex mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 3878,
+    "margins": {
+     "left": 33,
+     "right": 36
+    },
+    "sections": [
+     {
+      "sel": "table.doc-table",
+      "tag": "table",
+      "top": 583,
+      "height": 257,
+      "words": 90,
+      "media": 0,
+      "middle": 44,
+      "heading": null,
+      "left": 43,
+      "right": 47,
+      "textLeft": 43,
+      "textRight": 47,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "table.doc-table",
+      "tag": "table",
+      "top": 1993,
+      "height": 191,
+      "words": 40,
+      "media": 0,
+      "middle": 85,
+      "heading": null,
+      "left": 43,
+      "right": 208,
+      "textLeft": 43,
+      "textRight": 208,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "ul",
+      "tag": "ul",
+      "top": 3224,
+      "height": 139,
+      "words": 68,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 53,
+      "right": 118,
+      "textLeft": 53,
+      "textRight": 118,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "aside.doc-aside",
+      "tag": "aside",
+      "top": 3470,
+      "height": 375,
+      "words": 88,
+      "media": 0,
+      "middle": 60,
+      "heading": {
+       "text": "Index at a glance",
+       "size": 15,
+       "tag": "h2"
+      },
+      "left": 50,
+      "right": 157,
+      "textLeft": 50,
+      "textRight": 157,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "How the water state is calculated",
+      "size": 28,
+      "top": 161,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 33,
+      "n": 26
+     },
+     {
+      "x": 50,
+      "n": 1
+     },
+     {
+      "x": 118,
+      "n": 1
+     },
+     {
+      "x": 240,
+      "n": 1
+     },
+     {
+      "x": 411,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 30,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f2f5f2",
+    "sidebar": null,
+    "topbar": {
+     "h": 53
+    },
+    "canvas": {
+     "left": 33,
+     "right": 34
+    },
+    "hero": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "chars": 33,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "IBM Plex Sans",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 161,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 0,
+     "firstScreen": 0,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 12,
+     "radii": [
+      [
+       6,
+       8
+      ],
+      [
+       8,
+       2
+      ],
+      [
+       12,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 10,
+     "leftAligned": 0,
+     "figures": 10,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": {
+     "count": 14,
+     "median": 37
+    },
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.04,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      19,
+      28
+     ]
+    },
+    "title": {
+     "text": "How the water state is calculated",
+     "size": 28,
+     "top": 161
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.8,
+    0.74,
+    1,
+    0.72,
+    1,
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 5892,
+     "screens": 7,
+     "words": 1609,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 5,
+     "sections": 2,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "chars": 33,
+     "lines": 2,
+     "size": 28,
+     "vw": 7.2,
+     "font": "IBM Plex Sans",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 195,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "lines": 2,
+     "size": 28,
+     "font": "IBM Plex Sans"
+    },
+    "headings": [
+     {
+      "text": "How the water state is calculated",
+      "words": 6,
+      "chars": 33,
+      "lines": 2,
+      "size": 28,
+      "vw": 7.2,
+      "font": "IBM Plex Sans",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 195,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "IBM Plex Sans",
+       "share": 0.84,
+       "mono": false
+      },
+      {
+       "family": "IBM Plex Mono",
+       "share": 0.16,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      19,
+      28
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "IBM Plex Sans",
+      "size": 14,
+      "leading": 1.65,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.7
+     },
+     "measureChars": 51,
+     "max": {
+      "size": 28,
+      "vw": 7.2,
+      "font": "IBM Plex Sans",
+      "text": "How the water state is calculated"
+     },
+     "monoShare": 0.16,
+     "monoProseShare": 0.14,
+     "monoFamilies": [
+      "IBM Plex Mono"
+     ],
+     "monoSamples": [
+      "Uᵢ = max(0, Sᵢ − Dᵢ) bᵢ = max(0.05, dᵢ +",
+      "B = 100 × Σ dᵢ · min(1, cover_daysᵢ / 90",
+      "p = percentile rank of the current 7-day",
+      "M = 0.7p + 0.3a",
+      "abstraction = 100 × clamp((1.25 − extrac",
+      "G = 0.55 × abstraction + 0.45 × trend"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 14
+    },
+    "eyebrows": [
+     {
+      "text": "Reference / Methodology",
+      "above": "How the water state is calculated",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 160
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f5f2",
+     "bodyBgHsl": {
+      "h": 120,
+      "s": 0.13,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f5f2",
+       "top": 0,
+       "hsl": {
+        "h": 120,
+        "s": 0.13,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 143,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#14201d",
+       "share": 0.84
+      },
+      {
+       "color": "#0d4553",
+       "share": 0.1
+      },
+      {
+       "color": "#53605c",
+       "share": 0.03
+      },
+      {
+       "color": "#5f6a66",
+       "share": 0.02
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#14201d",
+      "hsl": {
+       "h": 165,
+       "s": 0.23,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 6,
+     "inHero": 2,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to the water state",
+      "Methodology"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "aside.sidebar 390px",
+      "main#sheet.sheet 390px",
+      "ul.doc-aside-list 324px",
+      "li 324px",
+      "li 324px"
+     ],
+     "outlinedBoxes": 10,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 10,
+     "boxRadius": 6,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 3,
+     "fixed": false,
+     "height": 32,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "ibm plex sans",
+     "ibm plex mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 5892,
+    "margins": {
+     "left": 16,
+     "right": 18
+    },
+    "sections": [
+     {
+      "sel": "div.doc-note",
+      "tag": "div",
+      "top": 393,
+      "height": 151,
+      "words": 57,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 35,
+      "textLeft": 31,
+      "textRight": 35,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "table.doc-table",
+      "tag": "table",
+      "top": 804,
+      "height": 471,
+      "words": 90,
+      "media": 0,
+      "middle": 20,
+      "heading": null,
+      "left": 26,
+      "right": 29,
+      "textLeft": 26,
+      "textRight": 29,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.formula-block",
+      "tag": "div",
+      "top": 1324,
+      "height": 133,
+      "words": 33,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 72,
+      "textLeft": 31,
+      "textRight": 72,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.formula-block",
+      "tag": "div",
+      "top": 1635,
+      "height": 133,
+      "words": 34,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 47,
+      "textLeft": 31,
+      "textRight": 47,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.formula-block",
+      "tag": "div",
+      "top": 1817,
+      "height": 133,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 55,
+      "textLeft": 31,
+      "textRight": 55,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "p",
+      "tag": "p",
+      "top": 1964,
+      "height": 139,
+      "words": 46,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 23,
+      "textLeft": 16,
+      "textRight": 23,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.formula-block",
+      "tag": "div",
+      "top": 2351,
+      "height": 133,
+      "words": 37,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.formula-block",
+      "tag": "div",
+      "top": 2681,
+      "height": 133,
+      "words": 30,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 39,
+      "textLeft": 31,
+      "textRight": 39,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "table.doc-table",
+      "tag": "table",
+      "top": 2828,
+      "height": 242,
+      "words": 40,
+      "media": 0,
+      "middle": 29,
+      "heading": null,
+      "left": 26,
+      "right": 27,
+      "textLeft": 26,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "p",
+      "tag": "p",
+      "top": 3252,
+      "height": 139,
+      "words": 51,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 16,
+      "textLeft": 16,
+      "textRight": 16,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.formula-block",
+      "tag": "div",
+      "top": 3403,
+      "height": 198,
+      "words": 48,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 34,
+      "textLeft": 31,
+      "textRight": 34,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "p",
+      "tag": "p",
+      "top": 3614,
+      "height": 208,
+      "words": 83,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 24,
+      "textLeft": 16,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.doc-note",
+      "tag": "div",
+      "top": 3834,
+      "height": 192,
+      "words": 68,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 31,
+      "right": 48,
+      "textLeft": 31,
+      "textRight": 48,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "p",
+      "tag": "p",
+      "top": 4093,
+      "height": 185,
+      "words": 65,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 20,
+      "textLeft": 16,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "p",
+      "tag": "p",
+      "top": 4290,
+      "height": 139,
+      "words": 47,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 27,
+      "textLeft": 16,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "p",
+      "tag": "p",
+      "top": 4495,
+      "height": 185,
+      "words": 70,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 18,
+      "textLeft": 16,
+      "textRight": 18,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "ul",
+      "tag": "ul",
+      "top": 4746,
+      "height": 255,
+      "words": 68,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 36,
+      "right": 20,
+      "textLeft": 36,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "aside.doc-aside",
+      "tag": "aside",
+      "top": 5147,
+      "height": 728,
+      "words": 88,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Index at a glance",
+       "size": 15,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 37,
+      "textLeft": 33,
+      "textRight": 37,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "How the water state is calculated",
+      "size": 28,
+      "top": 195,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 28
+     },
+     {
+      "x": 33,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 30,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f2f5f2",
+    "sidebar": null,
+    "topbar": {
+     "h": 87
+    },
+    "canvas": {
+     "left": 16,
+     "right": 17
+    },
+    "hero": {
+     "text": "How the water state is calculated",
+     "words": 6,
+     "chars": 33,
+     "lines": 2,
+     "size": 28,
+     "vw": 7.2,
+     "font": "IBM Plex Sans",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 195,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 10,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 11,
+     "radii": [
+      [
+       6,
+       8
+      ],
+      [
+       8,
+       2
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 10,
+     "leftAligned": 0,
+     "figures": 10,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": {
+     "count": 14,
+     "median": 56
+    },
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.04,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      19,
+      28
+     ]
+    },
+    "title": {
+     "text": "How the water state is calculated",
+     "size": 28,
+     "top": 195
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-method\\desktop-fold.jpg",
+   "pages": [
+    "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-method\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-method\\tablet-fold.jpg",
+   "pages": [
+    "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-method\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-method\\mobile-fold.jpg",
+   "pages": [
+    "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-method\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

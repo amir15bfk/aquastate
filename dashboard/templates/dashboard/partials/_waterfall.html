@@ -1,0 +1,20 @@
+{% load hydro_format %}
+<section class="block" id="waterfall" {% if oob %}hx-swap-oob="true"{% endif %}>
+  <div class="block__head">
+    <h3>Why this score</h3>
+    <span class="block__meta">{% if is_scenario %}<span class="simulated-tag">simulated</span> {% endif %}Signed points vs the 50-point neutral midline</span>
+  </div>
+  <div class="waterfall">
+    {% for key, value in state.contributions.items %}
+      <div class="waterfall__row">
+        <span class="waterfall__name">{% if key == "override" %}Cap override{% else %}{{ key }}{% endif %}</span>
+        <span class="waterfall__track">
+          <span class="waterfall__bar {% if value < 0 %}is-negative{% else %}is-positive{% endif %}"
+                style="width: {{ value|bar_width }}%"></span>
+        </span>
+        <span class="waterfall__value {% if value < 0 %}is-negative{% else %}is-positive{% endif %}">{{ value|signed_one }}</span>
+      </div>
+    {% endfor %}
+  </div>
+  <p class="block__note">Σ contributions + 50 = {{ state.hri|floatformat:1 }}. The override line is the difference made by the low-storage guard.</p>
+</section>

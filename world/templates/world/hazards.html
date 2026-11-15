@@ -1,0 +1,75 @@
+{% extends "world/base.html" %}
+{% load static humanize %}
+{% block title %}Hazards · AquaState{% endblock %}
+{% block body_class %}world-body hazards-body{% endblock %}
+{% block status_line %}Four pressures · live when available{% endblock %}
+{% block content %}
+<section class="hazards-head">
+  <div>
+    <p class="world-kicker">The four pressures</p>
+    <h1>Drought is the first domino.</h1>
+    <p class="hazards-lede">
+      These are not four independent warnings. Dry soil raises fire risk; fire and heat strip the land;
+      hard ground turns the next storm into a flood. The pressure scale is 0–100, higher is worse.
+    </p>
+  </div>
+  <div class="hazards-key">
+    <span><i class="key-dot" style="background:#2b6f6a"></i>Low pressure</span>
+    <span><i class="key-dot" style="background:#e5a23b"></i>Watch</span>
+    <span><i class="key-dot" style="background:#ef6f72"></i>Extreme</span>
+    <a href="/" class="btn-ghost">Open the world map</a>
+  </div>
+</section>
+
+<div class="hazard-board">
+  {% for card in cards %}
+  <section class="hazard-board-card" id="{{ card.key }}">
+    <div class="hb-head">
+      <div><span class="hb-label">{{ card.key|title }}</span><span class="hb-arabic" lang="ar" dir="rtl">{% if card.key == 'drought' %}الجفاف{% elif card.key == 'flood' %}الفيضان{% elif card.key == 'fire' %}حرائق الغابات{% else %}التصحر{% endif %}</span></div>
+      <span class="hb-count">{{ card.count }} countries</span>
+    </div>
+    <div class="hb-value">{% if card.average is not None %}{{ card.average|floatformat:0 }}{% else %}—{% endif %}<span>/100 pressure</span></div>
+    <div class="hb-meter"><span style="width:{% if card.average is not None %}{{ card.average|floatformat:0 }}{% else %}0{% endif %}%"></span></div>
+    <p class="hb-blurb">
+      {% if card.key == 'drought' %}SPI-3, SPI-12, soil moisture and the current dry spell.
+      {% elif card.key == 'flood' %}Forecast river discharge against its 60-day baseline, plus active flood events.
+      {% elif card.key == 'fire' %}Fire weather (VPD, wind, dry spell) coupled to drought and active fires.
+      {% else %}Aridity, rainfall trend, soil trend and forest-cover change.{% endif %}
+    </p>
+    <div class="hb-events">{{ card.events }} active {{ card.key }} event{{ card.events|pluralize }} in NASA EONET</div>
+    <ol class="hb-list">
+      {% for row in card.rows %}
+      <li><a href="/country/{{ row.iso2 }}/"><span>{{ row.iso2 }}</span><span class="hb-bar"><i style="width:{{ row.pressure|floatformat:0 }}%"></i></span><strong>{{ row.pressure|floatformat:0 }}</strong></a></li>
+      {% empty %}
+      <li class="empty-inline">No country pressure cached.</li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endfor %}
+</div>
+
+<section class="events-board">
+  <div class="events-head"><div><h2>Active events</h2><p>NASA EONET open events, assigned to the nearest country centroid. This is a curated feed, not a complete disaster census.</p></div><span class="tiny">{{ events|length }} shown</span></div>
+  <div class="events-table">
+    {% for event in events %}
+    <div class="events-row">
+      <span class="event-dot event-{{ event.category }}"></span>
+      <span class="er-title">{{ event.title }}</span>
+      <span class="er-cat">{{ event.category }}</span>
+      <span class="er-country">{{ event.country_iso2|default:"—" }}</span>
+      <span class="er-date">{{ event.event_date|date:"M d, Y" }}</span>
+      {% if event.source_url %}<a class="er-link" href="{{ event.source_url }}" target="_blank" rel="noopener">Source</a>{% endif %}
+    </div>
+    {% empty %}
+    <p class="empty-inline">No active events cached.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="hazards-note">
+  <strong>How to read this.</strong>
+  Pressure is a screening signal built from live public data. Flood is GloFAS river discharge, not a local flood warning.
+  Fire is fire weather, not an ignition forecast. Drought is an empirical percentile against the baseline, not an official drought
+  declaration. Desertification is a pressure index, not a land-cover map. Every country page exposes the formula, inputs and source.
+</section>
+{% endblock %}

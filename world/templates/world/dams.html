@@ -1,0 +1,116 @@
+{% extends "world/base.html" %}
+{% load static humanize world_format %}
+{% block title %}Dams · AquaState{% endblock %}
+{% block body_class %}world-body atlas-body{% endblock %}
+{% block status_line %}{{ atlas_total|intcomma }} catalogued · {{ atlas_monitored }} monitored · {{ atlas_countries }} countries{% endblock %}
+{% block content %}
+<section class="atlas-head">
+  <div>
+    <p class="world-kicker" style="color:#1b6c80">The dam atlas</p>
+    <h1>Every dam is a line item.</h1>
+    <p class="atlas-lede">
+      A searchable catalogue of the global Wikidata dam corpus, linked to the countries and basins they serve.
+      Inventory rows are clearly separated from the {{ atlas_monitored }} dams with a live status.
+    </p>
+  </div>
+  <dl class="atlas-stats">
+    <div><dt>Catalogued</dt><dd>{{ atlas_total|intcomma }}</dd></div>
+    <div><dt>Monitored</dt><dd>{{ atlas_monitored }}</dd></div>
+    <div><dt>Countries</dt><dd>{{ atlas_countries }}</dd></div>
+    <div><dt>Source</dt><dd>Wikidata</dd></div>
+  </dl>
+</section>
+
+<section class="atlas-panel">
+  <div class="atlas-map-head">
+    <div><h2>Map the catalogue</h2><p>Pan or zoom to load dams in the current viewport. Markers are capped at 500 for speed.</p></div>
+    <span class="map-count" id="atlas-map-count">Loading…</span>
+  </div>
+  <div id="atlas-map" class="atlas-map" tabindex="0"
+       data-api-url="/api/dams/"
+       data-geo-url="{% static 'data/countries-world.geojson' %}"
+       aria-label="Map of catalogued dams. The table below is the keyboard-accessible list."></div>
+  <div class="atlas-legend">
+    <span><i class="swatch swatch-dam"></i>Monitored dam</span>
+    <span><i class="swatch swatch-inventory"></i>Inventory only</span>
+    <span>Click a marker to open the dam sheet.</span>
+  </div>
+</section>
+
+<form class="atlas-filters" method="get" action="/dams/" role="search">
+  <label class="filter-field">
+    <span>Search</span>
+    <input type="search" name="q" value="{{ query }}" placeholder="Name or country">
+  </label>
+  <label class="filter-field">
+    <span>Country</span>
+    <select name="country">
+      <option value="">All countries</option>
+      {% for option in country_options %}
+      <option value="{{ option.country_iso2 }}" {% if option.country_iso2 == country_code %}selected{% endif %}>{{ option.country_name|default:option.country_iso2 }} ({{ option.count }})</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label class="filter-check">
+    <input type="checkbox" name="monitored" value="1" {% if monitored %}checked{% endif %}>
+    <span>Monitored only</span>
+  </label>
+  <button class="btn-light" type="submit">Apply filters</button>
+  <a class="text-link" href="/dams/">Reset</a>
+</form>
+
+<section class="atlas-panel">
+  <div class="atlas-table-head">
+    <div>
+      <h2>{% if query %}Results for “{{ query }}”{% else %}The catalogue{% endif %}</h2>
+      <p>{{ total|intcomma }} dam{{ total|pluralize }} · page {{ page }} of {{ pages }}</p>
+    </div>
+    <span class="tiny">Source: Wikidata full corpus + curated public inventories</span>
+  </div>
+  {% if rows %}
+  <div class="table-wrap-light">
+    <table class="light-table atlas-table">
+      <thead>
+        <tr><th>Dam</th><th>Country</th><th class="num">Capacity / power</th><th class="num">Height</th><th class="num">Year</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        {% for dam in rows %}
+        <tr>
+          <td>
+            <a class="dam-name" href="/dam/{% if dam.pilot_slug %}{{ dam.pilot_slug }}{% else %}{{ dam.wikidata_id }}{% endif %}/">{{ dam.name }}</a>
+            <span class="row-sub">{{ dam.wikidata_id }}</span>
+          </td>
+          <td>{{ dam.country_name|default:dam.country_iso2|default:"—" }}</td>
+          <td class="num">{% if dam.capacity_m3 %}{{ dam.capacity_m3|volume_mm3 }}{% elif dam.installed_mw %}{{ dam.installed_mw|installed_mw }}{% else %}—{% endif %}</td>
+          <td class="num">{% if dam.height_m %}{{ dam.height_m|height_m }}{% else %}—{% endif %}</td>
+          <td class="num">{{ dam.year_built|default:"—" }}</td>
+          <td>{% if dam.is_monitored %}<span class="pill-live">Monitored</span>{% else %}<span class="pill-ref">Inventory</span>{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <nav class="pagination" aria-label="Atlas pages">
+    {% if page > 1 %}
+    <a class="btn-light ghost" href="?page={{ page|add:-1 }}{% if query %}&q={{ query }}{% endif %}{% if country_code %}&country={{ country_code }}{% endif %}{% if monitored %}&monitored=1{% endif %}">← Previous</a>
+    {% endif %}
+    <span>Page {{ page }} / {{ pages }}</span>
+    {% if page < pages %}
+    <a class="btn-light ghost" href="?page={{ page|add:1 }}{% if query %}&q={{ query }}{% endif %}{% if country_code %}&country={{ country_code }}{% endif %}{% if monitored %}&monitored=1{% endif %}">Next →</a>
+    {% endif %}
+  </nav>
+  {% else %}
+  <p class="empty-light">No dams match those filters.</p>
+  {% endif %}
+  <p class="atlas-note">
+    Coverage is honest: the atlas is built from the full Wikidata dam corpus with coordinates — 91,568 coordinate
+    statements collapsing to {{ atlas_total|intcomma }} unique dam items — supplemented by curated public inventories.
+    English labels are available for most rows; a minority fall back to their Wikidata ID. Capacity or power is available
+    for a smaller notable subset. It is a catalogue, not an operational inventory or a guarantee that every small structure
+    on Earth is present. Monitored dams have a modelled/live status.
+  </p>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'world/js/atlas-map.js' %}"></script>
+{% endblock %}

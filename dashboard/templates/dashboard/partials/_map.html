@@ -1,0 +1,36 @@
+{% load static %}
+<div class="map-toolbar">
+  <div class="layer-toggles" role="group" aria-label="Map layers">
+    <label class="toggle"><input type="checkbox" data-layer="basins" checked> Basins</label>
+    <label class="toggle"><input type="checkbox" data-layer="countries" checked> Countries</label>
+    <label class="toggle"><input type="checkbox" data-layer="dams" checked> Dams</label>
+    <label class="toggle"><input type="checkbox" data-layer="labels" checked> Labels</label>
+  </div>
+  <div class="map-hint">Select a dam to inspect its bridge</div>
+</div>
+<div
+  id="map"
+  class="map"
+  data-map-url="{% url 'core_api:dam_map' selected_dam.slug %}"
+  data-static-dams="{% static 'data/dams.geojson' %}"
+  data-focus="{{ selected_dam.slug }}"
+  data-country="{{ country.iso3 }}"
+  data-panel-url="/dashboard/partials/panel/"
+>
+  <div class="map-fallback" id="map-fallback" role="img" aria-label="Fallback locator map of pilot dams">
+    <svg viewBox="0 0 100 70" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path d="M8 8 L46 4 L49 34 L31 49 L8 42 Z" class="fallback-country" />
+      <path d="M55 4 L94 8 L92 30 L72 30 L66 16 Z" class="fallback-country" />
+      {% for dam in map_dams %}
+        <circle cx="{{ dam.x }}" cy="{{ dam.y|add:'-1' }}" r="1.15" class="fallback-dot fallback-dot--{{ dam.country|lower }}" />
+      {% endfor %}
+    </svg>
+    <p>Local locator view. MapLibre will replace this when the map loads.</p>
+  </div>
+</div>
+<div class="map-legend" aria-label="Map legend">
+  <span><i class="legend-dot legend-dot--critical"></i>Critical</span>
+  <span><i class="legend-dot legend-dot--recharging"></i>Recharging</span>
+  <span><i class="legend-dot legend-dot--nodata"></i>No data</span>
+  <span class="map-legend__source">Approximate pilot geometry · seeded</span>
+</div>

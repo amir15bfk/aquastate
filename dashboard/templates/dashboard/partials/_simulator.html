@@ -1,0 +1,53 @@
+{% load hydro_format %}
+<section class="block" id="simulator" {% if oob %}hx-swap-oob="true"{% endif %}>
+  <div class="block__head">
+    <h3>Scenario simulator</h3>
+    <span class="block__meta">{% if is_scenario %}<span class="simulated-tag">simulated view</span> {% endif %}Observed values are never replaced</span>
+  </div>
+  <p class="block__note">Observed state: <strong>{{ observed_state.hri|floatformat:1 }}</strong> ({{ observed_state.status }}). Change a control; the panel updates on release.</p>
+  <form
+    id="simulator-form"
+    class="simulator"
+    hx-post="{% url 'dashboard:scenario_partial' selected_dam.slug %}"
+    hx-target="#scenario-response"
+    hx-swap="innerHTML"
+    hx-sync="this:replace"
+    hx-trigger="change delay:250ms, submit"
+    x-data='{rain: {% if "rain_multiplier" in overrides %}{{ overrides.rain_multiplier }}{% else %}1{% endif %}, demand: {% if "demand_multiplier" in overrides %}{{ overrides.demand_multiplier }}{% else %}1{% endif %}, soilOn: {% if "soil_saturation" in overrides %}true{% else %}false{% endif %}, stormOn: {% if "storm_arrival_day" in overrides %}true{% else %}false{% endif %}}'
+  >
+    {% csrf_token %}
+    <div class="simulator__grid">
+      <label class="slider">
+        <span class="slider__head"><span>Rain multiplier</span><output x-text="Number(rain).toFixed(1)">1.0</output></span>
+        <input type="range" name="rain_multiplier" min="0" max="3" step="0.1" value="{% if 'rain_multiplier' in overrides %}{{ overrides.rain_multiplier }}{% else %}1{% endif %}" x-model="rain">
+      </label>
+      <label class="slider">
+        <span class="slider__head"><span>Demand multiplier</span><output x-text="Number(demand).toFixed(1)">1.0</output></span>
+        <input type="range" name="demand_multiplier" min="0.5" max="2" step="0.1" value="{% if 'demand_multiplier' in overrides %}{{ overrides.demand_multiplier }}{% else %}1{% endif %}" x-model="demand">
+      </label>
+      <label class="slider slider--toggle">
+        <span class="slider__head">
+          <span><input type="checkbox" x-model="soilOn"> Override soil saturation</span>
+          <output x-text="soilOn ? 'on' : 'off'">off</output>
+        </span>
+        <input type="range" name="soil_saturation" min="0" max="1" step="0.05" value="{% if 'soil_saturation' in overrides %}{{ overrides.soil_saturation }}{% else %}0.85{% endif %}" x-bind:disabled="!soilOn" aria-label="Soil saturation override">
+      </label>
+      <label class="slider slider--toggle">
+        <span class="slider__head">
+          <span><input type="checkbox" x-model="stormOn"> Shift storm arrival</span>
+          <output x-text="stormOn ? 'day ' + (storm || 4) : 'off'">off</output>
+        </span>
+        <input type="range" name="storm_arrival_day" min="1" max="14" step="1" value="{% if 'storm_arrival_day' in overrides %}{{ overrides.storm_arrival_day }}{% else %}4{% endif %}" x-model="storm" x-bind:disabled="!stormOn" aria-label="Storm arrival day">
+      </label>
+    </div>
+    <div class="simulator__actions">
+      <button class="button button--primary" type="submit">Apply scenario</button>
+      <button class="button" type="button"
+              hx-get="{% url 'dashboard:panel_partial' selected_dam.slug %}"
+              hx-target="#panel-shell"
+              hx-swap="innerHTML">Reset to observed</button>
+      <span class="simulator__hint">Rain 0 → dry control; rain 2 → wet scenario.</span>
+    </div>
+  </form>
+  <div id="scenario-response" class="scenario-response" role="status" aria-live="polite"></div>
+</section>

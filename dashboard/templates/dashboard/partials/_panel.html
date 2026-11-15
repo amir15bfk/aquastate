@@ -1,0 +1,24 @@
+{% load hydro_format %}
+<div id="panel" class="panel" data-hri="{{ state.hri }}" data-status="{{ state.status }}" data-dam="{{ selected_dam.slug }}" data-scenario="{{ is_scenario|yesno:'true,false' }}">
+  <div class="panel__scroll">
+    {% include "dashboard/partials/_scenario_banner.html" %}
+    {% include "dashboard/partials/_hero.html" %}
+    {% include "dashboard/partials/_bridge.html" %}
+    {% include "dashboard/partials/_waterfall.html" %}
+    {% include "dashboard/partials/_subindices.html" %}
+    {% include "dashboard/partials/_simulator.html" %}
+    {% include "dashboard/partials/_analogs.html" %}
+
+    <details class="proof-block">
+      <summary>Audit trail</summary>
+      <ol class="proof">
+        {% for step in state.proof_steps %}<li>{{ step }}</li>{% endfor %}
+      </ol>
+    </details>
+
+    <footer class="panel__footer">
+      <span>{{ state.disclaimer }}</span>
+      <span class="mono">{{ state.data_mode }} · {{ state.provider }}</span>
+    </footer>
+  </div>
+</div>

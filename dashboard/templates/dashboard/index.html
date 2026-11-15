@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="app-shell" data-country="{{ country.iso3|default:'' }}" data-dam="{{ selected_dam.slug|default:'' }}">
+  {% include "dashboard/partials/_header.html" %}
+  {% if empty %}
+    {% if error %}
+      {% include "dashboard/partials/_error.html" with message=error %}
+    {% else %}
+      {% include "dashboard/partials/_empty.html" %}
+    {% endif %}
+  {% else %}
+    <main class="workspace">
+      <section class="map-pane" aria-label="Pilot dam map">
+        {% include "dashboard/partials/_map.html" %}
+      </section>
+      <aside class="panel-pane" id="panel-shell" aria-label="Explainability panel">
+        {% include "dashboard/partials/_panel.html" %}
+      </aside>
+    </main>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% include "dashboard/partials/_scenario_banner.html" with oob=True %}
+{% include "dashboard/partials/_hero.html" with oob=True %}
+{% include "dashboard/partials/_bridge.html" with oob=True %}
+{% include "dashboard/partials/_waterfall.html" with oob=True %}
+{% include "dashboard/partials/_subindices.html" with oob=True %}
+{% include "dashboard/partials/_simulator.html" with oob=True %}
+{% include "dashboard/partials/_analogs.html" with oob=True %}
+<p class="scenario-status">
+  {% if is_scenario %}
+    Scenario applied: {{ state.hri|floatformat:1 }} ({{ state.status }}) vs observed {{ observed_state.hri|floatformat:1 }}.
+  {% else %}
+    No scenario overrides; the observed state is shown.
+  {% endif %}
+</p>

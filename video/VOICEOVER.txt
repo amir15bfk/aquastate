@@ -1,0 +1,18 @@
+AquaState — 30s film voiceover
+Voice: edge-tts en-US-AndrewNeural · rate +10% · pitch -2Hz
+Narration length: 29.81 s (75 words)
+
+00.09  Water shaped the world.
+01.49  Every civilization grew along a river.
+03.73  A changing climate is rewriting the map.
+06.15  Some farmers find no water.
+08.61  Elsewhere, floods take the harvest, and the city.
+11.44  AquaState turns NASA's Earth data into one Water-Climate Resilience Index.
+16.10  249 countries. Four live pressures. 82,394 dams.
+21.85  Your country. Your number.
+23.51  One screen answers: are we covered until the next rain?
+26.42  AquaState. Water is the secret of life. This is its ledger.
+
+Word count: 75.
+Tone: calm, documentary, no hard sell. The last line is the tagline and
+should land with a small pause after "AquaState."

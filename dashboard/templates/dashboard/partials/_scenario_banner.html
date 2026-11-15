@@ -1,0 +1,8 @@
+{% load hydro_format %}
+{% if is_scenario %}
+<div class="scenario-banner" id="scenario-banner" {% if oob %}hx-swap-oob="true"{% endif %} role="status">
+  <span class="scenario-banner__tag">SCENARIO</span>
+  <span>Simulated {{ state.hri|floatformat:1 }} · observed {{ observed_state.hri|floatformat:1 }} · delta {{ delta|signed_one }}</span>
+  <span class="scenario-banner__note">Simulated values never replace observed values. Reset restores the observed state.</span>
+</div>
+{% endif %}

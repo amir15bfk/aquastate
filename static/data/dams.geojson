@@ -1,0 +1,185 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.283,
+          36.552
+        ]
+      },
+      "properties": {
+        "slug": "beni-haroun",
+        "name": "Beni Haroun",
+        "country": "DZA",
+        "capacity_m3": 100000000.0,
+        "dam_type": "embankment",
+        "year_built": 2003
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.417,
+          36.65
+        ]
+      },
+      "properties": {
+        "slug": "keddara",
+        "name": "Keddara",
+        "country": "DZA",
+        "capacity_m3": 142500000.0,
+        "dam_type": "rockfill",
+        "year_built": 1987
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.15,
+          36.783
+        ]
+      },
+      "properties": {
+        "slug": "taksebt",
+        "name": "Taksebt",
+        "country": "DZA",
+        "capacity_m3": 175000000.0,
+        "dam_type": "rockfill",
+        "year_built": 2007
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.317,
+          35.35
+        ]
+      },
+      "properties": {
+        "slug": "bakhadda",
+        "name": "Bakhadda",
+        "country": "DZA",
+        "capacity_m3": 45000000.0,
+        "dam_type": "earthfill",
+        "year_built": 1986
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.533,
+          35.55
+        ]
+      },
+      "properties": {
+        "slug": "oued-el-tlelat-tafraoui",
+        "name": "Oued El Tlelat / Tafraoui",
+        "country": "DZA",
+        "capacity_m3": 41000000.0,
+        "dam_type": "earthfill",
+        "year_built": 1988
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          0.55,
+          33.1
+        ]
+      },
+      "properties": {
+        "slug": "brezina",
+        "name": "Brezina",
+        "country": "DZA",
+        "capacity_m3": 125000000.0,
+        "dam_type": "earthfill",
+        "year_built": 1996
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.183,
+          36.733
+        ]
+      },
+      "properties": {
+        "slug": "sidi-salem",
+        "name": "Sidi Salem",
+        "country": "TUN",
+        "capacity_m3": 555000000.0,
+        "dam_type": "earthfill",
+        "year_built": 1981
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.233,
+          37.05
+        ]
+      },
+      "properties": {
+        "slug": "sejnane",
+        "name": "Sejnane",
+        "country": "TUN",
+        "capacity_m3": 70000000.0,
+        "dam_type": "earthfill",
+        "year_built": 2001
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.433,
+          36.6
+        ]
+      },
+      "properties": {
+        "slug": "bou-heurtma",
+        "name": "Bou Heurtma",
+        "country": "TUN",
+        "capacity_m3": 117000000.0,
+        "dam_type": "earthfill",
+        "year_built": 1977
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.85,
+          35.75
+        ]
+      },
+      "properties": {
+        "slug": "nebhana",
+        "name": "Nebhana",
+        "country": "TUN",
+        "capacity_m3": 78000000.0,
+        "dam_type": "earthfill",
+        "year_built": 1965
+      }
+    }
+  ]
+}

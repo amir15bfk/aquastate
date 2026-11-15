@@ -1,0 +1,24 @@
+{% load hydro_format %}
+<section class="block" id="analogs" {% if oob %}hx-swap-oob="true"{% endif %}>
+  <div class="block__head">
+    <h3>Historical analogs</h3>
+    <span class="block__meta">{% if is_scenario %}<span class="simulated-tag">simulated features</span> {% endif %}Nearest weeks within ±4 of week {{ state.week }}</span>
+  </div>
+  {% if state.analogs %}
+    <div class="analogs">
+      {% for analog in state.analogs %}
+        <div class="analog">
+          <div class="analog__year">{{ analog.year }}</div>
+          <div class="analog__meta">week {{ analog.week }} · similarity {{ analog.similarity|floatformat:2 }}</div>
+          <svg class="analog__spark" data-sparkline="{{ analog.trajectory|join:',' }}" viewBox="0 0 120 28" role="img" aria-label="90-day fill trajectory"></svg>
+          <div class="analog__delta {% if analog.delta_fill_pct < 0 %}is-negative{% else %}is-positive{% endif %}">
+            {{ analog.delta_fill_pct|signed_one }} pp over 90 d
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <p class="block__note">{{ state.analogs.0.disclaimer }}</p>
+  {% else %}
+    <p class="block__note">No analog with a complete 90-day forward window is available yet.</p>
+  {% endif %}
+</section>

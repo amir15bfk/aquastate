@@ -1,0 +1,32 @@
+{% load hydro_format %}
+<section class="block" id="subindices" {% if oob %}hx-swap-oob="true"{% endif %}>
+  <div class="block__head">
+    <h3>Sub-index stack</h3>
+    <span class="block__meta">{% if is_scenario %}<span class="simulated-tag">simulated</span> {% endif %}Five calculators · SAI is visible but not scored for pilot basins</span>
+  </div>
+  <div class="subindices">
+    {% for key, sub in state.sub_indices.items %}
+      <details class="subindex {% if not sub.available %}is-unavailable{% endif %}" {% if key == "SAI" %}open{% endif %}>
+        <summary>
+          <span class="subindex__name">{{ key }}</span>
+          <span class="subindex__score">
+            {% if sub.available %}{{ sub.score|floatformat:1 }}{% else %}NO_DATA{% endif %}
+          </span>
+          <span class="subindex__confidence">conf {{ sub.confidence|floatformat:2 }}</span>
+        </summary>
+        <div class="subindex__body">
+          <p>{{ sub.explanation }}</p>
+          {% if key == "SAI" and not sub.available %}
+            <p class="diagnostic">Regional GRACE percentile {{ sub.components.regional_percentile|floatformat:1 }}
+              · depletion slope {{ sub.components.slope_mm_yr|floatformat:2 }} mm/yr
+              <span class="diagnostic__tag">display-only diagnostic</span>
+            </p>
+          {% endif %}
+          <ul class="proof">
+            {% for step in sub.proof_steps %}<li>{{ step }}</li>{% endfor %}
+          </ul>
+        </div>
+      </details>
+    {% endfor %}
+  </div>
+</section>

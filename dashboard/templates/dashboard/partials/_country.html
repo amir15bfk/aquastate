@@ -1,0 +1,18 @@
+{% load hydro_format %}
+<div class="country-panel">
+  <div class="chip-row">
+    {% for item in countries %}
+      <a class="chip {% if item.iso3 == country.iso3 %}is-active{% endif %}" href="?country={{ item.iso3 }}">{{ item.iso3 }}</a>
+    {% endfor %}
+  </div>
+  <ul class="dam-list">
+    {% for dam in dams %}
+      <li>
+        <a class="dam-list__item" href="?country={{ country.iso3 }}&dam={{ dam.slug }}">
+          <span class="dam-list__name">{{ dam.name }}</span>
+          <span class="dam-list__meta">{{ dam.basin.area_km2|floatformat:0 }} km²</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

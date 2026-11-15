@@ -1,0 +1,100 @@
+{% extends "hydro/base.html" %}
+{% block title %}Sources and lineage · AquaState{% endblock %}
+{% block sheet %}
+<article class="doc">
+  <p class="breadcrumb">Reference / Sources</p>
+  <h1>Sources and lineage</h1>
+  <p class="doc-lead">
+    The dashboard separates live measurements, operational forecasts, reference inventories, modeled reconstruction and
+    synthetic fallback. The source ledger is shown with every snapshot so a reader can see what is carrying the number.
+  </p>
+
+  <div class="doc-note">
+    <strong>No source is dressed up as another.</strong> NASA POWER and Open-Meteo are live/keyless public services. Public
+    dam tables supply names, locations and screening capacities. Current storage and the ten-year history are modeled
+    from rainfall, allocated demand and evaporation. A fallback is labeled as fallback.
+  </div>
+
+  <h2>Current source ledger · {{ country.name|default:"Algeria" }}</h2>
+  {% if sources %}
+  <table class="doc-table doc-sources">
+    <thead>
+      <tr><th scope="col">Source</th><th scope="col">Use</th><th scope="col">Kind</th><th scope="col">Freshness</th></tr>
+    </thead>
+    <tbody>
+      {% for source in sources %}
+      <tr>
+        <td>
+          <span class="source-name">{{ source.name }}</span>
+          <span class="row-sub">
+            {% if "http" in source.url %}<a href="{{ source.url }}" target="_blank" rel="noopener">Open source</a>{% else %}<a href="{{ source.url }}">Read method</a>{% endif %}
+          </span>
+        </td>
+        <td>{{ source.what }}</td>
+        <td><span class="source-kind">{{ source.kind }}</span></td>
+        <td class="mono">
+          {% if source.fetched_at %}{{ source.fetched_at|slice:":16"|cut:"T" }} UTC{% else %}static{% endif %}
+          <span class="row-sub">{{ source.source }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <strong>The ledger has not been built yet.</strong>
+    <p>Run <code>python manage.py seed_demo</code> to create the Algeria and Tunisia profiles.</p>
+  </div>
+  {% endif %}
+
+  <h2>What each kind means</h2>
+  <table class="doc-table">
+    <thead><tr><th scope="col">Kind</th><th scope="col">Meaning</th><th scope="col">Effect on confidence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Live</strong></td><td>Fetched from a public API and stored with a timestamp.</td><td>High (0.90–0.95)</td></tr>
+      <tr><td><strong>Cached</strong></td><td>A recent live value kept in the local database inside the cache window.</td><td>High (0.85)</td></tr>
+      <tr><td><strong>Reference</strong></td><td>A public inventory or report value, not a real-time measurement.</td><td>Medium (0.68–0.72)</td></tr>
+      <tr><td><strong>Modeled</strong></td><td>Reconstructed from measured rainfall/ET0 plus a documented balance.</td><td>Medium (0.65–0.75)</td></tr>
+      <tr><td><strong>Proxy</strong></td><td>A labeled stand-in when a direct measurement is unavailable.</td><td>Low–medium (0.42)</td></tr>
+      <tr><td><strong>Fallback</strong></td><td>A deterministic local generator used when the public API fails.</td><td>Low (0.20–0.35)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Open data and services used</h2>
+  <ul>
+    <li><strong>NASA POWER / MERRA-2</strong>: daily precipitation (<code>PRECTOTCORR</code>) and surface/root-zone soil wetness (<code>GWETTOP</code>, <code>GWETROOT</code>) for the prior ten years. <a href="https://power.larc.nasa.gov/" target="_blank" rel="noopener">power.larc.nasa.gov</a></li>
+    <li><strong>Open-Meteo</strong>: 16-day precipitation, ET0 and maximum-temperature forecast for the country centroid and reservoir coordinates. <a href="https://open-meteo.com/" target="_blank" rel="noopener">open-meteo.com</a></li>
+    <li><strong>Natural Earth 1:110m</strong>: country outline for the map and the offline fallback. Public domain. <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">naturalearthdata.com</a></li>
+    <li><strong>OpenStreetMap / Overpass</strong>: optional community reservoir inventory for countries without a curated list. <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">openstreetmap.org</a></li>
+    <li><strong>Public dam and aquifer tables</strong>: screening capacities and aquifer context for Algeria and Tunisia; details are shown per row and in the audit JSON.</li>
+  </ul>
+
+  <h2>Inspect the data directly</h2>
+  <table class="doc-table">
+    <thead><tr><th scope="col">Endpoint</th><th scope="col">What it returns</th></tr></thead>
+    <tbody>
+      <tr><td><a href="/api/country/DZ/">/api/country/DZ/</a></td><td>The full dashboard payload: index, pillars, horizon simulation, reservoirs, aquifers and series.</td></tr>
+      <tr><td><a href="/api/country/DZ/audit/">/api/country/DZ/audit/</a></td><td>Formulas, substitutions, inputs, source ledger, horizon gate, AI trace and the latest stored snapshot.</td></tr>
+      <tr><td><a href="/api/country/DZ/?rain=dry&amp;demand=1.3">/api/country/DZ/?rain=dry&amp;demand=1.3</a></td><td>The same payload under a stressed scenario. Scenario results are not persisted.</td></tr>
+      <tr><td><a href="/api/ai/slots/">/api/ai/slots/</a></td><td>Reserved agent slots, their contracts, and the current policy (AI off).</td></tr>
+      <tr><td><a href="/health/">/health/</a></td><td>Runtime status, index version and database counts.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Data honesty rules</h2>
+  <ol>
+    <li>A value is marked live only when the API call succeeded and the fetch timestamp is stored.</li>
+    <li>Reservoir storage is never called telemetry. It is modeled/blended and says so in the ledger and audit.</li>
+    <li>No mapped aquifer means a root-zone proxy, not a hidden zero.</li>
+    <li>No forecast means neutral 50 with low confidence, not an invented drought.</li>
+    <li>No reservoir inventory means a visible national reference pool, not invented dam names.</li>
+    <li>A what-if rainfall event is labeled as a simulation everywhere it appears.</li>
+  </ol>
+
+  <div class="doc-actions">
+    <a class="btn btn-primary" href="/methodology/">Read the index mathematics</a>
+    <a class="btn btn-quiet" href="/api/country/{{ country.iso2|default:'DZ' }}/audit/" target="_blank" rel="noopener">Open the audit JSON</a>
+    <a class="btn btn-quiet" href="/water/{{ country.iso2|default:'DZ' }}/">Back to the dashboard</a>
+  </div>
+</article>
+{% endblock %}

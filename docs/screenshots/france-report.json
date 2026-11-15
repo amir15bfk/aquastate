@@ -1,0 +1,1780 @@
+{
+ "url": "http://127.0.0.1:8011/country/FR/",
+ "at": "2026-11-13T21:06:41.763Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.83,
+    0.85,
+    0.85,
+    0.85
+   ],
+   "motion": {
+    "elements": 26,
+    "css": 5,
+    "transitions": 0,
+    "scripted": 21,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 3087,
+     "screens": 3.4,
+     "words": 1071,
+     "img": 0,
+     "video": 0,
+     "canvas": 3,
+     "svg": 7,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "France water state",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 22,
+     "vw": 1.5,
+     "font": "IBM Plex Sans",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 96,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "France water state",
+     "words": 3,
+     "lines": 1,
+     "size": 22,
+     "font": "IBM Plex Sans"
+    },
+    "headings": [
+     {
+      "text": "OK until rain",
+      "words": 3,
+      "chars": 13,
+      "lines": 1,
+      "size": 34,
+      "vw": 2.4,
+      "font": "IBM Plex Sans",
+      "weight": 600,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.25,
+      "top": 318,
+      "tag": "p",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "IBM Plex Sans",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "IBM Plex Mono",
+       "share": 0.1,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      21,
+      22,
+      34
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "IBM Plex Sans",
+      "size": 13,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.6
+     },
+     "measureChars": 52,
+     "max": {
+      "size": 34,
+      "vw": 2.4,
+      "font": "IBM Plex Sans",
+      "text": "OK until rain"
+     },
+     "monoShare": 0.1,
+     "monoProseShare": 0.1,
+     "monoFamilies": [
+      "IBM Plex Mono"
+     ],
+     "monoSamples": [
+      "WRI-1.0",
+      "1.0×",
+      "+",
+      "−",
+      "35.0%",
+      "51 d"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.02,
+     "smallText": 46
+    },
+    "eyebrows": [
+     {
+      "text": "Forecast",
+      "above": "OK until rain",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 292
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f5f2",
+     "bodyBgHsl": {
+      "h": 120,
+      "s": 0.13,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f5f2",
+       "top": 0,
+       "hsl": {
+        "h": 120,
+        "s": 0.13,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 48,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#53605c",
+       "share": 0.39
+      },
+      {
+       "color": "#5f6a66",
+       "share": 0.33
+      },
+      {
+       "color": "#14201d",
+       "share": 0.2
+      },
+      {
+       "color": "#0d4553",
+       "share": 0.06
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#14201d",
+      "hsl": {
+       "h": 165,
+       "s": 0.23,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 6,
+     "radius": 6,
+     "height": 30,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to the water state",
+      "Water state",
+      "Refresh live data",
+      "Forecast",
+      "Dry spell"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 32,
+     "hairlineSamples": [
+      "aside.sidebar 228px",
+      "div.table-wrap 692px",
+      "section.panel.verdict-panel 400px",
+      "div.index-strip 362px",
+      "div.pillar-list 362px"
+     ],
+     "outlinedBoxes": 9,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 12,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 3,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 273
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.26
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.26
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.26
+     }
+    ],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "ibm plex sans",
+     "ibm plex mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 3087,
+    "margins": {
+     "left": 54,
+     "right": 52
+    },
+    "sections": [],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "France water state",
+      "size": 22,
+      "top": 96,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 1026,
+      "n": 5
+     },
+     {
+      "x": 272,
+      "n": 2
+     },
+     {
+      "x": 253,
+      "n": 1
+     },
+     {
+      "x": 324,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.07,
+    "voidBox": {
+     "x": 0,
+     "y": 240,
+     "w": 180,
+     "h": 480
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f2f5f2",
+    "sidebar": {
+     "w": 228,
+     "tag": "aside",
+     "links": 4,
+     "share": 0.16
+    },
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 36,
+     "right": 52
+    },
+    "hero": {
+     "text": "France water state",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 22,
+     "vw": 1.5,
+     "font": "IBM Plex Sans",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 96,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 5,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 17,
+     "radii": [
+      [
+       8,
+       7
+      ],
+      [
+       0,
+       5
+      ],
+      [
+       6,
+       4
+      ],
+      [
+       16,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#1b6c80 on #ffffff (5.99:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 8,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": {
+     "count": 12,
+     "median": 27
+    },
+    "chartHues": 3,
+    "placeholders": [],
+    "type": {
+     "under13": 0.25,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      21,
+      22,
+      34
+     ]
+    },
+    "title": {
+     "text": "France water state",
+     "size": 22,
+     "top": 96
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.96,
+    0.99,
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 23,
+    "css": 1,
+    "transitions": 0,
+    "scripted": 22,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 3583,
+     "screens": 3.5,
+     "words": 1051,
+     "img": 0,
+     "video": 0,
+     "canvas": 3,
+     "svg": 7,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "France water state",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 22,
+     "vw": 2.9,
+     "font": "IBM Plex Sans",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 149,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "France water state",
+     "words": 3,
+     "lines": 1,
+     "size": 22,
+     "font": "IBM Plex Sans"
+    },
+    "headings": [
+     {
+      "text": "OK until rain",
+      "words": 3,
+      "chars": 13,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "IBM Plex Sans",
+      "weight": 600,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 1306,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "IBM Plex Sans",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "IBM Plex Mono",
+       "share": 0.1,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      21,
+      22,
+      30
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "IBM Plex Sans",
+      "size": 13,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.6
+     },
+     "measureChars": 95,
+     "max": {
+      "size": 30,
+      "vw": 3.9,
+      "font": "IBM Plex Sans",
+      "text": "OK until rain"
+     },
+     "monoShare": 0.1,
+     "monoProseShare": 0.1,
+     "monoFamilies": [
+      "IBM Plex Mono"
+     ],
+     "monoSamples": [
+      "1.0×",
+      "+",
+      "−",
+      "35.0%",
+      "51 d",
+      "2.4 mm"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.02,
+     "smallText": 42
+    },
+    "eyebrows": [
+     {
+      "text": "Forecast",
+      "above": "OK until rain",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1280
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f5f2",
+     "bodyBgHsl": {
+      "h": 120,
+      "s": 0.13,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f5f2",
+       "top": 0,
+       "hsl": {
+        "h": 120,
+        "s": 0.13,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 101,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#e7eef0",
+       "top": 459,
+       "hsl": {
+        "h": 193,
+        "s": 0.23,
+        "l": 0.92
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#53605c",
+       "share": 0.39
+      },
+      {
+       "color": "#5f6a66",
+       "share": 0.33
+      },
+      {
+       "color": "#14201d",
+       "share": 0.2
+      },
+      {
+       "color": "#0d4553",
+       "share": 0.06
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#14201d",
+      "hsl": {
+       "h": 165,
+       "s": 0.23,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 6,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to the water state",
+      "Water state",
+      "Refresh live data",
+      "Forecast",
+      "Dry spell"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 36,
+     "hairlineSamples": [
+      "aside.sidebar 768px",
+      "div.table-wrap 664px",
+      "section.panel.verdict-panel 702px",
+      "div.index-strip 664px",
+      "div.index-stat 332px"
+     ],
+     "outlinedBoxes": 10,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 13,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 3,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.45
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.45
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.45
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": false,
+     "height": 32,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "ibm plex sans",
+     "ibm plex mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 3583,
+    "margins": {
+     "left": 44,
+     "right": 52
+    },
+    "sections": [
+     {
+      "sel": "div.page-head",
+      "tag": "div",
+      "top": 126,
+      "height": 136,
+      "words": 55,
+      "media": 0,
+      "middle": 46,
+      "heading": {
+       "text": "France",
+       "size": 22,
+       "tag": "h1"
+      },
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.map-column",
+      "tag": "section",
+      "top": 384,
+      "height": 858,
+      "words": 94,
+      "media": 3,
+      "middle": 0,
+      "heading": {
+       "text": "Water system",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 52,
+      "right": 52,
+      "textLeft": 52,
+      "textRight": 52,
+      "fullBleed": true,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.verdict-panel",
+      "tag": "section",
+      "top": 1261,
+      "height": 688,
+      "words": 140,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "OK until rain",
+       "size": 30,
+       "tag": "p"
+      },
+      "left": 52,
+      "right": 52,
+      "textLeft": 52,
+      "textRight": 52,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.pillars-panel",
+      "tag": "section",
+      "top": 1970,
+      "height": 643,
+      "words": 308,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "What builds the index",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 52,
+      "right": 52,
+      "textLeft": 52,
+      "textRight": 52,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.sources-panel",
+      "tag": "section",
+      "top": 3044,
+      "height": 507,
+      "words": 129,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Lineage",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 52,
+      "right": 52,
+      "textLeft": 52,
+      "textRight": 52,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "France water state",
+      "size": 22,
+      "top": 149,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 52,
+      "n": 6
+     },
+     {
+      "x": 33,
+      "n": 1
+     },
+     {
+      "x": 104,
+      "n": 1
+     },
+     {
+      "x": 413,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f2f5f2",
+    "sidebar": null,
+    "topbar": {
+     "h": 53
+    },
+    "canvas": {
+     "left": 33,
+     "right": -49
+    },
+    "hero": {
+     "text": "France water state",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 22,
+     "vw": 2.9,
+     "font": "IBM Plex Sans",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 149,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 5,
+    "layout": {
+     "panels": 0,
+     "firstScreen": 0,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 17,
+     "radii": [
+      [
+       8,
+       8
+      ],
+      [
+       6,
+       4
+      ],
+      [
+       0,
+       4
+      ],
+      [
+       12,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#1b6c80 on #ffffff (5.99:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 8,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": {
+     "count": 12,
+     "median": 27
+    },
+    "chartHues": 3,
+    "placeholders": [],
+    "type": {
+     "under13": 0.25,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      21,
+      22,
+      30
+     ]
+    },
+    "title": {
+     "text": "France water state",
+     "size": 22,
+     "top": 149
+    },
+    "colourShare": 0.002
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 5,
+   "filled": [
+    0.84,
+    0.99,
+    1,
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 26,
+    "css": 1,
+    "transitions": 0,
+    "scripted": 25,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 4220,
+     "screens": 5,
+     "words": 1013,
+     "img": 0,
+     "video": 0,
+     "canvas": 3,
+     "svg": 7,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "France water state",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 20,
+     "vw": 5.1,
+     "font": "IBM Plex Sans",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 215,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "France water state",
+     "words": 3,
+     "lines": 1,
+     "size": 20,
+     "font": "IBM Plex Sans"
+    },
+    "headings": [
+     {
+      "text": "+",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 22,
+      "vw": 5.6,
+      "font": "IBM Plex Mono",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.36,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.08,
+      "top": 568,
+      "tag": "a",
+      "kind": "heading"
+     },
+     {
+      "text": "−",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 22,
+      "vw": 5.6,
+      "font": "IBM Plex Mono",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.36,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "center",
+      "position": "left",
+      "widthRatio": 0.08,
+      "top": 598,
+      "tag": "a",
+      "kind": "heading"
+     },
+     {
+      "text": "OK until rain",
+      "words": 3,
+      "chars": 13,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "IBM Plex Sans",
+      "weight": 600,
+      "tracking": -0.03,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.84,
+      "top": 1403,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 3,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 2,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "IBM Plex Sans",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "IBM Plex Mono",
+       "share": 0.1,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      19,
+      20,
+      22,
+      28
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "IBM Plex Sans",
+      "size": 13,
+      "leading": 1.45,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 6.6
+     },
+     "measureChars": 47,
+     "max": {
+      "size": 28,
+      "vw": 7.2,
+      "font": "IBM Plex Sans",
+      "text": "OK until rain"
+     },
+     "monoShare": 0.1,
+     "monoProseShare": 0.1,
+     "monoFamilies": [
+      "IBM Plex Mono"
+     ],
+     "monoSamples": [
+      "1.0×",
+      "+",
+      "−",
+      "35.0%",
+      "51 d",
+      "2.4 mm"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.02,
+     "smallText": 43
+    },
+    "eyebrows": [
+     {
+      "text": "Forecast",
+      "above": "OK until rain",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1377
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f5f2",
+     "bodyBgHsl": {
+      "h": 120,
+      "s": 0.13,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f5f2",
+       "top": 0,
+       "hsl": {
+        "h": 120,
+        "s": 0.13,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 175,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#e7eef0",
+       "top": 555,
+       "hsl": {
+        "h": 193,
+        "s": 0.23,
+        "l": 0.92
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#53605c",
+       "share": 0.4
+      },
+      {
+       "color": "#5f6a66",
+       "share": 0.3
+      },
+      {
+       "color": "#14201d",
+       "share": 0.21
+      },
+      {
+       "color": "#0d4553",
+       "share": 0.07
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#14201d",
+      "hsl": {
+       "h": 165,
+       "s": 0.23,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 6,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Skip to the water state",
+      "Water state",
+      "Refresh live data",
+      "Forecast",
+      "Dry spell"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 32,
+     "hairlineSamples": [
+      "aside.sidebar 390px",
+      "main#sheet.sheet 390px",
+      "section.panel.verdict-panel 358px",
+      "div.index-strip 328px",
+      "div.pillar-list 328px"
+     ],
+     "outlinedBoxes": 9,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 12,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 3,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.38
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.38
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.38
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": false,
+     "height": 32,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "ibm plex sans",
+     "ibm plex mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 4220,
+    "margins": {
+     "left": 25,
+     "right": 31
+    },
+    "sections": [
+     {
+      "sel": "form#scenario-form.scenario-bar",
+      "tag": "form",
+      "top": 309,
+      "height": 144,
+      "words": 13,
+      "media": 0,
+      "middle": 3,
+      "heading": null,
+      "left": 25,
+      "right": 25,
+      "textLeft": 25,
+      "textRight": 25,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.map-column",
+      "tag": "section",
+      "top": 465,
+      "height": 875,
+      "words": 94,
+      "media": 3,
+      "middle": 0,
+      "heading": {
+       "text": "Water system",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": true,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.verdict-panel",
+      "tag": "section",
+      "top": 1360,
+      "height": 790,
+      "words": 140,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "OK until rain",
+       "size": 28,
+       "tag": "p"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.pillars-panel",
+      "tag": "section",
+      "top": 2170,
+      "height": 792,
+      "words": 286,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "What builds the index",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.trend-panel",
+      "tag": "section",
+      "top": 2982,
+      "height": 361,
+      "words": 51,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Storage trend",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.aquifer-panel",
+      "tag": "section",
+      "top": 3363,
+      "height": 145,
+      "words": 26,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Underground reserve",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.panel.sources-panel",
+      "tag": "section",
+      "top": 3528,
+      "height": 675,
+      "words": 129,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Lineage",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "France water state",
+      "size": 20,
+      "top": 215,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 31,
+      "n": 7
+     },
+     {
+      "x": 16,
+      "n": 1
+     },
+     {
+      "x": 81,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f2f5f2",
+    "sidebar": null,
+    "topbar": {
+     "h": 87
+    },
+    "canvas": {
+     "left": 16,
+     "right": -41
+    },
+    "hero": {
+     "text": "France water state",
+     "words": 3,
+     "chars": 18,
+     "lines": 1,
+     "size": 20,
+     "vw": 5.1,
+     "font": "IBM Plex Sans",
+     "weight": 400,
+     "tracking": -0.02,
+     "leading": 1.15,
+     "top": 215,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 5,
+    "layout": {
+     "panels": 8,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 15,
+     "radii": [
+      [
+       8,
+       8
+      ],
+      [
+       6,
+       4
+      ],
+      [
+       0,
+       3
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#1b6c80 on #ffffff (5.99:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 8,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": {
+     "count": 12,
+     "median": 27
+    },
+    "chartHues": 3,
+    "placeholders": [],
+    "type": {
+     "under13": 0.26,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      19,
+      20,
+      28
+     ]
+    },
+    "title": {
+     "text": "France water state",
+     "size": 20,
+     "top": 215
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-fr\\desktop-fold.jpg",
+   "pages": [
+    "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-fr\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-fr\\tablet-fold.jpg",
+   "pages": [
+    "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-fr\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-fr\\mobile-fold.jpg",
+   "pages": [
+    "F:\\amir\\nasa space app\\water app 2\\.taste-skill\\inspect-fr\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

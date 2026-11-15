@@ -1,0 +1,136 @@
+{% extends "world/base.html" %}
+{% load static %}
+{% block title %}Method · AquaState{% endblock %}
+{% block body_class %}world-body docs-body{% endblock %}
+{% block status_line %}WCRI-2.0 · WRI-2.0 · DRI-2.0{% endblock %}
+{% block content %}
+<section class="docs-head">
+  <p class="world-kicker" style="color:#1b6c80">Method</p>
+  <h1>The arithmetic behind the ledger.</h1>
+  <p class="docs-lede">Three scales, one deterministic core. Every number on the site carries its formula, inputs, source, confidence and contribution.</p>
+</section>
+<div class="docs-grid">
+  <nav class="docs-toc" aria-label="On this page">
+    <a href="#scales">Three scales</a>
+    <a href="#wcri">WCRI-2.0</a>
+    <a href="#aggregation">Aggregation</a>
+    <a href="#hazards">The four pressures</a>
+    <a href="#wri">WRI-2.0</a>
+    <a href="#dri">DRI-2.0</a>
+    <a href="#confidence">Confidence</a>
+    <a href="#limits">Limits</a>
+  </nav>
+  <article class="docs-article">
+    <section id="scales">
+      <h2>Three scales, one question</h2>
+      <p>AquaState answers “are we covered until the next rain?” at three resolutions. The scales are deliberately separate: a national score never silently rewrites a dam score, and a forecast never rewrites an observed score.</p>
+      <table class="docs-table">
+        <thead><tr><th>Scale</th><th>Index</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>World</td><td><strong>WCRI-2.0</strong></td><td>How resilient is this country’s water-climate system, and which pressure is driving it?</td></tr>
+          <tr><td>Country</td><td><strong>WRI-2.0</strong></td><td>Is stored water covered until the next rain, and what does the horizon say?</td></tr>
+          <tr><td>Dam</td><td><strong>DRI-2.0</strong></td><td>What is this reservoir’s hydrological resilience now, and what would the forecast change?</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="wcri">
+      <h2>WCRI-2.0 — the country index</h2>
+      <p>0–100, higher is better. Six pillars, each with a published formula and confidence. Weights are expert-judgment screening weights; they are visible and versioned.</p>
+      <table class="docs-table">
+        <thead><tr><th>Pillar</th><th class="num">Weight</th><th>Formula (plain language)</th></tr></thead>
+        <tbody>
+          <tr><td>Water availability</td><td class="num">0.22</td><td>0.55 × freshwater-per-capita score + 0.45 × aridity score. Per-capita is log-scaled between 500 m³ (0) and 10,000 m³ (100).</td></tr>
+          <tr><td>Drought &amp; soil</td><td class="num">0.20</td><td>0.40 × SPI-3 + 0.25 × SPI-12 + 0.20 × soil-moisture percentile + 0.15 × dry-spell score.</td></tr>
+          <tr><td>Groundwater</td><td class="num">0.14</td><td>0.60 × root-zone percentile + 0.40 × root-zone trend score. Labelled a proxy when no aquifer inventory exists.</td></tr>
+          <tr><td>Flood resilience</td><td class="num">0.14</td><td>100 − [0.75 × forecast-discharge pressure + 0.25 × active-event pressure].</td></tr>
+          <tr><td>Wildfire resilience</td><td class="num">0.14</td><td>100 − [0.65 × fire-weather pressure + 0.20 × drought coupling + 0.15 × active-fire pressure].</td></tr>
+          <tr><td>Desertification resilience</td><td class="num">0.16</td><td>100 − [0.40 × aridity + 0.30 × rainfall trend + 0.20 × soil trend + 0.10 × forest change].</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="aggregation">
+      <h2>Aggregation and the cascade</h2>
+      <pre class="formula">base = 0.22·W + 0.20·D + 0.14·G + 0.14·F + 0.14·R + 0.16·L
+
+penalty = 0.12·max(0, 30 − min(pillars))
+        + 0.05·max(0, 45 − D)·max(0, 45 − R)/45
+        + 0.05·max(0, 45 − D)·max(0, 45 − L)/45
+
+WCRI = clamp(base − penalty, 0, 100)</pre>
+      <p>The first penalty is a bottleneck guard (max 3.6 points). The other two are the explicit drought–fire and drought–desertification cascade terms (max 2.25 each). The score is never hidden behind a multiplier; the formula is printed on the country page.</p>
+      <p><strong>Bands:</strong> Resilient ≥70 · Stable 55–70 · Watch 40–55 · Stressed 25–40 · Critical &lt;25. A country with less than 40% of the index weight available is shown as <code>NO_DATA</code>, not given a false score.</p>
+    </section>
+
+    <section id="hazards">
+      <h2>The four pressures</h2>
+      <table class="docs-table">
+        <thead><tr><th>Pressure</th><th>What is measured</th><th>What it is not</th></tr></thead>
+        <tbody>
+          <tr><td>Drought / الجفاف</td><td>Empirical SPI-3 and SPI-12, soil-moisture percentile, days since >2 mm rain.</td><td>Not an official drought declaration.</td></tr>
+          <tr><td>Flood / الفيضان</td><td>GloFAS forecast peak discharge vs the same point’s 60-day baseline, plus active EONET floods.</td><td>Not a local flood warning or a hydraulic model.</td></tr>
+          <tr><td>Wildfire / حرائق الغابات</td><td>VPD, dry spell, wind and soil percentile, coupled to drought, plus active EONET fires.</td><td>Not an ignition forecast or a fuel model.</td></tr>
+          <tr><td>Desertification / التصحر</td><td>Aridity (P/PET), Sen rainfall trend, soil trend, forest-cover change.</td><td>Not a land-cover map or a soil-degradation survey.</td></tr>
+        </tbody>
+      </table>
+      <p>All four pressures are reported separately as 0–100 pressure (higher is worse) and inverted into the resilience pillars. This keeps the map readable: the index layer is green=resilient, the hazard layers are green=low pressure to red=extreme.</p>
+    </section>
+
+    <section id="wri">
+      <h2>WRI-2.0 — the water system</h2>
+      <p>The original water-state engine is preserved. It computes five pillars — storage buffer, soil moisture, underground reserve, forecast opportunity and storage trend — and a separate Smart Horizon verdict.</p>
+      <ul>
+        <li>Mid-rank empirical percentiles replace ad-hoc ranks; the current year is never in its own baseline.</li>
+        <li>SPI-3 and SPI-12 are added to the drought signal.</li>
+        <li>Weights are effective weights: nominal weight × confidence, renormalised over available pillars.</li>
+        <li>The Φ buffer bridge and the continuous low-storage guard come from the space app; there is no hard step at a threshold.</li>
+        <li>The score is the current-state score. “OK until rain” is a separate horizon verdict, not a rewritten index.</li>
+      </ul>
+      <pre class="formula">WRI = Σ wᵢ·Sᵢ − 0.15·max(0, 35 − min(Sᵢ))
+Φ    = rain_gate · σ((D_autonomy − D_until_rain)/7) · σ(ln((V_in14 + ε_V)/(14·Q_out + ε_V))/0.5)</pre>
+    </section>
+
+    <section id="dri">
+      <h2>DRI-2.0 — the dam deep index</h2>
+      <p>The space app’s signed HRI-1.0 mathematics is ported unchanged. It is the only index that uses reservoir bathymetry, basin climate windows and event-scale SCS-CN runoff.</p>
+      <table class="docs-table">
+        <thead><tr><th>Sub-index</th><th>What it reads</th><th>Nominal weight</th></tr></thead>
+        <tbody>
+          <tr><td>SSI</td><td>Surface storage: usable fill against the same-week baseline.</td><td>0.30</td></tr>
+          <tr><td>CMI</td><td>Catchment meteorology: 30/90-day rain and dry spell.</td><td>0.20</td></tr>
+          <tr><td>SRRI</td><td>Soil and runoff readiness: SCS-CN with antecedent soil.</td><td>0.15</td></tr>
+          <tr><td>SAI</td><td>Subsurface/aquifer; <code>NO_DATA</code> for pilot basins smaller than GRACE’s footprint.</td><td>0.20</td></tr>
+          <tr><td>EESI</td><td>Evaporative and ecological stress.</td><td>0.15</td></tr>
+        </tbody>
+      </table>
+      <p>The signed fixtures are preserved: Beni Haroun’s storm case reproduces <code>HRI_now=38.616</code>, <code>HRI_proj=83.293</code>, <code>Φ=0.94977</code>, <code>HRI=81.05</code>, <code>RECHARGING</code>. The dry case reproduces <code>24.9 CRITICAL</code>; the low-autonomy case reproduces <code>19.9</code>. These are regression tests, not marketing numbers.</p>
+    </section>
+
+    <section id="confidence">
+      <h2>Confidence and coverage</h2>
+      <p>Confidence never changes the score. It is reported beside it, decomposed per pillar, and used to renormalise the effective weights. Coverage is the share of nominal weight with a real source; under 40% the country is <code>NO_DATA</code>.</p>
+      <ul>
+        <li><strong>Live</strong> — a fetch succeeded and a timestamp was stored.</li>
+        <li><strong>Cached</strong> — served from the last successful fetch.</li>
+        <li><strong>Modeled</strong> — a mass-balance, trend or screening calculation.</li>
+        <li><strong>Reference</strong> — a public inventory or annual statistic.</li>
+        <li><strong>Proxy</strong> — a labelled substitute, e.g. root-zone wetness for groundwater.</li>
+        <li><strong>Unavailable</strong> — neutral 50 with low confidence, never a hidden zero.</li>
+      </ul>
+    </section>
+
+    <section id="limits">
+      <h2>What this is not</h2>
+      <ul>
+        <li>Not an operational flood, fire or drought warning system.</li>
+        <li>Not official water accounting; reservoir storage is modeled/blended, not telemetry.</li>
+        <li>Not a groundwater model; GRACE is not ingested in this MVP.</li>
+        <li>Not a complete dam census; the atlas is notable dams with public records.</li>
+        <li>Not a forecast of conflict, migration or food security.</li>
+      </ul>
+      <p>Reproduce the world layer with <code>python manage.py bootstrap_world</code>; recompute the dam layer with <code>python manage.py compute_indices --all</code>. The source ledger at <a href="/sources/">/sources/</a> lists every fetch and timestamp.</p>
+    </section>
+  </article>
+</div>
+{% endblock %}

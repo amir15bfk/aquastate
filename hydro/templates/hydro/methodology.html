@@ -1,0 +1,213 @@
+{% extends "hydro/base.html" %}
+{% block title %}Methodology · AquaState{% endblock %}
+{% block sheet %}
+<div class="doc-layout">
+<article class="doc">
+  <p class="breadcrumb">Reference / Methodology</p>
+  <h1>How the water state is calculated</h1>
+  <p class="doc-lead">
+    AquaState reports a current-state score and a separate forward-looking horizon verdict. The MVP is deterministic:
+    every number has a formula, a substitution, a source and a confidence. No AI agent can change the score, the
+    formulas, the inputs or the verdict.
+  </p>
+
+  <div class="doc-note">
+    <strong>Plain-language answer first.</strong> The score tells you how strong the water system is today. The horizon
+    verdict tells you whether the water you have is enough until the next refill. A low score with a secured refill
+    reads <strong>“OK until rain”</strong>, because the current level is not the binding constraint. The score stays
+    visible and unchanged.
+  </div>
+
+  <h2>1. The one question</h2>
+  <p>
+    Every dashboard begins with the same question: <strong>“Are we covered until the next rain?”</strong> The index is a
+    decision aid for a national water analyst, not an official water-accounting standard.
+  </p>
+
+  <h2>2. Sub-indexes and weights</h2>
+  <p>Each sub-index runs from 0 to 100. Weights sum to 1.00.</p>
+  <table class="doc-table">
+    <thead>
+      <tr><th scope="col">Sub-index</th><th scope="col">Weight</th><th scope="col">What it measures</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Storage buffer</strong></td><td class="num">0.36</td><td>Days of usable stored water at the current net burn, scored against a 90-day target.</td></tr>
+      <tr><td><strong>Soil moisture</strong></td><td class="num">0.18</td><td>Surface soil wetness against the same calendar window in the prior ten years.</td></tr>
+      <tr><td><strong>Underground reserve</strong></td><td class="num">0.16</td><td>Abstraction pressure and water-table direction for mapped aquifers; a labelled root-zone proxy when no aquifer data exists.</td></tr>
+      <tr><td><strong>Forecast opportunity</strong></td><td class="num">0.14</td><td>14-day rain versus the ten-year normal for the same fortnight.</td></tr>
+      <tr><td><strong>Storage trend</strong></td><td class="num">0.16</td><td>Ten-year trajectory, using Sen's slope and a Mann–Kendall significance test.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Storage buffer</h3>
+  <div class="formula-block">
+    Uᵢ = max(0, Sᵢ − Dᵢ)<br>
+    bᵢ = max(0.05, dᵢ + Eᵢ − qᵢ)<br>
+    cover_daysᵢ = Uᵢ / bᵢ<br>
+    <strong>B = 100 × Σ dᵢ · min(1, cover_daysᵢ / 90)^0.85 / Σ dᵢ</strong>
+  </div>
+  <p>
+    <code>S</code> is live storage, <code>D</code> dead storage, <code>d</code> allocated demand, <code>q</code> base inflow.
+    Evaporation <code>E = ET0 × area × 0.001 × 0.70</code>, because one millimetre over one square kilometre is
+    0.001 Mm³. A 90-day runway scores 100; 30 days scores about 39; 60 days about 71.
+  </p>
+
+  <h3>Soil moisture</h3>
+  <div class="formula-block">
+    p = percentile rank of the current 7-day mean against prior-year windows<br>
+    a = 50 + 50 × tanh((current − normal) / max(0.05, 0.25 × normal))<br>
+    <strong>M = 0.7p + 0.3a</strong>
+  </div>
+
+  <h3>Underground reserve</h3>
+  <div class="formula-block">
+    abstraction = 100 × clamp((1.25 − extraction/recharge) / 0.75, 0, 1)<br>
+    trend = 100 × clamp(0.5 + water_table_trend_m_per_year / 3, 0, 1)<br>
+    <strong>G = 0.55 × abstraction + 0.45 × trend</strong>
+  </div>
+  <p>
+    Positive trend means recovery; negative means decline. Fossil systems are flagged as non-renewable on management
+    timescales. If a country has no mapped aquifer, <code>G = 0.6 × root-zone percentile + 0.4 × root-zone trend score</code>
+    and the UI labels it as a proxy.
+  </p>
+
+  <h3>Forecast opportunity</h3>
+  <div class="formula-block">
+    <strong>F = 100 × min(1, (P14 / max(1, Pnormal14)) / 1.25)</strong>
+  </div>
+  <p>A normal fortnight scores 80; 1.25× normal scores 100. Missing forecast data is neutral (50) with low confidence, not treated as drought.</p>
+
+  <h3>Storage trend</h3>
+  <div class="formula-block">
+    β = Sen's slope in percentage points of capacity per year<br>
+    T_raw = 100 × clamp(0.5 + β/4, 0, 1)<br>
+    <strong>T = 50 + (T_raw − 50) × (1 − p)</strong>, using the two-sided Mann–Kendall p-value
+  </div>
+  <p>
+    A flat series returns β = 0, p = 1, T = 50. The normal approximation is used only with at least eight annual
+    values; ties are corrected. The <code>(1 − p)</code> factor is a deliberate screening shrinkage, not a claim that
+    <code>1 − p</code> is the probability that a trend is real.
+  </p>
+
+  <h2>3. Aggregation and bands</h2>
+  <div class="formula-block">
+    base = 0.36B + 0.18M + 0.16G + 0.14F + 0.16T<br>
+    penalty = 0.15 × max(0, 35 − min(B, M, G, F, T))<br>
+    <strong>WRI = clamp(base − penalty, 0, 100)</strong>
+  </div>
+  <table class="doc-table">
+    <thead><tr><th scope="col">Band</th><th scope="col">Range</th><th scope="col">Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><span class="status-pill status-ok">OK</span></td><td class="num">≥ 60</td><td>Current state is resilient.</td></tr>
+      <tr><td><span class="status-pill status-watch">Watch</span></td><td class="num">45 – 59.9</td><td>One or more pillars need attention.</td></tr>
+      <tr><td><span class="status-pill status-stressed">Stressed</span></td><td class="num">30 – 44.9</td><td>Current state is under material pressure.</td></tr>
+      <tr><td><span class="status-pill status-critical">Critical</span></td><td class="num">&lt; 30</td><td>The current state is the binding constraint.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The bottleneck penalty is deliberately small (maximum 5.25 points). It nudges the score when one pillar is very
+    weak; it cannot manufacture a crisis.
+  </p>
+
+  <h2>4. Smart Horizon: verdict without rewriting the arithmetic</h2>
+  <p>
+    The horizon simulation runs a 45-day daily balance per reservoir. Forecast rain is used for days 0–15; zero rain is
+    assumed after day 16. Runoff lags rainfall by two days. The screening rainfall response is
+    <code>rain × (capacity / 300) × 0.60</code>, where <code>capacity / 300</code> has units Mm³ per mm.
+  </p>
+  <div class="formula-block">
+    rain_gainᵢ(t) = Pᵢ(t − 2) × (Cᵢ / 300) × 0.60<br>
+    Sᵢ(t+1) = clamp(Sᵢ(t) + qᵢ + rain_gainᵢ(t) − dᵢ − Eᵢ(t), 0, Cᵢ)<br>
+    relief = first 3-day rain total ≥ 5 × daily demand / national response<br>
+    relief_day = event day + 1 + 2-day runoff lag
+  </div>
+  <p>
+    The horizon is <strong>secured</strong> when the aggregate usable ratio stays above 3% of live capacity through the
+    relief day, every major reservoir stays above 1% of capacity, the reserve at relief is above the emergency threshold,
+    and the refill adds at least two days of national demand and 2% of live capacity. It is <strong>buffered</strong> when
+    no refill is needed, <strong>tight</strong> when rain is forecast but the reserve breaches before it arrives, and
+    <strong>exposed</strong> when no refill is forecast and the runway is short.
+  </p>
+  <div class="doc-note">
+    <strong>Why the score does not jump to 60.</strong> The score is the current-state evidence. The horizon verdict is a
+    separate, conditional statement. Rewriting the score would make the arithmetic non-monotone and would hide the
+    current state. The product still says “OK until rain” in the headline and explains the gate; the score stays visible
+    beside it. The horizon is a conditional forecast, not a guarantee.
+  </div>
+
+  <h2>5. Confidence and honesty</h2>
+  <p>
+    Confidence is the weighted average of source-confidence values. It never changes the score. Live API data is
+    0.90–0.95; cached data 0.85; modeled reconstruction 0.65–0.75; curated reference 0.68–0.72; synthetic fallback 0.20–0.35.
+    Reservoir storage is modeled or blended from public capacity, demand allocation, NASA POWER rainfall, ET0 and base inflow.
+    It is never presented as SCADA telemetry.
+  </p>
+  <p>
+    Country switching covers 250 ISO entries. Algeria and Tunisia carry curated screening inventories. Any other country
+    gets a clearly labelled <strong>National reference storage pool</strong>, plus live satellite soil and forecast data.
+    OpenStreetMap reservoir import is available where that service responds.
+  </p>
+
+  <h2>6. AI-ready, AI-off</h2>
+  <p>
+    Five agent slots are reserved for future narrative, anomaly, confidence and critique work. They are disabled. The
+    contract rejects any payload that attempts to write core keys; even an enabled slot may only produce an advisory
+    trace, never a mutation of the score, formulas, inputs, pillars or horizon verdict. The audit endpoint records every
+    suggestion, its rationale, confidence, delta, errors and whether it was applied.
+  </p>
+
+  <h2>7. Limits</h2>
+  <ul>
+    <li>Reservoir capacities are public screening values; storage is modeled, not operational telemetry.</li>
+    <li>The rainfall-runoff response is a screened coefficient, not a calibrated catchment model.</li>
+    <li>Soil wetness is a point/area reanalysis signal, not a national soil-moisture map.</li>
+    <li>Aquifer figures are public reference estimates, not a numerical groundwater model.</li>
+    <li>The index is a decision aid, not an official water-accounting standard.</li>
+  </ul>
+
+  <div class="doc-actions">
+    <a class="btn btn-primary" href="/api/country/DZ/audit/" target="_blank" rel="noopener">Open a full audit JSON</a>
+    <a class="btn btn-quiet" href="/sources/">Read the source ledger</a>
+    <a class="btn btn-quiet" href="/water/DZ/">Back to Algeria</a>
+  </div>
+</article>
+
+<aside class="doc-aside" aria-label="Method at a glance">
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>Index at a glance</h2>
+        <p class="panel-sub">{{ version }} · deterministic</p>
+      </div>
+    </div>
+    <table class="mini-table">
+      <tbody>
+        <tr><td>Storage buffer</td><td class="num mono">{{ weights.buffer|floatformat:2 }}</td></tr>
+        <tr><td>Soil moisture</td><td class="num mono">{{ weights.soil|floatformat:2 }}</td></tr>
+        <tr><td>Underground reserve</td><td class="num mono">{{ weights.groundwater|floatformat:2 }}</td></tr>
+        <tr><td>Forecast opportunity</td><td class="num mono">{{ weights.forecast|floatformat:2 }}</td></tr>
+        <tr><td>Storage trend</td><td class="num mono">{{ weights.trend|floatformat:2 }}</td></tr>
+      </tbody>
+    </table>
+    <p class="chart-note">Weights sum to 1.00. The bottleneck penalty is capped at 5.25 points. The score is the current state; the horizon verdict is separate.</p>
+    <a class="btn btn-quiet" href="/api/country/DZ/audit/" target="_blank" rel="noopener">Audit JSON</a>
+  </section>
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>Source families</h2>
+        <p class="panel-sub">Live, reference, modeled, fallback.</p>
+      </div>
+    </div>
+    <ul class="doc-aside-list">
+      <li><strong>NASA POWER</strong><span>rain + soil wetness, 10 years</span></li>
+      <li><strong>Open-Meteo</strong><span>16-day rain + ET0 forecast</span></li>
+      <li><strong>Public inventories</strong><span>dam capacity, aquifer context</span></li>
+      <li><strong>Mass balance</strong><span>modeled storage + annual trend</span></li>
+      <li><strong>Natural Earth</strong><span>country outline</span></li>
+    </ul>
+    <a class="text-link" href="/sources/">Open the full lineage</a>
+  </section>
+</aside>
+</div>
+{% endblock %}
